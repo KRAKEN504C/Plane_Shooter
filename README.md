@@ -1,2 +1,2 @@
 # Plane_Shooter
-Projekt na zaliczenie przedmiotu "proceduralne języki programowania"
+Projekt gry typu "yop-down shooter" na zaliczenie przedmiotu "proceduralne języki programowania"
