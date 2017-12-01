@@ -34,7 +34,7 @@ int main()
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 
 	int test = 0;
-	
+
 
 	while (1)
 	{
@@ -53,7 +53,7 @@ int main()
 		al_flip_display();
 
 		//koniec rozrysowania menu.
-		//podsietlenie aktywnych opcji menu, oraz dzia³anie podczas ich wyboru.
+		//podsietlenie aktywnych opcji menu, oraz dziaÂ³anie podczas ich wyboru.
 
 		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
@@ -62,12 +62,12 @@ int main()
 		}
 
 		if (ev.type == ALLEGRO_EVENT_MOUSE_AXES ||
-			ev.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY || 
+			ev.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY ||
 			ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 
 			x = ev.mouse.x;
 			y = ev.mouse.y;
-			
+
 
 			if ((x >= 300 && x <= 500) && (y >= 100 && y <= 130))
 			{
