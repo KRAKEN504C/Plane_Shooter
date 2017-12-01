@@ -1,4 +1,5 @@
 #include "jakas.h"
+#include "Random_Font.hpp"
 //#include "kolkokwadrat.cpp"
 //#include <Edytor.cpp>
 #include <fstream>
@@ -56,7 +57,7 @@ int Edytor()
 	int x, y;
 
 	ALLEGRO_DISPLAY* displayE = al_create_display(1024, 768);
-	ALLEGRO_FONT* font = al_load_font("C:\\Windows\\Fonts\\bauhs93.ttf", 22, 0);
+	ALLEGRO_FONT* font = Random_Font();
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
 	ALLEGRO_COLOR White = al_map_rgb(255, 255, 255);
@@ -67,7 +68,7 @@ int Edytor()
 	ALLEGRO_BITMAP *obrazek2 = NULL;
 	ALLEGRO_BITMAP *cursor = NULL;
 
-	obrazek1 = al_load_bitmap("C:\\Users\\KRAKEN504C\\Documents\\Visual Studio 2017\\Projects\\Plane Shooter\\Plane Shooter\\bitmapy\\sciana_Placeholder.png");
+	obrazek1 = al_load_bitmap("bitmapy/sciana_Placeholder.png");
 	if (!obrazek1)
 	{
 		fprintf(stderr, "failed to create obrazek1 bitmap!\n");
@@ -76,7 +77,7 @@ int Edytor()
 		return -1;
 	}
 
-	obrazek2 = al_load_bitmap("C:\\Users\\KRAKEN504C\\Documents\\Visual Studio 2017\\Projects\\Plane Shooter\\Plane Shooter\\bitmapy\\Droga_Placeholder.png");
+	obrazek2 = al_load_bitmap("bitmapy/Droga_Placeholder.png");
 	if (!obrazek2)
 	{
 		fprintf(stderr, "failed to create obrazek2 bitmap!\n");

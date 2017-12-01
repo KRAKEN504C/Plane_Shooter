@@ -1,4 +1,5 @@
 #include "jakas.h"
+#include "Random_Font.hpp"
 //#include "kolkokwadrat.cpp"
 //#include <Edytor.cpp>
 
@@ -20,7 +21,7 @@ int main()
 	int x, y;
 
 	ALLEGRO_DISPLAY* display = al_create_display(800, 600);
-	ALLEGRO_FONT* font = al_load_font("C:\\Windows\\Fonts\\bauhs93.ttf", 22, 0);
+	ALLEGRO_FONT* font = Random_Font();
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
 

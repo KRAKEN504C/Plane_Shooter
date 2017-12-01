@@ -1,4 +1,5 @@
 #include "jakas.h"
+#include "Random_Font.hpp"
 
 const float FPS = 60;
 const int SCREEN_W = 640;
@@ -24,7 +25,7 @@ int kolkokwadrat()
 	ALLEGRO_COLOR LovelyPink = al_map_rgb(255, 20, 147);
 
 	//ALLEGRO_FONT* font = al_create_builtin_font();
-	ALLEGRO_FONT* font = al_load_ttf_font("C:\\Windows\\Fonts\\bauhs93.ttf", 22, 0);
+	ALLEGRO_FONT* font = Random_Font();
 
 	bool key[1] = { false };
 
@@ -101,7 +102,7 @@ int kolkokwadrat()
 		y1 += vely;
 		y2 += vely;
 
-		
+
 
 		if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
 		{
@@ -111,7 +112,7 @@ int kolkokwadrat()
 				al_destroy_bitmap(bouncer);
 				al_destroy_timer(timer);
 				return 0;
-				
+
 			}
 		}
 	}
