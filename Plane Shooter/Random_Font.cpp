@@ -7,9 +7,19 @@ ALLEGRO_FONT* Random_Font()
 
     bool temp = rand()%2;
 
-    if(temp==0)
-        return font1;
-
-    if(temp==1)
-        return font2;
+    switch(temp)
+    {
+    case 0:
+        {
+            return font1;
+        }
+    case 1:
+        {
+            return font2;
+        }
+    default:
+        {
+            return nullptr;
+        }
+    }
 }
