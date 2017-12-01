@@ -24,14 +24,11 @@ enum MYKEYS {
 /*
 struct Bloki
 {
-	//struktura przechowywuje informacje o mo¿liwych do u¿ycia blokach
-	fstream plik;
-	int numer;
-	string nazwa;
-
-
+//struktura przechowywuje informacje o moÂ¿liwych do uÂ¿ycia blokach
+fstream plik;
+int numer;
+string nazwa;
 };
-
 */
 
 int Edytor()
@@ -130,7 +127,7 @@ int Edytor()
 		al_flip_display();
 
 		//koniec rozrysowania menu.
-		//podsietlenie aktywnych opcji menu, oraz dzia³anie podczas ich wyboru.
+		//podsietlenie aktywnych opcji menu, oraz dziaÂ³anie podczas ich wyboru.
 
 
 		/*
@@ -139,7 +136,6 @@ int Edytor()
 		ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN ||
 		ev.type == ALLEGRO_EVENT_KEY_DOWN)
 		{
-
 		x = ev.mouse.x;
 		y = ev.mouse.y;
 		}
@@ -176,6 +172,17 @@ int Edytor()
 				{
 					//cursor = obrazek1;
 					//cursor = obrazek2;
+				}
+				if (key[KEY_SPACE])
+				{
+					if (test == 0)
+					{
+						tab[cursor_x / 32][cursor_y / 32] = 2;
+					}
+					else if (test == 1)
+					{
+						tab[cursor_x / 32][cursor_y / 32] = 1;
+					}
 				}
 
 
@@ -229,6 +236,22 @@ int Edytor()
 				case ALLEGRO_KEY_SPACE:
 					key[KEY_SPACE] = true;
 					break;
+
+				case ALLEGRO_KEY_L:
+					key[KEY_L] = true;
+					cout << "L was pressed" << endl;
+					fstream pliczek1;
+					pliczek1.open("mapaL.txt", ios::in | ios::out);
+					for (int i = 0; i < 20; i++)
+					{
+						for (int j = 0; j < 15; j++)
+						{
+							pliczek1 >> tab[i][j];
+						}
+					}
+					cout << "wczytano mape" << endl;
+					pliczek1.close();
+					break;
 				}
 				cout << cursor_x << endl;
 				cout << cursor_y << endl;
@@ -266,19 +289,12 @@ int Edytor()
 					break;
 
 				case ALLEGRO_KEY_ESCAPE:
+					al_destroy_display(displayE);
 					doexit = true;
 					break;
 
 				case ALLEGRO_KEY_SPACE:
 					key[KEY_SPACE] = false;
-					if (test == 0)
-					{
-						tab[cursor_x / 32][cursor_y / 32] = 2;
-					}
-					else if (test == 1)
-					{
-						tab[cursor_x / 32][cursor_y / 32] = 1;
-					}
 					break;
 
 				case ALLEGRO_KEY_S:
@@ -290,12 +306,12 @@ int Edytor()
 						for (int j = 0; j < 15; j++)
 						{
 							pliczek << tab[i][j];
+							pliczek << " ";
 						}
 						pliczek << endl;
 					}
 					cout << "zapisano mape" << endl;
 					pliczek.close();
-
 					break;
 
 				}
