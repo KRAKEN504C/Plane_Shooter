@@ -1,4 +1,4 @@
-#include "jakas.h"
+ï»¿#include "jakas.h"
 //#include "kolkokwadrat.cpp"
 //#include <Edytor.cpp>
 #include <fstream>
@@ -23,14 +23,11 @@ enum MYKEYS {
 /*
 struct Bloki
 {
-//struktura przechowywuje informacje o mo¿liwych do u¿ycia blokach
+//struktura przechowywuje informacje o moÂ¿liwych do uÂ¿ycia blokach
 fstream plik;
 int numer;
 string nazwa;
-
-
 };
-
 */
 
 int Edytor()
@@ -67,7 +64,7 @@ int Edytor()
 	ALLEGRO_BITMAP *obrazek2 = NULL;
 	ALLEGRO_BITMAP *cursor = NULL;
 
-	obrazek1 = al_load_bitmap("C:\\Users\\student\\Documents\\Visual Studio 2015\\Projects\\Project1\\Project1\\bitmapy\\sciana_Placeholder.png");
+	obrazek1 = al_load_bitmap("C:\\Users\\KRAKEN504C\\Documents\\Visual Studio 2017\\Projects\\Plane Shooter\\Plane Shooter\\bitmapy\\sciana_Placeholder.png");
 	if (!obrazek1)
 	{
 		fprintf(stderr, "failed to create obrazek1 bitmap!\n");
@@ -76,7 +73,7 @@ int Edytor()
 		return -1;
 	}
 
-	obrazek2 = al_load_bitmap("C:\\Users\\student\\Documents\\Visual Studio 2015\\Projects\\Project1\\Project1\\bitmapy\\Droga_Placeholder.png");
+	obrazek2 = al_load_bitmap("C:\\Users\\KRAKEN504C\\Documents\\Visual Studio 2017\\Projects\\Plane Shooter\\Plane Shooter\\bitmapy\\Droga_Placeholder.png");
 	if (!obrazek2)
 	{
 		fprintf(stderr, "failed to create obrazek2 bitmap!\n");
@@ -129,7 +126,7 @@ int Edytor()
 		al_flip_display();
 
 		//koniec rozrysowania menu.
-		//podsietlenie aktywnych opcji menu, oraz dzia³anie podczas ich wyboru.
+		//podsietlenie aktywnych opcji menu, oraz dziaÂ³anie podczas ich wyboru.
 
 
 		/*
@@ -138,7 +135,6 @@ int Edytor()
 		ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN ||
 		ev.type == ALLEGRO_EVENT_KEY_DOWN)
 		{
-
 		x = ev.mouse.x;
 		y = ev.mouse.y;
 		}
