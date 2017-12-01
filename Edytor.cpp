@@ -23,10 +23,10 @@ enum MYKEYS {
 /*
 struct Bloki
 {
-	//struktura przechowywuje informacje o mo퓄iwych do u퓓cia blokach
-	fstream plik;
-	int numer;
-	string nazwa;
+//struktura przechowywuje informacje o mo퓄iwych do u퓓cia blokach
+fstream plik;
+int numer;
+string nazwa;
 
 
 };
@@ -67,7 +67,7 @@ int Edytor()
 	ALLEGRO_BITMAP *obrazek2 = NULL;
 	ALLEGRO_BITMAP *cursor = NULL;
 
-	obrazek1 = al_load_bitmap("C:\\Users\\KRAKEN504C\\Documents\\Visual Studio 2017\\Projects\\Plane Shooter\\Plane Shooter\\bitmapy\\sciana_Placeholder.png");
+	obrazek1 = al_load_bitmap("C:\\Users\\student\\Documents\\Visual Studio 2015\\Projects\\Project1\\Project1\\bitmapy\\sciana_Placeholder.png");
 	if (!obrazek1)
 	{
 		fprintf(stderr, "failed to create obrazek1 bitmap!\n");
@@ -76,7 +76,7 @@ int Edytor()
 		return -1;
 	}
 
-	obrazek2 = al_load_bitmap("C:\\Users\\KRAKEN504C\\Documents\\Visual Studio 2017\\Projects\\Plane Shooter\\Plane Shooter\\bitmapy\\Droga_Placeholder.png");
+	obrazek2 = al_load_bitmap("C:\\Users\\student\\Documents\\Visual Studio 2015\\Projects\\Project1\\Project1\\bitmapy\\Droga_Placeholder.png");
 	if (!obrazek2)
 	{
 		fprintf(stderr, "failed to create obrazek2 bitmap!\n");
@@ -176,6 +176,17 @@ int Edytor()
 					//cursor = obrazek1;
 					//cursor = obrazek2;
 				}
+				if (key[KEY_SPACE])
+				{
+					if (test == 0)
+					{
+						tab[cursor_x / 32][cursor_y / 32] = 2;
+					}
+					else if (test == 1)
+					{
+						tab[cursor_x / 32][cursor_y / 32] = 1;
+					}
+				}
 
 
 				redraw = true;
@@ -228,6 +239,22 @@ int Edytor()
 				case ALLEGRO_KEY_SPACE:
 					key[KEY_SPACE] = true;
 					break;
+
+				case ALLEGRO_KEY_L:
+					key[KEY_L] = true;
+					cout << "L was pressed" << endl;
+					fstream pliczek1;
+					pliczek1.open("mapaL.txt", ios::in | ios::out);
+					for (int i = 0; i < 20; i++)
+					{
+						for (int j = 0; j < 15; j++)
+						{
+							pliczek1 >> tab[i][j];
+						}
+					}
+					cout << "wczytano mape" << endl;
+					pliczek1.close();
+					break;
 				}
 				cout << cursor_x << endl;
 				cout << cursor_y << endl;
@@ -265,19 +292,12 @@ int Edytor()
 					break;
 
 				case ALLEGRO_KEY_ESCAPE:
+					al_destroy_display(displayE);
 					doexit = true;
 					break;
 
 				case ALLEGRO_KEY_SPACE:
 					key[KEY_SPACE] = false;
-					if (test == 0)
-					{
-						tab[cursor_x / 32][cursor_y / 32] = 2;
-					}
-					else if (test == 1)
-					{
-						tab[cursor_x / 32][cursor_y / 32] = 1;
-					}
 					break;
 
 				case ALLEGRO_KEY_S:
@@ -289,12 +309,12 @@ int Edytor()
 						for (int j = 0; j < 15; j++)
 						{
 							pliczek << tab[i][j];
+							pliczek << " ";
 						}
 						pliczek << endl;
 					}
 					cout << "zapisano mape" << endl;
 					pliczek.close();
-
 					break;
 
 				}
