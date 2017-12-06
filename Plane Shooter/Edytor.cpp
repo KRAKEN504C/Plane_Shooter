@@ -1,4 +1,4 @@
-#include "jakas.h"
+#include "biblioteki.h"
 #include "Random_Font.hpp"
 //#include "kolkokwadrat.cpp"
 //#include <Edytor.cpp>
@@ -11,6 +11,7 @@ const float FPS = 60;
 
 int kolkokwadrat();
 int Edytor();
+int main();
 
 const int SCREEN_W = 640;
 const int SCREEN_H = 480;
@@ -33,9 +34,6 @@ string nazwa;
 
 int Edytor()
 {
-
-
-
 	al_init();
 	al_init_font_addon();
 	al_init_ttf_addon();
@@ -43,7 +41,6 @@ int Edytor()
 	al_install_mouse();
 	al_install_keyboard();
 	al_init_image_addon();
-
 
 	bool key[9] = { false, false, false, false, false, false, false, false, false };
 	bool redraw = true;
@@ -56,10 +53,10 @@ int Edytor()
 	ALLEGRO_DISPLAY* displayE = al_create_display(1024, 768);
 	ALLEGRO_FONT* font = Random_Font();
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
-	ALLEGRO_TIMER *timer = NULL;
+	ALLEGRO_TIMER *timerE = NULL;
 	ALLEGRO_COLOR White = al_map_rgb(255, 255, 255);
 
-	timer = al_create_timer(1.0 / FPS);
+	timerE = al_create_timer(1.0 / FPS);
 
 	ALLEGRO_BITMAP *obrazek1 = NULL;
 	ALLEGRO_BITMAP *obrazek2 = NULL;
@@ -70,7 +67,7 @@ int Edytor()
 	{
 		fprintf(stderr, "failed to create obrazek1 bitmap!\n");
 		al_destroy_display(displayE);
-		al_destroy_timer(timer);
+		al_destroy_timer(timerE);
 		return -1;
 	}
 
@@ -79,15 +76,13 @@ int Edytor()
 	{
 		fprintf(stderr, "failed to create obrazek2 bitmap!\n");
 		al_destroy_display(displayE);
-		al_destroy_timer(timer);
+		al_destroy_timer(timerE);
 		return -1;
 	}
 
 	cursor = al_create_bitmap(CURSOR_SIZE, CURSOR_SIZE);
 
-
 	//al_set_target_bitmap(cursor);
-
 	//al_clear_to_color(al_map_rgb(255, 0, 255));
 
 	cursor = obrazek2;
@@ -95,51 +90,27 @@ int Edytor()
 	al_set_target_bitmap(al_get_backbuffer(displayE));
 
 
-
-
-
 	event_queue = al_create_event_queue();
 
 	al_register_event_source(event_queue, al_get_mouse_event_source());
-	al_register_event_source(event_queue, al_get_display_event_source(displayE));
-
-
-	al_register_event_source(event_queue, al_get_timer_event_source(timer));
-
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	al_register_event_source(event_queue, al_get_display_event_source(displayE));
+	al_register_event_source(event_queue, al_get_timer_event_source(timerE));
 
-	al_start_timer(timer);
+	al_start_timer(timerE);
 
 	int test = 0;
-
+	int wyjscie = 0;
+	int czas = 0;
+	int miniczas = 0;
 
 
 
 	while (1)
 	{
-		//ALLEGRO_EVENT ev;
-		//al_wait_for_event(event_queue, &ev);
-
-		//Rozrysowanie menu
-
-		//al_draw_rectangle(300, 50, 500, 300, al_map_rgb(255, 0, 0), 1);
-
 		al_flip_display();
 
-		//koniec rozrysowania menu.
-		//podsietlenie aktywnych opcji menu, oraz dzia³anie podczas ich wyboru.
-
-
-		/*
-		if (ev.type == ALLEGRO_EVENT_MOUSE_AXES ||
-		ev.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY ||
-		ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN ||
-		ev.type == ALLEGRO_EVENT_KEY_DOWN)
-		{
-		x = ev.mouse.x;
-		y = ev.mouse.y;
-		}
-		*/
+		
 		while (!doexit)
 		{
 			ALLEGRO_EVENT ev;
@@ -148,24 +119,61 @@ int Edytor()
 			if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 			{
 				al_destroy_display(displayE);
+				wyjscie = main();
 				return 0;
 			}
 
 			if (ev.type == ALLEGRO_EVENT_TIMER) {
 				if (key[KEY_UP] && cursor_y >= 4.0) {
-					//cursor_y -= 32.0;
+					czas++;
+					if (czas >= 30)
+					{
+						miniczas++;
+						if (miniczas >= 3)
+						{
+							cursor_y -= 32.0;
+							miniczas = 0;
+						}
+					}
 				}
 
 				if (key[KEY_DOWN] && cursor_y <= SCREEN_H - CURSOR_SIZE - 4.0) {
-					//cursor_y += 32.0;
+					czas++;
+					if (czas >= 30)
+					{
+						miniczas++;
+						if (miniczas >= 3)
+						{
+							cursor_y += 32.0;
+							miniczas = 0;
+						}
+					}
 				}
 
 				if (key[KEY_LEFT] && cursor_x >= 4.0) {
-					//cursor_x -= 32.0;
+					czas++;
+					if (czas >= 30)
+					{
+						miniczas++;
+						if (miniczas >= 3)
+						{
+							cursor_x -= 32.0;
+							miniczas = 0;
+						}
+					}
 				}
 
 				if (key[KEY_RIGHT] && cursor_x <= SCREEN_W - CURSOR_SIZE - 4.0) {
-					//cursor_x += 32.0;
+					czas++;
+					if (czas >= 30)
+					{
+						miniczas++;
+						if (miniczas >= 3)
+						{
+							cursor_x += 32.0;
+							miniczas = 0;
+						}
+					}
 				}
 
 				if (key[KEY_B])
@@ -187,9 +195,6 @@ int Edytor()
 
 
 				redraw = true;
-			}
-			else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) { // Wyjscie z programu
-				break;
 			}
 			else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
 				switch (ev.keyboard.keycode) {
@@ -241,7 +246,7 @@ int Edytor()
 					key[KEY_L] = true;
 					cout << "L was pressed" << endl;
 					fstream pliczek1;
-					pliczek1.open("mapaL.txt", ios::in | ios::out);
+					pliczek1.open("Mapy/mapaL.txt", ios::in | ios::out);
 					for (int i = 0; i < 20; i++)
 					{
 						for (int j = 0; j < 15; j++)
@@ -260,18 +265,22 @@ int Edytor()
 				switch (ev.keyboard.keycode) {
 				case ALLEGRO_KEY_UP:
 					key[KEY_UP] = false;
+					czas = 0;
 					break;
 
 				case ALLEGRO_KEY_DOWN:
 					key[KEY_DOWN] = false;
+					czas = 0;
 					break;
 
 				case ALLEGRO_KEY_LEFT:
 					key[KEY_LEFT] = false;
+					czas = 0;
 					break;
 
 				case ALLEGRO_KEY_RIGHT:
 					key[KEY_RIGHT] = false;
+					czas = 0;
 					break;
 
 				case ALLEGRO_KEY_B:
@@ -290,7 +299,9 @@ int Edytor()
 
 				case ALLEGRO_KEY_ESCAPE:
 					al_destroy_display(displayE);
-					doexit = true;
+					wyjscie = main();
+					return 0;
+					//doexit = true;
 					break;
 
 				case ALLEGRO_KEY_SPACE:
@@ -300,7 +311,7 @@ int Edytor()
 				case ALLEGRO_KEY_S:
 					key[KEY_S] = false;
 					fstream pliczek;
-					pliczek.open("mapa.txt", ios::in | ios::out);
+					pliczek.open("Mapy/mapa.txt", ios::in | ios::out);
 					for (int i = 0; i < 20; i++)
 					{
 						for (int j = 0; j < 15; j++)
@@ -355,6 +366,9 @@ int Edytor()
 		}
 	}
 
+
+	al_destroy_display(displayE);
+	al_destroy_timer(timerE);
 
 	return 0;
 }

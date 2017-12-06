@@ -126,7 +126,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Edytor.cpp" />
-    <ClCompile Include="jakas.h" />
+    <ClCompile Include="Enemies.cpp" />
+    <ClCompile Include="biblioteki.h" />
     <ClCompile Include="kolkokwadrat.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Main_Menu.cpp" />
