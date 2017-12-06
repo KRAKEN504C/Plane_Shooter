@@ -1,4 +1,4 @@
-#include "jakas.h"
+#include "biblioteki.h"
 #include "Random_Font.hpp"
 //#include "kolkokwadrat.cpp"
 //#include <Edytor.cpp>
@@ -54,7 +54,7 @@ int main()
 		al_flip_display();
 
 		//koniec rozrysowania menu.
-		//podsietlenie aktywnych opcji menu, oraz dzia³anie podczas ich wyboru.
+		//podswietlenie aktywnych opcji menu, oraz dzialanie podczas ich wyboru.
 
 		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
@@ -76,8 +76,10 @@ int main()
 				al_draw_filled_rectangle(300, 100, 500, 130, al_map_rgb(255, 0, 0));
 				if (ev.mouse.button & 1)
 				{
-					cout << "right mouse has been clicked on start" << endl;
+					cout << "Left mouse has been clicked on start" << endl;
+					al_destroy_display(display);
 					test = kolkokwadrat();
+					//display = al_create_display(800, 600);
 				}
 			}
 			else if ((x >= 300 && x <= 500) && (y >= 150 && y <= 180))
@@ -91,8 +93,10 @@ int main()
 				al_draw_filled_rectangle(300, 200, 500, 230, al_map_rgb(255, 0, 0));
 				if (ev.mouse.button & 1)
 				{
-					cout << "right mouse has been clicked on options" << endl;
+					cout << "Left mouse has been clicked on options" << endl;
+					al_destroy_display(display);
 					test = Edytor();
+					//display = al_create_display(800, 600);
 				}
 			}
 			else if ((x >= 300 && x <= 500) && (y >= 250 && y <= 280))
@@ -101,7 +105,7 @@ int main()
 				al_draw_filled_rectangle(300, 250, 500, 280, al_map_rgb(255, 0, 0));
 				if (ev.mouse.button & 1)
 				{
-					cout << "right mouse has been clicked on exit" << endl;
+					cout << "Left mouse has been clicked on exit" << endl;
 					al_destroy_display(display);
 					return 0;
 				}
@@ -111,15 +115,15 @@ int main()
 				al_clear_to_color(al_map_rgb(0, 0, 0));
 			}
 
-			cout << x << "\t";
-			cout << y << "\t";
-			cout << test;
-			cout << endl;
+			//cout << x << "\t";
+			//cout << y << "\t";
+			//cout << test;
+			//cout << endl;
 		}
-
+		
 	}
 
-	al_rest(5.0);
+	//al_rest(5.0);
 
 	return 0;
 }
