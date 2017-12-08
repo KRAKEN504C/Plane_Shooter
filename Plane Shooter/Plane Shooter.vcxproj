@@ -129,6 +129,7 @@
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="biblioteki.h" />
     <ClCompile Include="kolkokwadrat.cpp" />
+    <ClCompile Include="loader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Main_Menu.cpp" />
     <ClCompile Include="Random_Font.cpp" />
@@ -137,6 +138,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="loader.hpp" />
     <ClInclude Include="Random_Font.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

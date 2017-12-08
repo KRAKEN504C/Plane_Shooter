@@ -23,7 +23,7 @@ enum MYKEYS {
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_S, KEY_L, KEY_B, KEY_ESCAPE, KEY_SPACE
 };
 /*
-struct Bloki
+Class Bloki
 {
 //struktura przechowywuje informacje o mo¿liwych do u¿ycia blokach
 fstream plik;
