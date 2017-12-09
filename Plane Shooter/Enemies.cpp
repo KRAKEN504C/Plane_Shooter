@@ -269,6 +269,7 @@ int Enemies()
 			redraw = true;
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			test = main();
 			break;
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -368,6 +369,7 @@ int Enemies()
 	al_destroy_timer(timerEn);
 	al_destroy_display(displayEn);
 	al_destroy_event_queue(event_queue);
+	test = main();
 
 	return 0;
 }
