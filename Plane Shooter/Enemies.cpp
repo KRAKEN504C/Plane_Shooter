@@ -4,6 +4,7 @@
 #include <random>
 #include <stdlib.h>
 #include <time.h>
+//#include "loader.cpp"
 
 
 using namespace std;
@@ -18,7 +19,7 @@ const int CURSOR_SIZE = 16;
 
 int tabEn[20][15];
 
-
+ALLEGRO_BITMAP *loader(string sciezka);
 
 enum MYKEYS {
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_S, KEY_L, KEY_B, KEY_ESCAPE, KEY_SPACE
@@ -105,7 +106,7 @@ int Enemies()
 
 
 
-
+	/*
 	ALLEGRO_BITMAP *obrazek1 = NULL;
 	ALLEGRO_BITMAP *obrazek2 = NULL;
 	ALLEGRO_BITMAP *Enemy1 = NULL;
@@ -179,7 +180,7 @@ int Enemies()
 		fprintf(stderr, "failed to create bonus2 bitmap!\n");
 		return -1;
 	}
-
+	*/
 
 
 
@@ -203,15 +204,30 @@ int Enemies()
 	}
 	*/
 
+
+
+	ALLEGRO_BITMAP *obrazek1 = loader("bitmapy/sciana_Placeholder.png");
+	ALLEGRO_BITMAP *obrazek2 = loader("bitmapy/Droga_Placeholder.png");
+	ALLEGRO_BITMAP *Enemy1 = loader("Enemies/Enemy1_Placeholder.png");
+	ALLEGRO_BITMAP *Enemy2 = loader("Enemies/Enemy2_Placeholder.png");
+	ALLEGRO_BITMAP *Player = loader("Player/Player_Placeholder.png");
+	ALLEGRO_BITMAP *bron1 = loader("bron/bron1_Placeholder.png");
+	ALLEGRO_BITMAP *bron2 = loader("bron/bron2_Placeholder.png");
+	ALLEGRO_BITMAP *bonus1 = loader("bonus/bonus1_Placeholder.png");
+	ALLEGRO_BITMAP *bonus2 = loader("bonus/bonus2_Placeholder.png");
+
+	
+
+
 	Player = al_create_bitmap(CURSOR_SIZE, CURSOR_SIZE);
 
 	al_set_target_bitmap(Player);
 
-	al_clear_to_color(al_map_rgb(255, 0, 255));
+	//al_clear_to_color(al_map_rgb(255, 0, 255));
 
 	al_set_target_bitmap(al_get_backbuffer(displayEn));
 
-	//Player = al_load_bitmap("Player/Player_Placeholder.png");
+	Player = al_load_bitmap("Player/Player_Placeholder.png");
 
 	
 
@@ -235,35 +251,136 @@ int Enemies()
 	int czas = 0;
 	int miniczas = 0;
 
-
+	int bonusEffect = 0;
+	int bronEffect = 0;
+	int bronEffect2 = 0;
+	int enemyEffect = 0;
+	int enemyEffect2 = 0;
 
 
 	
 
 	while (!doexit)
 	{
+
+
+
+
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
+
+
+
+		for (int i = 0; i < 20; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+				if (tabEn[i][j] != 0)
+				{
+					if (tabEn[i][j] == 1)
+					{
+						al_draw_bitmap(obrazek1, i * 32, j * 32, 0);
+					}
+					else if (tabEn[i][j] == 2)
+					{
+						al_draw_bitmap(obrazek2, i * 32, j * 32, 0);
+					}
+				}
+			}
+		}
+
+
+
 
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
 			if (key[KEY_UP] && Player_y >= 4.0) {
 				cout << "Up key was pressed" << endl;
-				Player_y -= 4.0;
+				if (bonusEffect == 1)
+				{
+					Player_y -= 8.0;
+				}
+				else
+				{
+					Player_y -= 4.0;
+				}
 			}
 
 			if (key[KEY_DOWN] && Player_y <= SCREEN_H - CURSOR_SIZE - 4.0) {
 				cout << "Down key was pressed" << endl;
-				Player_y += 4.0;
+				if (bonusEffect == 1)
+				{
+					Player_y += 8.0;
+				}
+				else
+				{
+					Player_y += 4.0;
+				}
 			}
 
 			if (key[KEY_LEFT] && Player_x >= 4.0) {
 				cout << "Left key was pressed" << endl;
-				Player_x -= 4.0;
+				if (bonusEffect == 1)
+				{
+					Player_x -= 8.0;
+				}
+				else
+				{
+					Player_x -= 4.0;
+				}
 			}
 
 			if (key[KEY_RIGHT] && Player_x <= SCREEN_W - CURSOR_SIZE - 4.0) {
 				cout << "Right key was pressed" << endl;
-				Player_x += 4.0;
+				if (bonusEffect == 1)
+				{
+					Player_x += 8.0;
+				}
+				else
+				{
+					Player_x += 4.0;
+				}
+			}
+
+			if (key[KEY_SPACE]) {
+				cout << "Space key was pressed" << endl;
+				if (bronEffect == 1)
+				{
+					if (key[KEY_RIGHT])
+					{
+						al_draw_bitmap(bron1, Player_x + 32, Player_y, 0);
+					}
+					if (key[KEY_LEFT])
+					{
+						al_draw_bitmap(bron1, Player_x - 32, Player_y, 0);
+					}
+					if (key[KEY_UP])
+					{
+						al_draw_bitmap(bron1, Player_x, Player_y - 32, 0);
+					}
+					if (key[KEY_DOWN])
+					{
+						al_draw_bitmap(bron1, Player_x, Player_y + 32, 0);
+					}
+				}
+				else if(bronEffect2 == 1)
+				{
+					if (key[KEY_RIGHT])
+					{
+						al_draw_bitmap(bron2, Player_x + 32, Player_y, 0);
+					}
+					if (key[KEY_LEFT])
+					{
+						al_draw_bitmap(bron2, Player_x - 32, Player_y, 0);
+					}
+					if (key[KEY_UP])
+					{
+						al_draw_bitmap(bron2, Player_x, Player_y - 32, 0);
+					}
+					if (key[KEY_DOWN])
+					{
+						al_draw_bitmap(bron2, Player_x, Player_y + 32, 0);
+					}
+				}
 			}
 
 			redraw = true;
@@ -289,6 +406,10 @@ int Enemies()
 			case ALLEGRO_KEY_RIGHT:
 				key[KEY_RIGHT] = true;
 				break;
+
+			case ALLEGRO_KEY_SPACE:
+				key[KEY_SPACE] = true;
+				break;
 			}
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
@@ -309,14 +430,50 @@ int Enemies()
 				key[KEY_RIGHT] = false;
 				break;
 
+			case ALLEGRO_KEY_SPACE:
+				key[KEY_SPACE] = false;
+				break;
+
 			case ALLEGRO_KEY_ESCAPE:
 				doexit = true;
 				break;
 			}
 		}
 
+		if ((Player_x >= bonus1_x && Player_x <= bonus1_x +32 ) && (Player_y >= bonus1_y && Player_y <= bonus1_y +32))
+		{
+			bonusEffect = 1;
+			cout << "Bonus was picked up!";
+		}
+
+		if ((Player_x >= bron1_x && Player_x <= bron1_x + 32) && (Player_y >= bron1_y && Player_y <= bron1_y + 32))
+		{
+			bronEffect = 1;
+			cout << "Bron1 was picked up!";
+		}
+
+		if ((Player_x >= bron2_x && Player_x <= bron2_x + 32) && (Player_y >= bron2_y && Player_y <= bron2_y + 32))
+		{
+			bronEffect2 = 1;
+			cout << "Bron2 was picked up!";
+		}
+
+		if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+		{
+			enemyEffect2 = 1;
+			cout << "Enemy1 killed Player!";
+			return 0;
+		}
+
+		if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+		{
+			enemyEffect2 = 1;
+			cout << "Enemy2 killed Player!";
+			return 0;
+		}
 
 
+		/*
 		for (int i = 0; i < 20; i++)
 		{
 			for (int j = 0; j < 15; j++)
@@ -334,7 +491,7 @@ int Enemies()
 				}
 			}
 		}
-
+		*/
 
 
 		if (redraw && al_is_event_queue_empty(event_queue)) {
@@ -344,12 +501,21 @@ int Enemies()
 
 			al_draw_bitmap(Player, Player_x, Player_y, 0);
 
-			al_draw_bitmap(bron1, bron1_x, bron1_y, 0);
+			if (bronEffect == 0)
+			{
+				al_draw_bitmap(bron1, bron1_x, bron1_y, 0);
+			}
 
-			al_draw_bitmap(bron2, bron2_x, bron2_y, 0);
+			if (bronEffect2 == 0)
+			{
+				al_draw_bitmap(bron2, bron2_x, bron2_y, 0);
+			}
 
-			al_draw_bitmap(bonus1, bonus1_x, bonus1_y, 0);
-
+			if (bonusEffect == 0)
+			{
+				al_draw_bitmap(bonus1, bonus1_x, bonus1_y, 0);
+			}
+			
 			al_draw_bitmap(bonus2, bonus2_x, bonus2_y, 0);
 
 			al_draw_bitmap(Enemy1, Enemy1_x, Enemy1_y, 0);
