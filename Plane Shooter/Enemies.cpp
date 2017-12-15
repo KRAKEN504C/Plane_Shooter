@@ -70,6 +70,15 @@ int Enemies()
 	int bron5_y = bron1_y - 32;
 	int bron5_x = bron1_x;
 
+	int bonus3_y = bonus1_y + 32;
+	int bonus3_x = bonus1_x;
+
+	int bonus4_y = bonus2_y + 32;
+	int bonus4_x = bonus2_x;
+
+	int bonus5_y = bonus1_y - 32;
+	int bonus5_x = bonus1_x;
+
 
 
 	bool key[9] = { false, false, false, false, false, false, false, false, false };
@@ -279,6 +288,10 @@ int Enemies()
 	int bronEffect3 = 0;
 	int bronEffect4 = 0;
 	int bronEffect5 = 0;
+	int bonusEffect3 = 0;
+	int bonusEffect4 = 0;
+	int bonusEffect5 = 0;
+	int lastKey = 0;
 
 
 
@@ -325,7 +338,7 @@ int Enemies()
 				}
 				else
 				{
-					Player_y -= 4.0;
+					Player_y -= 5.0;
 				}
 			}
 
@@ -337,7 +350,7 @@ int Enemies()
 				}
 				else
 				{
-					Player_y += 4.0;
+					Player_y += 5.0;
 				}
 			}
 
@@ -349,7 +362,7 @@ int Enemies()
 				}
 				else
 				{
-					Player_x -= 4.0;
+					Player_x -= 5.0;
 				}
 			}
 
@@ -361,7 +374,7 @@ int Enemies()
 				}
 				else
 				{
-					Player_x += 4.0;
+					Player_x += 5.0;
 				}
 			}
 
@@ -369,21 +382,80 @@ int Enemies()
 				cout << "Space key was pressed" << endl;
 				if (bronEffect == 1)
 				{
+
+					switch (lastKey)
+					{
+					case 4:
+						al_draw_bitmap(bron1, Player_x + 16, Player_y, 0);
+						break;
+					case 3:
+						al_draw_bitmap(bron1, Player_x - 16, Player_y, 0);
+						break;
+					case 1:
+						al_draw_bitmap(bron1, Player_x, Player_y - 16, 0);
+						break;
+					case 2:
+						al_draw_bitmap(bron1, Player_x, Player_y + 16, 0);
+						break;
+					}
+
+
+
 					if (key[KEY_RIGHT])
 					{
 						al_draw_bitmap(bron1, Player_x + 16, Player_y, 0);
+						if ((Player_x + 16 >= Enemy1_x && Player_x + 16 <= Enemy1_x + 16) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+						}
+						if ((Player_x + 16 >= Enemy2_x && Player_x + 16 <= Enemy2_x + 16) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+						}
 					}
 					if (key[KEY_LEFT])
 					{
 						al_draw_bitmap(bron1, Player_x - 16, Player_y, 0);
+						if ((Player_x - 16 >= Enemy1_x && Player_x - 16 <= Enemy1_x + 16) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+						}
+						if ((Player_x - 16 >= Enemy2_x && Player_x - 16 <= Enemy2_x + 16) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+						}
 					}
 					if (key[KEY_UP])
 					{
 						al_draw_bitmap(bron1, Player_x, Player_y - 16, 0);
+						if ((Player_x  >= Enemy1_x && Player_x  <= Enemy1_x + 16) && (Player_y - 16 >= Enemy1_y && Player_y - 16 <= Enemy1_y + 16))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+						}
+						if ((Player_x  >= Enemy2_x && Player_x  <= Enemy2_x + 16) && (Player_y - 16 >= Enemy2_y && Player_y - 16 <= Enemy2_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+						}
 					}
 					if (key[KEY_DOWN])
 					{
 						al_draw_bitmap(bron1, Player_x, Player_y + 16, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 16) && (Player_y + 16 >= Enemy1_y && Player_y + 16 <= Enemy1_y + 16))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 16) && (Player_y + 16 >= Enemy2_y && Player_y + 16 <= Enemy2_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+						}
 					}
 				}
 				else if(bronEffect2 == 1)
@@ -417,18 +489,22 @@ int Enemies()
 			switch (ev.keyboard.keycode) {
 			case ALLEGRO_KEY_UP:
 				key[KEY_UP] = true;
+				lastKey = 1;
 				break;
 
 			case ALLEGRO_KEY_DOWN:
 				key[KEY_DOWN] = true;
+				lastKey = 2;
 				break;
 
 			case ALLEGRO_KEY_LEFT:
 				key[KEY_LEFT] = true;
+				lastKey = 3;
 				break;
 
 			case ALLEGRO_KEY_RIGHT:
 				key[KEY_RIGHT] = true;
+				lastKey = 4;
 				break;
 
 			case ALLEGRO_KEY_SPACE:
@@ -474,6 +550,24 @@ int Enemies()
 		{
 			bonusEffect2 = 1;
 			cout << "Bonus2 was picked up!";
+		}
+
+		if ((Player_x >= bonus3_x && Player_x <= bonus3_x + 16) && (Player_y >= bonus3_y && Player_y <= bonus3_y + 16))
+		{
+			bonusEffect3 = 1;
+			cout << "Bonus3 was picked up!";
+		}
+
+		if ((Player_x >= bonus4_x && Player_x <= bonus4_x + 16) && (Player_y >= bonus4_y && Player_y <= bonus4_y + 16))
+		{
+			bonusEffect4 = 1;
+			cout << "Bonus4 was picked up!";
+		}
+
+		if ((Player_x >= bonus5_x && Player_x <= bonus5_x + 16) && (Player_y >= bonus5_y && Player_y <= bonus5_y + 16))
+		{
+			bonusEffect5 = 1;
+			cout << "Bonus5 was picked up!";
 		}
 
 		if ((Player_x >= bron1_x && Player_x <= bron1_x + 16) && (Player_y >= bron1_y && Player_y <= bron1_y + 16))
@@ -612,6 +706,21 @@ int Enemies()
 			if (enemyDead2 == 0)
 			{
 				al_draw_bitmap(Enemy2, Enemy2_x, Enemy2_y, 0);
+			}
+
+			if (bonusEffect3 == 0)
+			{
+				al_draw_bitmap(bonus3, bonus3_x, bonus3_y, 0);
+			}
+
+			if (bonusEffect4 == 0)
+			{
+				al_draw_bitmap(bonus4, bonus4_x, bonus4_y, 0);
+			}
+
+			if (bonusEffect5 == 0)
+			{
+				al_draw_bitmap(bonus5, bonus5_x, bonus5_y, 0);
 			}
 
 			al_flip_display();
