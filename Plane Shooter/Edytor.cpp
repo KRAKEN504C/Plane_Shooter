@@ -127,6 +127,8 @@ int Edytor()
 
 	bool tekst_podany = false;
 
+	const char *slowo;
+
 
 	while (1)
 	{
@@ -292,7 +294,24 @@ int Edytor()
 
 				case ALLEGRO_KEY_S:
 					key[KEY_S] = true;
-					break;
+					{
+						string testwyjsciowy = "Mapy/";
+						testwyjsciowy += mapa_do_zapisu;
+						testwyjsciowy += ".txt";
+						std::ofstream pliczek(testwyjsciowy /*"Mapy/mapa.txt"*/);
+						for (int i = 0; i < 20; i++)
+						{
+							for (int j = 0; j < 15; j++)
+							{
+								pliczek << tab[i][j];
+								pliczek << " ";
+							}
+							pliczek << endl;
+						}
+						cout << "zapisano mape" << endl;
+						pliczek.close();
+						break;
+					}
 
 				case ALLEGRO_KEY_SPACE:
 					key[KEY_SPACE] = true;
@@ -300,18 +319,44 @@ int Edytor()
 
 				case ALLEGRO_KEY_L:
 					key[KEY_L] = true;
+
+					string testwyjsciowy = "Mapy/";
+					testwyjsciowy += mapa_do_zapisu;
+					testwyjsciowy += ".txt";
+
 					cout << "L was pressed" << endl;
 					fstream pliczek1;
-					pliczek1.open("Mapy/mapaL.txt", ios::in | ios::out);
-					for (int i = 0; i < 20; i++)
+					pliczek1.open(testwyjsciowy, ios::in | ios::out);
+					if (pliczek1)
 					{
-						for (int j = 0; j < 15; j++)
+						for (int i = 0; i < 20; i++)
 						{
-							pliczek1 >> tab[i][j];
+							for (int j = 0; j < 15; j++)
+							{
+								pliczek1 >> tab[i][j];
+							}
+						}
+						cout << "wczytano mape uzytkownika" << endl;
+						pliczek1.close();
+					}
+					else
+					{
+						cout << "couldnt find such file/nLoading mapaL";
+						fstream pliczek2;
+						pliczek2.open("Mapy/mapaL.txt", ios::in | ios::out);
+						if (pliczek1.good())
+						{
+							for (int i = 0; i < 20; i++)
+							{
+								for (int j = 0; j < 15; j++)
+								{
+									pliczek1 >> tab[i][j];
+								}
+							}
+							cout << "wczytano mape domyslna" << endl;
+							pliczek2.close();
 						}
 					}
-					cout << "wczytano mape" << endl;
-					pliczek1.close();
 					break;
 				}
 				cout << cursor_x << endl;
@@ -368,22 +413,22 @@ int Edytor()
 					key[KEY_S] = false;
 
 
-					string testwyjsciowy = "Mapy/";
-					testwyjsciowy += mapa_do_zapisu;
-					testwyjsciowy += ".txt";
-					std::ofstream pliczek( testwyjsciowy /*"Mapy/mapa.txt"*/);
-					for (int i = 0; i < 20; i++)
-					{
-						for (int j = 0; j < 15; j++)
-						{
-							pliczek << tab[i][j];
-							pliczek << " ";
-						}
-						pliczek << endl;
-					}
-					cout << "zapisano mape" << endl;
-					pliczek.close();
-					break;
+					//string testwyjsciowy = "Mapy/";
+					//testwyjsciowy += mapa_do_zapisu;
+					//testwyjsciowy += ".txt";
+					//std::ofstream pliczek( testwyjsciowy /*"Mapy/mapa.txt"*/);
+					//for (int i = 0; i < 20; i++)
+					//{
+					//	for (int j = 0; j < 15; j++)
+					//	{
+					//		pliczek << tab[i][j];
+					//		pliczek << " ";
+					//	}
+					//	pliczek << endl;
+					//}
+					//cout << "zapisano mape" << endl;
+					//pliczek.close();
+					//break;
 
 				}
 			}
