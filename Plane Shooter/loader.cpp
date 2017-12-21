@@ -1,3 +1,5 @@
+#ifndef LOADER_CPP_INCLUDED
+#define LOADER_CPP_INCLUDED
 #include "biblioteki.h"
 //#include "Edytor.cpp"
 #include "Random_Font.hpp"
@@ -6,19 +8,6 @@
 
 using namespace std;
 
-//int tabL[20][15];
-
-/*
-ALLEGRO_BITMAP *obrazek1 = NULL;
-ALLEGRO_BITMAP *obrazek2 = NULL;
-ALLEGRO_BITMAP *Enemy1 = NULL;
-ALLEGRO_BITMAP *Enemy2 = NULL;
-ALLEGRO_BITMAP *Player = NULL;
-ALLEGRO_BITMAP *bron1 = NULL;
-ALLEGRO_BITMAP *bron2 = NULL;
-ALLEGRO_BITMAP *bonus1 = NULL;
-ALLEGRO_BITMAP *bonus2 = NULL;
-*/
 
 
 ALLEGRO_BITMAP *loader(string sciezka)
@@ -35,11 +24,31 @@ ALLEGRO_BITMAP *loader(string sciezka)
 		return al_create_bitmap(32,32);
 	}
 
+}
 
-	//return 0;
+// NA ŒWIÊTA !!!! NAPRAWIC PLIKI LOADER.CPP I HPP ZEBY DOBRZE FUNKCJONOWALY (jak zinkluduje loader.hpp to beda mi sie wszystkie bitmapy ladowaly przy pomocy funkcji loader.cpp)
+//Zrób to w przekletej klasie !!!
+
+class ProperLoader
+{
+public:
+	ProperLoader();
+	~ProperLoader();
+
+};
+
+ProperLoader::ProperLoader()
+{
+}
+
+ProperLoader::~ProperLoader()
+{
 }
 
 
+
+
+#endif
 
 
 

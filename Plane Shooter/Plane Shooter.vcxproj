@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{19431302-DF09-4111-A5CE-278439F6F502}</ProjectGuid>
     <RootNamespace>PlaneShooter</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Biom.cpp" />
     <ClCompile Include="Edytor.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="biblioteki.h" />
@@ -140,13 +141,16 @@
     <ClCompile Include="loader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Main_Menu.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Random_Font.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Biom.hpp" />
     <ClInclude Include="loader.hpp" />
+    <ClInclude Include="Player.hpp" />
     <ClInclude Include="Random_Font.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

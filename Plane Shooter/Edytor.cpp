@@ -1,8 +1,9 @@
 #include "biblioteki.h"
 #include "Random_Font.hpp"
 //#include "kolkokwadrat.cpp"
-//#include <Edytor.cpp>
+//#include "Edytor.cpp"
 #include <fstream>
+//#include "loader.cpp"
 
 
 using namespace std;
@@ -32,6 +33,12 @@ string nazwa;
 };
 */
 
+
+
+void funkcja(ALLEGRO_EVENT ev, ALLEGRO_USTR *input);
+
+
+
 int Edytor()
 {
 	al_init();
@@ -48,11 +55,15 @@ int Edytor()
 	int cursor_y = 0;
 	int cursor_x = 0;
 
-	int x, y;
+	//int x, y;
+
+	int camera_x = 0;
+	int camera_y = 0;
 
 	ALLEGRO_DISPLAY* displayE = al_create_display(1024, 768);
 	ALLEGRO_FONT* font = Random_Font();
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+	ALLEGRO_EVENT_QUEUE *event_save_queue = NULL;
 	ALLEGRO_TIMER *timerE = NULL;
 	ALLEGRO_COLOR White = al_map_rgb(255, 255, 255);
 
@@ -80,6 +91,8 @@ int Edytor()
 		return -1;
 	}
 
+	ALLEGRO_TRANSFORM camera; // KAMERA TUTAJ!!!!!!!!
+
 	cursor = al_create_bitmap(CURSOR_SIZE, CURSOR_SIZE);
 
 	//al_set_target_bitmap(cursor);
@@ -91,6 +104,9 @@ int Edytor()
 
 
 	event_queue = al_create_event_queue();
+	event_save_queue = al_create_event_queue();
+
+	al_register_event_source(event_save_queue, al_get_keyboard_event_source());
 
 	al_register_event_source(event_queue, al_get_mouse_event_source());
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
@@ -104,6 +120,12 @@ int Edytor()
 	int czas = 0;
 	int miniczas = 0;
 
+	ALLEGRO_USTR *input = al_ustr_newf("");
+	int pos = (int)al_ustr_size(input);
+	//char mapa_do_zapisu;
+	const char *mapa_do_zapisu = "bardzodluganazwatestowabotak.txt";
+
+	bool tekst_podany = false;
 
 
 	while (1)
@@ -116,12 +138,46 @@ int Edytor()
 			ALLEGRO_EVENT ev;
 			al_wait_for_event(event_queue, &ev);
 
+
+			// ZAPISUJE DO PLIKU!!!!!!!!!!!!!!!!!!! (nie w 100% tak jak chcialem, ale dziala!!!!!!!!!!!)
+
+			switch (ev.type)
+			{
+			case ALLEGRO_EVENT_KEY_CHAR:
+				if (ev.keyboard.unichar >= 32)
+				{
+					pos += al_ustr_append_chr(input, ev.keyboard.unichar);
+				}
+				else if (ev.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
+				{
+					if (al_ustr_prev(input, &pos))
+						al_ustr_truncate(input, pos);
+				}
+				else if (ev.keyboard.keycode == ALLEGRO_KEY_ENTER)
+				{
+					mapa_do_zapisu = al_cstr(input);
+
+					cout << mapa_do_zapisu << endl;
+
+					std::ofstream outfile("test.txt");
+					{
+						outfile << mapa_do_zapisu << std::endl;
+					}
+					outfile.close();
+					break;
+				}
+
+				break;
+			}
+
+
 			if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 			{
 				al_destroy_display(displayE);
 				wyjscie = main();
 				return 0;
 			}
+
 
 			if (ev.type == ALLEGRO_EVENT_TIMER) {
 				if (key[KEY_UP] && cursor_y >= 4.0) {
@@ -310,8 +366,12 @@ int Edytor()
 
 				case ALLEGRO_KEY_S:
 					key[KEY_S] = false;
-					fstream pliczek;
-					pliczek.open("Mapy/mapa.txt", ios::in | ios::out);
+
+
+					string testwyjsciowy = "Mapy/";
+					testwyjsciowy += mapa_do_zapisu;
+					testwyjsciowy += ".txt";
+					std::ofstream pliczek( testwyjsciowy /*"Mapy/mapa.txt"*/);
 					for (int i = 0; i < 20; i++)
 					{
 						for (int j = 0; j < 15; j++)
@@ -343,11 +403,11 @@ int Edytor()
 						{
 							if (tab[i][j] == 1)
 							{
-								al_draw_bitmap(obrazek1, i * 32, j * 32, 0);
+								al_draw_bitmap(obrazek1, i * 32 - camera_x, j * 32 - camera_y, 0);
 							}
 							else if (tab[i][j] == 2)
 							{
-								al_draw_bitmap(obrazek2, i * 32, j * 32, 0);
+								al_draw_bitmap(obrazek2, i * 32 - camera_x, j * 32 - camera_y, 0);
 							}
 						}
 					}
@@ -355,10 +415,18 @@ int Edytor()
 
 				al_draw_bitmap(cursor, cursor_x, cursor_y, 0);
 
+				//camera_x = cursor_x - SCREEN_W / 2;
+				//camera_y = cursor_y - SCREEN_H / 2;
+
+				al_identity_transform(&camera);
+				al_translate_transform(&camera, camera_x, camera_y);
+				al_use_transform(&camera);
+
 				al_draw_text(font, al_map_rgb(0, 255, 0), 700, 50, ALLEGRO_ALIGN_LEFT, "S-zapisz");
 				al_draw_text(font, al_map_rgb(0, 255, 0), 700, 100, ALLEGRO_ALIGN_LEFT, "L-Wczytaj");
 				al_draw_text(font, al_map_rgb(0, 255, 0), 700, 150, ALLEGRO_ALIGN_LEFT, "B-Blok");
 				al_draw_text(font, al_map_rgb(0, 255, 0), 700, 200, ALLEGRO_ALIGN_LEFT, "ESC-Wyjscie");
+				al_draw_ustr(font, al_map_rgb_f(255, 255, 0), 300, 200, ALLEGRO_ALIGN_LEFT, input);
 
 				al_flip_display();
 			}
@@ -371,4 +439,23 @@ int Edytor()
 	al_destroy_timer(timerE);
 
 	return 0;
+}
+
+
+
+void funkcja(ALLEGRO_EVENT ev, ALLEGRO_USTR *input)
+{
+	{
+		switch (ev.keyboard.keycode)
+		{
+
+		case ALLEGRO_EVENT_KEY_CHAR:
+		{
+			int unichar = ev.keyboard.unichar;
+			if (unichar >= 32)
+				al_ustr_append_chr(input, unichar);
+			break;
+		}
+		}
+	}
 }

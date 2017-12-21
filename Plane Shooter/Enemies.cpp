@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 //#include "loader.cpp"
+//#include "loader.hpp"
 
 
 using namespace std;
@@ -16,6 +17,12 @@ int main();
 const int SCREEN_W = 640;
 const int SCREEN_H = 480;
 const int CURSOR_SIZE = 16;
+
+int worldWidth = 10000;
+int worldHeight = 10000;
+
+int camera_x = 100;
+int camera_y = 100;
 
 int tabEn[20][15];
 
@@ -242,7 +249,7 @@ int Enemies()
 	ALLEGRO_BITMAP *bron5 = loader("bron/bron5_Placeholder.png");
 
 
-	
+	ALLEGRO_TRANSFORM camera; // KAMERA TUTAJ!!!!!!!!
 
 
 	Player = al_create_bitmap(CURSOR_SIZE, CURSOR_SIZE);
@@ -291,7 +298,15 @@ int Enemies()
 	int bonusEffect3 = 0;
 	int bonusEffect4 = 0;
 	int bonusEffect5 = 0;
-	int lastKey = 0;
+	int lastKey = 1;
+	/*
+	
+	4-GÓRA
+	3-DÓ£
+	1-LEWO
+	2-PRAWO
+
+	*/
 
 
 
@@ -299,8 +314,32 @@ int Enemies()
 
 	while (!doexit)
 	{
-
-
+		Player_y -= camera_y;
+		Player_x -= camera_x;
+		Enemy1_y -= camera_y;
+		Enemy1_x -= camera_x;
+		Enemy2_y -= camera_y;
+		Enemy2_x -= camera_x;
+		bron1_y -= camera_y;
+		bron1_x -= camera_x;
+		bron2_y -= camera_y;
+		bron2_x -= camera_x;
+		bonus1_y -= camera_y;
+		bonus1_x -= camera_x;
+		bonus2_y -= camera_y;
+		bonus2_x -= camera_x;
+		bron3_y -= camera_y;
+		bron3_x -= camera_x;
+		bron4_y -= camera_y;
+		bron4_x -= camera_x;
+		bron5_y -= camera_y;
+		bron5_x -= camera_x;
+		bonus3_y -= camera_y;
+		bonus3_x -= camera_x;
+		bonus4_y -= camera_y;
+		bonus4_x -= camera_x;
+		bonus5_y -= camera_y;
+		bonus5_x -= camera_x;
 
 
 		ALLEGRO_EVENT ev;
@@ -316,11 +355,11 @@ int Enemies()
 				{
 					if (tabEn[i][j] == 1)
 					{
-						al_draw_bitmap(obrazek1, i * 32, j * 32, 0);
+						al_draw_bitmap(obrazek1, i * 32 /*- camera_x*/, j * 32 /*- camera_y*/, 0);
 					}
 					else if (tabEn[i][j] == 2)
 					{
-						al_draw_bitmap(obrazek2, i * 32, j * 32, 0);
+						al_draw_bitmap(obrazek2, i * 32 /*- camera_x*/, j * 32 /*- camera_y*/, 0);
 					}
 				}
 			}
@@ -331,7 +370,7 @@ int Enemies()
 
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
 			if (key[KEY_UP] && Player_y >= 4.0) {
-				cout << "Up key was pressed" << endl;
+				//cout << "Up key was pressed" << endl;
 				if (bonusEffect == 1)
 				{
 					Player_y -= 8.0;
@@ -343,7 +382,7 @@ int Enemies()
 			}
 
 			if (key[KEY_DOWN] && Player_y <= SCREEN_H - CURSOR_SIZE - 4.0) {
-				cout << "Down key was pressed" << endl;
+				//cout << "Down key was pressed" << endl;
 				if (bonusEffect == 1)
 				{
 					Player_y += 8.0;
@@ -355,7 +394,7 @@ int Enemies()
 			}
 
 			if (key[KEY_LEFT] && Player_x >= 4.0) {
-				cout << "Left key was pressed" << endl;
+				//cout << "Left key was pressed" << endl;
 				if (bonusEffect == 1)
 				{
 					Player_x -= 8.0;
@@ -367,7 +406,7 @@ int Enemies()
 			}
 
 			if (key[KEY_RIGHT] && Player_x <= SCREEN_W - CURSOR_SIZE - 4.0) {
-				cout << "Right key was pressed" << endl;
+				//cout << "Right key was pressed" << endl;
 				if (bonusEffect == 1)
 				{
 					Player_x += 8.0;
@@ -379,7 +418,7 @@ int Enemies()
 			}
 
 			if (key[KEY_SPACE]) {
-				cout << "Space key was pressed" << endl;
+				//cout << "Space key was pressed" << endl;
 				if (bronEffect == 1)
 				{
 
@@ -509,6 +548,29 @@ int Enemies()
 
 			case ALLEGRO_KEY_SPACE:
 				key[KEY_SPACE] = true;
+				break;
+
+			case ALLEGRO_KEY_V:
+				switch (lastKey)
+				{
+				case 4:
+					if(Player_y >= 4.0)
+					{ Player_x += 44;}
+					break;
+				case 3:
+					if (Player_y <= SCREEN_H - CURSOR_SIZE - 4.0)
+					{ Player_x -= 44;}
+					break;
+				case 2:
+					if(Player_x >= 4.0)
+					{ Player_y += 44;}
+					break;
+				case 1:
+					if(Player_x <= SCREEN_W - CURSOR_SIZE - 4.0)
+					{ Player_y -= 44;}
+				}
+				cout << "x: " << Player_x << endl;
+				cout << "y: " << Player_y << endl;
 				break;
 			}
 		}
@@ -722,6 +784,13 @@ int Enemies()
 			{
 				al_draw_bitmap(bonus5, bonus5_x, bonus5_y, 0);
 			}
+
+			camera_x = Player_x - SCREEN_W / 2;
+			camera_y = Player_y - SCREEN_H / 2;
+
+			al_identity_transform(&camera);
+			al_translate_transform(&camera, camera_x, camera_y);
+			al_use_transform(&camera);
 
 			al_flip_display();
 		}
