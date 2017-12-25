@@ -3,6 +3,10 @@
 
 #include "biblioteki.h"
 
+namespace Biomki
+
+{
+
 class Biomy
 {
 public:
@@ -16,10 +20,9 @@ public:
 	}
 
 
-
-private:
-
 };
+
+}
 
 //ALLEGRO_BITMAP Biomy::*Biom_bitmapa()
 //{

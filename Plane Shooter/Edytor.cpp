@@ -162,9 +162,7 @@ int Edytor()
 					cout << mapa_do_zapisu << endl;
 
 					std::ofstream outfile("test.txt");
-					{
 						outfile << mapa_do_zapisu << std::endl;
-					}
 					outfile.close();
 					break;
 				}
@@ -471,7 +469,7 @@ int Edytor()
 				al_draw_text(font, al_map_rgb(0, 255, 0), 700, 100, ALLEGRO_ALIGN_LEFT, "L-Wczytaj");
 				al_draw_text(font, al_map_rgb(0, 255, 0), 700, 150, ALLEGRO_ALIGN_LEFT, "B-Blok");
 				al_draw_text(font, al_map_rgb(0, 255, 0), 700, 200, ALLEGRO_ALIGN_LEFT, "ESC-Wyjscie");
-				al_draw_ustr(font, al_map_rgb_f(255, 255, 0), 300, 200, ALLEGRO_ALIGN_LEFT, input);
+				al_draw_ustr(font, al_map_rgb(0, 255, 0), 300, 200, ALLEGRO_ALIGN_LEFT, input);
 
 				al_flip_display();
 			}

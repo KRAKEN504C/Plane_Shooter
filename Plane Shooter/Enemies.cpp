@@ -102,7 +102,7 @@ int Enemies()
 	HubL.open("Mapy/Hub.txt", ios::in | ios::out);
 	for (int i = 0; i < 20; i++)
 	{
-		for (int j = 0; j < 15; j++)
+		for (int j = 0; j < 20; j++)
 		{
 			HubL >> tabEn[i][j];
 		}
@@ -314,60 +314,67 @@ int Enemies()
 
 	while (!doexit)
 	{
-		Player_y -= camera_y;
-		Player_x -= camera_x;
-		Enemy1_y -= camera_y;
-		Enemy1_x -= camera_x;
-		Enemy2_y -= camera_y;
-		Enemy2_x -= camera_x;
-		bron1_y -= camera_y;
-		bron1_x -= camera_x;
-		bron2_y -= camera_y;
-		bron2_x -= camera_x;
-		bonus1_y -= camera_y;
-		bonus1_x -= camera_x;
-		bonus2_y -= camera_y;
-		bonus2_x -= camera_x;
-		bron3_y -= camera_y;
-		bron3_x -= camera_x;
-		bron4_y -= camera_y;
-		bron4_x -= camera_x;
-		bron5_y -= camera_y;
-		bron5_x -= camera_x;
-		bonus3_y -= camera_y;
-		bonus3_x -= camera_x;
-		bonus4_y -= camera_y;
-		bonus4_x -= camera_x;
-		bonus5_y -= camera_y;
-		bonus5_x -= camera_x;
+		/*Player_y -= camera_y;
+		Player_x -= camera_x;*/
+
+		///*Enemy1_y -= camera_y;
+		//Enemy1_x -= camera_x;
+		//Enemy2_y -= camera_y;
+		//Enemy2_x -= camera_x;
+		//bron1_y -= camera_y;
+		//bron1_x -= camera_x;
+		//bron2_y -= camera_y;
+		//bron2_x -= camera_x;
+		//bonus1_y -= camera_y;
+		//bonus1_x -= camera_x;
+		//bonus2_y -= camera_y;
+		//bonus2_x -= camera_x;
+		//bron3_y -= camera_y;
+		//bron3_x -= camera_x;
+		//bron4_y -= camera_y;
+		//bron4_x -= camera_x;
+		//bron5_y -= camera_y;
+		//bron5_x -= camera_x;
+		//bonus3_y -= camera_y;
+		//bonus3_x -= camera_x;
+		//bonus4_y -= camera_y;
+		//bonus4_x -= camera_x;
+		//bonus5_y -= camera_y;
+		//bonus5_x -= camera_x;*/
 
 
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
 
-
+		int sprawdztablica_x, sprawdztablica_y;
 
 		for (int i = 0; i < 20; i++)
 		{
-			for (int j = 0; j < 15; j++)
+			for (int j = 0; j < 20; j++)
 			{
 				if (tabEn[i][j] != 0)
 				{
+					int wsp_i = (i * 32) /*- camera_x*/;
+					int wsp_j = (j * 32) /*- camera_y*/;
 					if (tabEn[i][j] == 1)
 					{
-						al_draw_bitmap(obrazek1, i * 32 /*- camera_x*/, j * 32 /*- camera_y*/, 0);
+						al_draw_bitmap(obrazek1, wsp_i, wsp_j, 0);
 					}
 					else if (tabEn[i][j] == 2)
 					{
-						al_draw_bitmap(obrazek2, i * 32 /*- camera_x*/, j * 32 /*- camera_y*/, 0);
+						al_draw_bitmap(obrazek2, wsp_i, wsp_j, 0);
 					}
+					sprawdztablica_x = wsp_i;
+					sprawdztablica_y = wsp_j;
+					//cout << wsp_i << endl << wsp_j << endl;
 				}
 			}
 		}
 
+		//cout << sprawdztablica_x << endl << sprawdztablica_y << endl;
+		cout << Enemy1_x << endl << Enemy1_y << endl;
 
-
-
+		// --------------------------------------------------------------------------------- Trzeba poprawiæ warunki kolizji !!! ---------------------------------------------------------------------------------
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
 			if (key[KEY_UP] && Player_y >= 4.0) {
 				//cout << "Up key was pressed" << endl;
@@ -518,6 +525,9 @@ int Enemies()
 				}
 			}
 
+			/*cout << "Player_x: " << Player_x << endl;
+			cout << "Player_y: " << Player_y << endl;*/
+
 			redraw = true;
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -569,8 +579,8 @@ int Enemies()
 					if(Player_x <= SCREEN_W - CURSOR_SIZE - 4.0)
 					{ Player_y -= 44;}
 				}
-				cout << "x: " << Player_x << endl;
-				cout << "y: " << Player_y << endl;
+				cout << "Player_x: " << Player_x << endl;
+				cout << "Player_y: " << Player_y << endl;
 				break;
 			}
 		}
@@ -675,6 +685,8 @@ int Enemies()
 				cout << "Enemy1 killed Player!";
 				Enemy1_x = -100;
 				Enemy1_y = -100;
+				al_destroy_display(displayEn);
+				wyjscie = main();
 				return 0;
 			}
 		}
@@ -692,6 +704,9 @@ int Enemies()
 				cout << "Enemy2 killed Player!";
 				Enemy2_x = -100;
 				Enemy2_y = -100;
+
+				al_destroy_display(displayEn);
+				wyjscie = main();
 				return 0;
 			}
 		}
@@ -785,8 +800,8 @@ int Enemies()
 				al_draw_bitmap(bonus5, bonus5_x, bonus5_y, 0);
 			}
 
-			camera_x = Player_x - SCREEN_W / 2;
-			camera_y = Player_y - SCREEN_H / 2;
+			camera_x = -(Player_x - SCREEN_W / 2);
+			camera_y = -(Player_y - SCREEN_H / 2);
 
 			al_identity_transform(&camera);
 			al_translate_transform(&camera, camera_x, camera_y);
