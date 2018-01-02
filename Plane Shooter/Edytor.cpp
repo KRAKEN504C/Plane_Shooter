@@ -71,6 +71,7 @@ int Edytor()
 
 	ALLEGRO_BITMAP *obrazek1 = NULL;
 	ALLEGRO_BITMAP *obrazek2 = NULL;
+	ALLEGRO_BITMAP *obrazek3 = NULL;
 	ALLEGRO_BITMAP *cursor = NULL;
 
 	obrazek1 = al_load_bitmap("bitmapy/sciana_Placeholder.png");
@@ -86,6 +87,14 @@ int Edytor()
 	if (!obrazek2)
 	{
 		fprintf(stderr, "failed to create obrazek2 bitmap!\n");
+		al_destroy_display(displayE);
+		al_destroy_timer(timerE);
+		return -1;
+	}
+	obrazek3 = al_load_bitmap("bitmapy/Drzwi_Placeholder.png");
+	if (!obrazek2)
+	{
+		fprintf(stderr, "failed to create obrazek3 bitmap!\n");
 		al_destroy_display(displayE);
 		al_destroy_timer(timerE);
 		return -1;
@@ -128,6 +137,17 @@ int Edytor()
 	bool tekst_podany = false;
 
 	const char *slowo;
+
+
+	/*
+	
+	test = 0 === obrazek1 (sciana)
+	test = 1 === obrazek2 (droga)
+	test = 2 === obrazek3 (drzwi)
+
+	*/
+
+
 
 
 	while (1)
@@ -241,11 +261,15 @@ int Edytor()
 				{
 					if (test == 0)
 					{
-						tab[cursor_x / 32][cursor_y / 32] = 2;
+						tab[cursor_x / 32][cursor_y / 32] = 1;
 					}
 					else if (test == 1)
 					{
-						tab[cursor_x / 32][cursor_y / 32] = 1;
+						tab[cursor_x / 32][cursor_y / 32] = 2;
+					}
+					else if (test == 2)
+					{
+						tab[cursor_x / 32][cursor_y / 32] = 3;
 					}
 				}
 
@@ -384,16 +408,45 @@ int Edytor()
 
 				case ALLEGRO_KEY_B:
 					key[KEY_B] = false;
-					if (test == 0)
+
+					test++;
+
+					if (test > 2)
+					{
+						test = 0;
+					}
+
+					switch (test)
+					{
+					case 0:
+						cursor = obrazek1;
+						break;
+
+					case 1:
+						cursor = obrazek2;
+						break;
+
+					case 2:
+						cursor = obrazek3;
+						break;
+					}
+
+					/*if (test == 0)
 					{
 						cursor = obrazek1;
-						test++;
+						test = 1;
 					}
 					else if (test == 1)
 					{
 						cursor = obrazek2;
-						test = 0;
+						test = 2;
 					}
+					else if (test == 2)
+					{
+						cursor = obrazek3;
+						test = 0;
+					}*/
+
 					break;
 
 				case ALLEGRO_KEY_ESCAPE:
@@ -451,6 +504,10 @@ int Edytor()
 							else if (tab[i][j] == 2)
 							{
 								al_draw_bitmap(obrazek2, i * 32 - camera_x, j * 32 - camera_y, 0);
+							}
+							else if (tab[i][j] == 3)
+							{
+								al_draw_bitmap(obrazek3, i * 32 - camera_x, j * 32 - camera_y, 0);
 							}
 						}
 					}
