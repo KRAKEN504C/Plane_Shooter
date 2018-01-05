@@ -24,7 +24,7 @@ int worldHeight = 10000;
 int camera_x = 100;
 int camera_y = 100;
 
-int tabEn[20][15];
+int tabEn[200][210];
 
 ALLEGRO_BITMAP *loader(string sciezka);
 
@@ -47,26 +47,26 @@ int Enemies()
 
 	bool redraw = true;
 	bool doexit = false;
-	int Player_y = 0;
-	int Player_x = 0;
+	int Player_y = 3520;
+	int Player_x = 3616;
 
-	int Enemy1_y = rand()%300 + 64;
-	int Enemy1_x = rand() % 360 + 164;
+	int Enemy1_y = rand() % 448 + 3392;
+	int Enemy1_x = rand() % 608 + 3232;
 
-	int Enemy2_y = rand() % 30 + 364;
-	int Enemy2_x = rand() % 30 + 364;
+	int Enemy2_y = rand() % 448 + 3392;
+	int Enemy2_x = rand() % 608 + 3232;
 
-	int bron1_y = rand() % 10 + 264;
-	int bron1_x = rand() % 150 + 364;
+	int bron1_y = rand() % 448 + 3392;
+	int bron1_x = rand() % 608 + 3232;
 
-	int bron2_y = rand() % 200 + 164;
-	int bron2_x = rand() % 225 + 364;
+	int bron2_y = rand() % 448 + 3392;
+	int bron2_x = rand() % 608 + 3232;
 
-	int bonus1_y = rand() % 10 + 364;
-	int bonus1_x = rand() % 190 + 364;
+	int bonus1_y = rand() % 448 + 3392;
+	int bonus1_x = rand() % 608 + 3232;
 
-	int bonus2_y = rand() % 400 + 20;
-	int bonus2_x = rand() % 300 + 120;
+	int bonus2_y = rand() % 448 + 3392;
+	int bonus2_x = rand() % 608 + 3232;
 
 	int bron3_y = bron1_y + 32;
 	int bron3_x = bron1_x;
@@ -99,10 +99,10 @@ int Enemies()
 	timerEn = al_create_timer(1.0 / FPS);
 
 	fstream HubL;
-	HubL.open("Mapy/Hub.txt", ios::in | ios::out);
-	for (int i = 0; i < 20; i++)
+	HubL.open("Generowanie/Wyjscie.txt", ios::in | ios::out);
+	for (int i = 0; i < 200; i++)
 	{
-		for (int j = 0; j < 20; j++)
+		for (int j = 0; j < 210; j++)
 		{
 			HubL >> tabEn[i][j];
 		}
@@ -233,6 +233,7 @@ int Enemies()
 
 	ALLEGRO_BITMAP *obrazek1 = loader("bitmapy/sciana_Placeholder.png");
 	ALLEGRO_BITMAP *obrazek2 = loader("bitmapy/Droga_Placeholder.png");
+	ALLEGRO_BITMAP *obrazek3 = loader("bitmapy/Drzwi_Placeholder.png");
 	ALLEGRO_BITMAP *Enemy1 = loader("Enemies/Enemy1_Placeholder.png");
 	ALLEGRO_BITMAP *Enemy2 = loader("Enemies/Enemy2_Placeholder.png");
 	ALLEGRO_BITMAP *Player = loader("Player/Player_Placeholder.png");
@@ -317,7 +318,7 @@ int Enemies()
 		/*Player_y -= camera_y;
 		Player_x -= camera_x;*/
 
-		///*Enemy1_y -= camera_y;
+		/*Enemy1_y -= camera_y;
 		//Enemy1_x -= camera_x;
 		//Enemy2_y -= camera_y;
 		//Enemy2_x -= camera_x;
@@ -342,15 +343,21 @@ int Enemies()
 		//bonus5_y -= camera_y;
 		//bonus5_x -= camera_x;*/
 
+		cout << Enemy1_x << endl;
+		cout << Enemy1_y << endl;
+		cout << Player_x << endl;
+		cout << Player_y << endl;
 
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
 
 		int sprawdztablica_x, sprawdztablica_y;
 
-		for (int i = 0; i < 20; i++)
+		al_clear_to_color(al_map_rgb(125, 125, 125));
+
+		for (int i = 0; i < 200; i++)
 		{
-			for (int j = 0; j < 20; j++)
+			for (int j = 0; j < 210; j++)
 			{
 				if (tabEn[i][j] != 0)
 				{
@@ -364,15 +371,25 @@ int Enemies()
 					{
 						al_draw_bitmap(obrazek2, wsp_i, wsp_j, 0);
 					}
+					else if (tabEn[i][j] == 3)
+					{
+						al_draw_bitmap(obrazek3, wsp_i, wsp_j, 0);
+					}
 					sprawdztablica_x = wsp_i;
 					sprawdztablica_y = wsp_j;
 					//cout << wsp_i << endl << wsp_j << endl;
 				}
+				/*if (tabEn[i][j] == 0)
+				{
+					int wsp_i = (i * 32);
+					int wsp_j = (j * 32);
+					al_draw_bitmap(obrazek1, wsp_i, wsp_j, 0);
+				}*/
 			}
 		}
 
 		//cout << sprawdztablica_x << endl << sprawdztablica_y << endl;
-		cout << Enemy1_x << endl << Enemy1_y << endl;
+		//cout << Enemy1_x << endl << Enemy1_y << endl;
 
 		// --------------------------------------------------------------------------------- Trzeba poprawiæ warunki kolizji !!! ---------------------------------------------------------------------------------
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
@@ -388,7 +405,7 @@ int Enemies()
 				}
 			}
 
-			if (key[KEY_DOWN] && Player_y <= SCREEN_H - CURSOR_SIZE - 4.0) {
+			if (key[KEY_DOWN] /*&& Player_y <= SCREEN_H - CURSOR_SIZE - 4.0*/) {
 				//cout << "Down key was pressed" << endl;
 				if (bonusEffect == 1)
 				{
@@ -400,7 +417,7 @@ int Enemies()
 				}
 			}
 
-			if (key[KEY_LEFT] && Player_x >= 4.0) {
+			if (key[KEY_LEFT] /*&& Player_x >= 4.0*/) {
 				//cout << "Left key was pressed" << endl;
 				if (bonusEffect == 1)
 				{
@@ -412,7 +429,7 @@ int Enemies()
 				}
 			}
 
-			if (key[KEY_RIGHT] && Player_x <= SCREEN_W - CURSOR_SIZE - 4.0) {
+			if (key[KEY_RIGHT] /*&& Player_x <= SCREEN_W - CURSOR_SIZE - 4.0*/) {
 				//cout << "Right key was pressed" << endl;
 				if (bonusEffect == 1)
 				{
@@ -564,19 +581,19 @@ int Enemies()
 				switch (lastKey)
 				{
 				case 4:
-					if(Player_y >= 4.0)
+					/*if(Player_y >= 4.0)*/
 					{ Player_x += 44;}
 					break;
 				case 3:
-					if (Player_y <= SCREEN_H - CURSOR_SIZE - 4.0)
+					/*if (Player_y <= SCREEN_H - CURSOR_SIZE - 4.0)*/
 					{ Player_x -= 44;}
 					break;
 				case 2:
-					if(Player_x >= 4.0)
+					/*if(Player_x >= 4.0)*/
 					{ Player_y += 44;}
 					break;
 				case 1:
-					if(Player_x <= SCREEN_W - CURSOR_SIZE - 4.0)
+					/*if(Player_x <= SCREEN_W - CURSOR_SIZE - 4.0)*/
 					{ Player_y -= 44;}
 				}
 				cout << "Player_x: " << Player_x << endl;

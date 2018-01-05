@@ -10,6 +10,7 @@ const float FPS = 60;
 int kolkokwadrat();
 int Edytor();
 int Enemies();
+void generatorPoziomu();
 
 int main()
 {
@@ -96,6 +97,7 @@ int main()
 				{
 					cout << "Left mouse has been clicked on Load game" << endl;
 					al_destroy_display(display);
+					generatorPoziomu();
 					test = Enemies();
 					return 0;													//---------->Teraz dobrze wychodzi, dzieki tej malutkiej prosciutkiej linijce<----------
 					//display = al_create_display(800, 600);
