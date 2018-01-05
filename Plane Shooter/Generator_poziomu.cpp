@@ -61,7 +61,7 @@ void polozenieNowegoSektora(int miniMap_x, int miniMap_y, int tabMiniMap[10][13]
 
 
 
-
+int tabMiniMapa[10][13];
 
 
 void generatorPoziomu()
@@ -352,7 +352,44 @@ void generatorPoziomu()
 	}
 	tabMiniMap[miniMap_x][miniMap_y] = 1;
 
+	miniMap_y++;
 
+	realMap_x = miniMap_x * 20;
+	realMap_y = miniMap_y * 15;
+
+	arena = originalarena;
+	arena += "_1.txt";
+
+	wczytaj.open(arena, ios::in | ios::out);
+
+	if (wczytaj)
+	{
+		for (int i = 0; i < 20; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+				wczytaj >> tabPrzejsciowy[i][j];
+			}
+		}
+		//cout << "wczytano mape uzytkownika" << endl;
+	}
+	else
+	{
+		cout << "Nie mozna bylo wczytac mapy: ";
+		//cout << start << endl;
+	}
+
+	wczytaj.close();
+
+
+	for (int i = 0; i < 20; i++)
+	{
+		for (int j = 0; j < 15; j++)
+		{
+			tabGP[realMap_x + i][realMap_y + j] = tabPrzejsciowy[i][j];
+		}
+	}
+	tabMiniMap[miniMap_x][miniMap_y] = 1;
 
 
 
@@ -382,6 +419,18 @@ void generatorPoziomu()
 	}
 
 	zapisz.close();
+
+	fstream MiniMapa;
+	MiniMapa.open("Generowanie/MiniMapa.txt", ios::in | ios::out);
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 13; j++)
+		{
+			MiniMapa << tabMiniMap[i][j];
+			MiniMapa << " ";
+		}
+		MiniMapa << endl;
+	}
 
 	system("pause");
 }

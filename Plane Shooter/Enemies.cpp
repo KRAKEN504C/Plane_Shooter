@@ -28,6 +28,8 @@ int tabEn[200][210];
 
 ALLEGRO_BITMAP *loader(string sciezka);
 
+void generatorPoziomu();
+
 enum MYKEYS {
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_S, KEY_L, KEY_B, KEY_ESCAPE, KEY_SPACE
 };
@@ -249,6 +251,9 @@ int Enemies()
 	ALLEGRO_BITMAP *bron4 = loader("bron/bron4_Placeholder.png");
 	ALLEGRO_BITMAP *bron5 = loader("bron/bron5_Placeholder.png");
 
+	ALLEGRO_BITMAP *miniMap_empty = loader("bonus/bonus2_Placeholder.png");
+	ALLEGRO_BITMAP *miniMap_Arena = loader("bonus/bonus2_Placeholder.png");
+
 
 	ALLEGRO_TRANSFORM camera; // KAMERA TUTAJ!!!!!!!!
 
@@ -353,7 +358,24 @@ int Enemies()
 
 		int sprawdztablica_x, sprawdztablica_y;
 
-		al_clear_to_color(al_map_rgb(125, 125, 125));
+		al_clear_to_color(al_map_rgb(25, 25, 85)); // ---------- W zale¿noœci od biomu bêdzie inne t³o. ---------- 
+
+		// miniMapa 40x52
+
+		for (int i = 0; i < 10; i++)
+		{
+			for (int j = 0; j < 13; j++)
+			{
+				int wsp_i = camera_x + (i * 4);
+				int wsp_j = camera_x + (j * 4);
+				//if (tabMiniMapa[i][j])
+				{
+
+				}
+				//al_draw_bitmap(, wsp_i, wsp_j);
+				//al_draw_bitmap(, wsp_i, wsp_j);
+			}
+		}
 
 		for (int i = 0; i < 200; i++)
 		{
