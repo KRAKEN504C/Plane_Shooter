@@ -60,8 +60,46 @@ void polozenieNowegoSektora(int miniMap_x, int miniMap_y, int tabMiniMap[10][13]
 }
 
 
+void wczytanieZPliku(string nazwaPliku,int tabPrzejsciowy[20][15])
+{
+	fstream wczytaj;
 
-int tabMiniMapa[10][13];
+	wczytaj.open(nazwaPliku, ios::in | ios::out);
+
+	if (wczytaj)
+	{
+		for (int i = 0; i < 20; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+				wczytaj >> tabPrzejsciowy[i][j];
+			}
+		}
+		//cout << "wczytano mape uzytkownika" << endl;
+	}
+	else
+	{
+		cout << "Nie mozna bylo wczytac mapy: ";
+		//cout << start << endl;
+	}
+
+	wczytaj.close();
+}
+
+
+void RysowanieNaMapie(int tabGP[200][210], int tabPrzejsciowy[20][15], int realMap_x, int realMap_y)
+{
+
+
+	for (int i = 0; i < 20; i++)
+	{
+		for (int j = 0; j < 15; j++)
+		{
+			tabGP[realMap_x + i][realMap_y + j] = tabPrzejsciowy[i][j];
+		}
+	}
+	//tabMiniMap[miniMap_x][miniMap_y] = 1;
+}
 
 
 void generatorPoziomu()
@@ -72,6 +110,7 @@ void generatorPoziomu()
 	int tabGP[200][210] = {};
 	int tabPrzejsciowy[20][15] = {};
 	int tabMiniMap[10][13] = {};
+	int tabMiniMapa[10][13];
 
 	int miniMap_x = 5;
 	int miniMap_y = 7;
@@ -106,12 +145,10 @@ void generatorPoziomu()
 				wczytaj >> tabPrzejsciowy[i][j];
 			}
 		}
-		//cout << "wczytano mape uzytkownika" << endl;
 	}
 	else
 	{
 		cout << "Nie mozna bylo wczytac mapy: ";
-		//cout << start << endl;
 	}
 
 	wczytaj.close();
@@ -138,6 +175,7 @@ void generatorPoziomu()
 		cout << "Nie mozna bylo otworzyc pliku wyjscowego: ";
 	}
 
+	test.close();
 	//wygl¹da na to, ¿e wszystko dobrze siê zapisuje do tabPrzejsciowy.
 
 
@@ -199,206 +237,93 @@ void generatorPoziomu()
 			tabGP[realMap_x + i][realMap_y + j] = tabPrzejsciowy[i][j];
 		}
 	}
+
 	tabMiniMap[miniMap_x][miniMap_y] = 1;
 
 	//wyrzucenie wszystkiego do pliku, i sprawdzenie jak dzia³a.
-	fstream zapisz;
-
-
-
-
-	/*zapisz.open(wyjscie, ios::in | ios::out);
-	if (zapisz)
-	{
-		for (int i = 0; i < 200; i++)
-		{
-			for (int j = 0; j < 210; j++)
-			{
-				zapisz << tabGP[i][j];
-				zapisz << " ";
-			}
-			zapisz << endl;
-		}
-	}
-	else
-	{
-		cout << "Nie mozna bylo otworzyc pliku wyjsciowego: ";
-	}
-
-	zapisz.close();*/
-
-
-
+	
 
 
 	//wszystko na razie dzia³a!
 
-	miniMap_x++;
-
-	realMap_x = miniMap_x * 20;
-	realMap_y = miniMap_y * 15;
-
-	arena += "_1.txt";
-
-
-	wczytaj.open(arena, ios::in | ios::out);
-
-	if (wczytaj)
 	{
-		for (int i = 0; i < 20; i++)
-		{
-			for (int j = 0; j < 15; j++)
-			{
-				wczytaj >> tabPrzejsciowy[i][j];
-			}
-		}
-		//cout << "wczytano mape uzytkownika" << endl;
-	}
-	else
-	{
-		cout << "Nie mozna bylo wczytac mapy: ";
-		//cout << start << endl;
+		miniMap_x++;
+
+		realMap_x = miniMap_x * 20;
+		realMap_y = miniMap_y * 15;
+
+		arena += "_1.txt";
+
+
+		wczytanieZPliku(arena, tabPrzejsciowy);
+
+		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
+
+
+		tabMiniMap[miniMap_x][miniMap_y] = 1;
 	}
 
-	wczytaj.close();
-
-
-	for (int i = 0; i < 20; i++)
 	{
-		for (int j = 0; j < 15; j++)
-		{
-			tabGP[realMap_x + i][realMap_y + j] = tabPrzejsciowy[i][j];
-		}
-	}
-	tabMiniMap[miniMap_x][miniMap_y] = 1;
+		miniMap_y++;
+
+		realMap_x = miniMap_x * 20;
+		realMap_y = miniMap_y * 15;
+
+		arena = originalarena;
+		arena += "_2.txt";
 
 
-	miniMap_y++;
+		wczytanieZPliku(arena, tabPrzejsciowy);
 
-	realMap_x = miniMap_x * 20;
-	realMap_y = miniMap_y * 15;
+		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
 
-	arena = originalarena;
-	arena += "_2.txt";
 
-	wczytaj.open(arena, ios::in | ios::out);
-
-	if (wczytaj)
-	{
-		for (int i = 0; i < 20; i++)
-		{
-			for (int j = 0; j < 15; j++)
-			{
-				wczytaj >> tabPrzejsciowy[i][j];
-			}
-		}
-		//cout << "wczytano mape uzytkownika" << endl;
-	}
-	else
-	{
-		cout << "Nie mozna bylo wczytac mapy: ";
-		//cout << start << endl;
+		tabMiniMap[miniMap_x][miniMap_y] = 1;
 	}
 
-	wczytaj.close();
-
-
-	for (int i = 0; i < 20; i++)
 	{
-		for (int j = 0; j < 15; j++)
-		{
-			tabGP[realMap_x + i][realMap_y + j] = tabPrzejsciowy[i][j];
-		}
-	}
-	tabMiniMap[miniMap_x][miniMap_y] = 1;
+		miniMap_x--;
+
+		realMap_x = miniMap_x * 20;
+		realMap_y = miniMap_y * 15;
+
+		arena = originalarena;
+		arena += "_3.txt";
 
 
-	miniMap_x--;
+		wczytanieZPliku(arena, tabPrzejsciowy);
 
-	realMap_x = miniMap_x * 20;
-	realMap_y = miniMap_y * 15;
+		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
 
-	arena = originalarena;
-	arena += "_3.txt";
 
-	wczytaj.open(arena, ios::in | ios::out);
-
-	if (wczytaj)
-	{
-		for (int i = 0; i < 20; i++)
-		{
-			for (int j = 0; j < 15; j++)
-			{
-				wczytaj >> tabPrzejsciowy[i][j];
-			}
-		}
-		//cout << "wczytano mape uzytkownika" << endl;
-	}
-	else
-	{
-		cout << "Nie mozna bylo wczytac mapy: ";
-		//cout << start << endl;
+		tabMiniMap[miniMap_x][miniMap_y] = 1;
 	}
 
-	wczytaj.close();
-
-
-	for (int i = 0; i < 20; i++)
 	{
-		for (int j = 0; j < 15; j++)
-		{
-			tabGP[realMap_x + i][realMap_y + j] = tabPrzejsciowy[i][j];
-		}
-	}
-	tabMiniMap[miniMap_x][miniMap_y] = 1;
+		miniMap_y++;
 
-	miniMap_y++;
+		realMap_x = miniMap_x * 20;
+		realMap_y = miniMap_y * 15;
 
-	realMap_x = miniMap_x * 20;
-	realMap_y = miniMap_y * 15;
+		arena = originalarena;
+		arena += "_1.txt";
 
-	arena = originalarena;
-	arena += "_1.txt";
 
-	wczytaj.open(arena, ios::in | ios::out);
+		wczytanieZPliku(arena, tabPrzejsciowy);
 
-	if (wczytaj)
-	{
-		for (int i = 0; i < 20; i++)
-		{
-			for (int j = 0; j < 15; j++)
-			{
-				wczytaj >> tabPrzejsciowy[i][j];
-			}
-		}
-		//cout << "wczytano mape uzytkownika" << endl;
-	}
-	else
-	{
-		cout << "Nie mozna bylo wczytac mapy: ";
-		//cout << start << endl;
+		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
+
+
+		tabMiniMap[miniMap_x][miniMap_y] = 1;
 	}
 
-	wczytaj.close();
-
-
-	for (int i = 0; i < 20; i++)
-	{
-		for (int j = 0; j < 15; j++)
-		{
-			tabGP[realMap_x + i][realMap_y + j] = tabPrzejsciowy[i][j];
-		}
-	}
-	tabMiniMap[miniMap_x][miniMap_y] = 1;
 
 
 
 
 
 
-
-
-
+	fstream zapisz;
 
 	zapisz.open(wyjscie, ios::in | ios::out);
 	if (zapisz)
@@ -420,6 +345,17 @@ void generatorPoziomu()
 
 	zapisz.close();
 
+
+
+
+
+
+
+
+
+
+
+
 	fstream MiniMapa;
 	MiniMapa.open("Generowanie/MiniMapa.txt", ios::in | ios::out);
 	for (int i = 0; i < 10; i++)
@@ -432,5 +368,70 @@ void generatorPoziomu()
 		MiniMapa << endl;
 	}
 
+
+
+
+
+
+
+
+
+
+
 	system("pause");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+miniMap_x++;
+
+realMap_x = miniMap_x * 20;
+realMap_y = miniMap_y * 15;
+
+arena += "_1.txt";
+
+
+//wczytaj.open(arena, ios::in | ios::out);
+
+//if (wczytaj)
+//{
+//	for (int i = 0; i < 20; i++)
+//	{
+//		for (int j = 0; j < 15; j++)
+//		{
+//			wczytaj >> tabPrzejsciowy[i][j];
+//		}
+//	}
+//	//cout << "wczytano mape uzytkownika" << endl;
+//}
+//else
+//{
+//	cout << "Nie mozna bylo wczytac mapy: ";
+//	//cout << start << endl;
+//}
+
+//wczytaj.close();
+
+wczytanieZPliku(arena, tabPrzejsciowy);
+
+RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
+
+/*for (int i = 0; i < 20; i++)
+{
+for (int j = 0; j < 15; j++)
+{
+tabGP[realMap_x + i][realMap_y + j] = tabPrzejsciowy[i][j];
+}
+}*/
