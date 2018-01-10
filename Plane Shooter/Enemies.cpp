@@ -254,6 +254,8 @@ int Enemies()
 	ALLEGRO_BITMAP *miniMap_empty = loader("bonus/bonus2_Placeholder.png");
 	ALLEGRO_BITMAP *miniMap_Arena = loader("bonus/bonus2_Placeholder.png");
 
+	ALLEGRO_BITMAP *obrazek4 = loader("bitmapy/Sklep_Placeholder.png");
+
 
 	ALLEGRO_TRANSFORM camera; // KAMERA TUTAJ!!!!!!!!
 
@@ -358,7 +360,7 @@ int Enemies()
 
 		int sprawdztablica_x, sprawdztablica_y;
 
-		al_clear_to_color(al_map_rgb(25, 25, 85)); // ---------- W zale¿noœci od biomu bêdzie inne t³o. ---------- 
+		al_clear_to_color(al_map_rgb(135, 206, 250)); // ---------- W zale¿noœci od biomu bêdzie inne t³o. ---------- 
 
 		// miniMapa 40x52
 
@@ -396,6 +398,10 @@ int Enemies()
 					else if (tabEn[i][j] == 3)
 					{
 						al_draw_bitmap(obrazek3, wsp_i, wsp_j, 0);
+					}
+					else if (tabEn[i][j] == 4)
+					{
+						al_draw_bitmap(obrazek4, wsp_i, wsp_j, 0);
 					}
 					sprawdztablica_x = wsp_i;
 					sprawdztablica_y = wsp_j;

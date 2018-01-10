@@ -72,6 +72,7 @@ int Edytor()
 	ALLEGRO_BITMAP *obrazek1 = NULL;
 	ALLEGRO_BITMAP *obrazek2 = NULL;
 	ALLEGRO_BITMAP *obrazek3 = NULL;
+	ALLEGRO_BITMAP *obrazek4 = NULL;
 	ALLEGRO_BITMAP *cursor = NULL;
 
 	obrazek1 = al_load_bitmap("bitmapy/sciana_Placeholder.png");
@@ -91,7 +92,17 @@ int Edytor()
 		al_destroy_timer(timerE);
 		return -1;
 	}
+
 	obrazek3 = al_load_bitmap("bitmapy/Drzwi_Placeholder.png");
+	if (!obrazek2)
+	{
+		fprintf(stderr, "failed to create obrazek3 bitmap!\n");
+		al_destroy_display(displayE);
+		al_destroy_timer(timerE);
+		return -1;
+	}
+
+	obrazek4 = al_load_bitmap("bitmapy/Sklep_Placeholder.png");
 	if (!obrazek2)
 	{
 		fprintf(stderr, "failed to create obrazek3 bitmap!\n");
@@ -271,6 +282,10 @@ int Edytor()
 					{
 						tab[cursor_x / 32][cursor_y / 32] = 3;
 					}
+					else if (test == 3)
+					{
+						tab[cursor_x / 32][cursor_y / 32] = 4;
+					}
 				}
 
 
@@ -411,7 +426,7 @@ int Edytor()
 
 					test++;
 
-					if (test > 2)
+					if (test > 3)
 					{
 						test = 0;
 					}
@@ -428,6 +443,10 @@ int Edytor()
 
 					case 2:
 						cursor = obrazek3;
+						break;
+
+					case 3:
+						cursor = obrazek4;
 						break;
 					}
 
@@ -508,6 +527,10 @@ int Edytor()
 							else if (tab[i][j] == 3)
 							{
 								al_draw_bitmap(obrazek3, i * 32 - camera_x, j * 32 - camera_y, 0);
+							}
+							else if (tab[i][j] == 4)
+							{
+								al_draw_bitmap(obrazek4, i * 32 - camera_x, j * 32 - camera_y, 0);
 							}
 						}
 					}

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void polozenieNowegoSektora(int miniMap_x, int miniMap_y, int tabMiniMap[10][13])
+void polozenieNowegoSektora(int miniMap_x, int miniMap_y, int tabMiniMap[10][13], int realMap_x, int realMap_y)
 {
 	int tymczasowa_miniMap_x = miniMap_x;
 	int tymczasowa_miniMap_y = miniMap_y;
@@ -57,6 +57,10 @@ void polozenieNowegoSektora(int miniMap_x, int miniMap_y, int tabMiniMap[10][13]
 		}
 		counter++;
 	} while (tabMiniMap[miniMap_x][miniMap_y] != 0);
+
+	realMap_x = miniMap_x * 20;
+	realMap_y = miniMap_y * 15;
+
 }
 
 
@@ -101,6 +105,11 @@ void RysowanieNaMapie(int tabGP[200][210], int tabPrzejsciowy[20][15], int realM
 	//tabMiniMap[miniMap_x][miniMap_y] = 1;
 }
 
+
+void LosowanieStringa()
+{
+
+}
 
 void generatorPoziomu()
 {
@@ -248,74 +257,63 @@ void generatorPoziomu()
 
 	{
 		miniMap_x++;
-
 		realMap_x = miniMap_x * 20;
 		realMap_y = miniMap_y * 15;
-
 		arena += "_1.txt";
 
-
 		wczytanieZPliku(arena, tabPrzejsciowy);
-
 		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
-
 
 		tabMiniMap[miniMap_x][miniMap_y] = 1;
 	}
 
 	{
 		miniMap_y++;
-
 		realMap_x = miniMap_x * 20;
 		realMap_y = miniMap_y * 15;
-
 		arena = originalarena;
 		arena += "_2.txt";
 
-
 		wczytanieZPliku(arena, tabPrzejsciowy);
-
 		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
-
 
 		tabMiniMap[miniMap_x][miniMap_y] = 1;
 	}
 
 	{
 		miniMap_x--;
-
 		realMap_x = miniMap_x * 20;
 		realMap_y = miniMap_y * 15;
-
 		arena = originalarena;
 		arena += "_3.txt";
 
-
 		wczytanieZPliku(arena, tabPrzejsciowy);
-
 		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
-
 
 		tabMiniMap[miniMap_x][miniMap_y] = 1;
 	}
 
 	{
 		miniMap_y++;
-
 		realMap_x = miniMap_x * 20;
 		realMap_y = miniMap_y * 15;
-
 		arena = originalarena;
 		arena += "_1.txt";
 
-
 		wczytanieZPliku(arena, tabPrzejsciowy);
-
 		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
-
 
 		tabMiniMap[miniMap_x][miniMap_y] = 1;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
