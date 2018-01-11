@@ -35,6 +35,11 @@ enum MYKEYS {
 };
 
 
+void LogikaSklepu()
+{
+
+}
+
 int Enemies()
 {
 	srand(time(NULL));
@@ -238,11 +243,13 @@ int Enemies()
 	ALLEGRO_BITMAP *obrazek3 = loader("bitmapy/Drzwi_Placeholder.png");
 	ALLEGRO_BITMAP *Enemy1 = loader("Enemies/Enemy1_Placeholder.png");
 	ALLEGRO_BITMAP *Enemy2 = loader("Enemies/Enemy2_Placeholder.png");
-	ALLEGRO_BITMAP *Player = loader("Player/Player_Placeholder.png");
 	ALLEGRO_BITMAP *bron1 = loader("bron/bron1_Placeholder.png");
 	ALLEGRO_BITMAP *bron2 = loader("bron/bron2_Placeholder.png");
 	ALLEGRO_BITMAP *bonus1 = loader("bonus/bonus1_Placeholder.png");
 	ALLEGRO_BITMAP *bonus2 = loader("bonus/bonus2_Placeholder.png");
+
+	ALLEGRO_BITMAP *Player = loader("Player/Player_Placeholder.png");
+	ALLEGRO_BITMAP *serce = loader("Player/Serce_Placeholder.png");
 
 	ALLEGRO_BITMAP *bonus3 = loader("bonus/bonus3_Placeholder.png");
 	ALLEGRO_BITMAP *bonus4 = loader("bonus/bonus4_Placeholder.png");
@@ -307,6 +314,9 @@ int Enemies()
 	int bonusEffect4 = 0;
 	int bonusEffect5 = 0;
 	int lastKey = 1;
+
+	int playerMoney = 0;
+	int playerHealth = 3;
 	/*
 	
 	4-GÓRA
@@ -781,9 +791,17 @@ int Enemies()
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			redraw = false;
 
+		
+
+
 			//al_clear_to_color(al_map_rgb(0, 0, 0));
 
 			al_draw_bitmap(Player, Player_x, Player_y, 0);
+
+			{
+				al_draw_bitmap(serce, 60-camera_x, 10-camera_y, 0);
+				al_draw_textf(font, al_map_rgb(135, 206, 50), 110-camera_x, 10-camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerHealth);
+			}
 
 			if (bronEffect == 0)
 			{
@@ -844,6 +862,8 @@ int Enemies()
 			{
 				al_draw_bitmap(bonus5, bonus5_x, bonus5_y, 0);
 			}
+
+
 
 			camera_x = -(Player_x - SCREEN_W / 2);
 			camera_y = -(Player_y - SCREEN_H / 2);
