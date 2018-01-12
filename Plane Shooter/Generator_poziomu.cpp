@@ -306,7 +306,19 @@ void generatorPoziomu()
 		tabMiniMap[miniMap_x][miniMap_y] = 1;
 	}
 
+	{
+		miniMap_x++;
+		realMap_x = miniMap_x * 20; 
+		realMap_y = miniMap_y * 15;
+		//arena = originalarena;
+		//arena += "_1.txt";
+		sklep += "_1.txt";
 
+		wczytanieZPliku(sklep, tabPrzejsciowy);
+		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
+
+		tabMiniMap[miniMap_x][miniMap_y] = 1;
+	}
 
 
 

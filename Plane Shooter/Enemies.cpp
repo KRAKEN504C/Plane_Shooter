@@ -250,6 +250,7 @@ int Enemies()
 
 	ALLEGRO_BITMAP *Player = loader("Player/Player_Placeholder.png");
 	ALLEGRO_BITMAP *serce = loader("Player/Serce_Placeholder.png");
+	ALLEGRO_BITMAP *moneta = loader("Player/Moneta_Placeholder.png");
 
 	ALLEGRO_BITMAP *bonus3 = loader("bonus/bonus3_Placeholder.png");
 	ALLEGRO_BITMAP *bonus4 = loader("bonus/bonus4_Placeholder.png");
@@ -509,11 +510,13 @@ int Enemies()
 						{
 							cout << "Enemy killed!";
 							enemyDead = 1;
+							playerMoney += 30;
 						}
 						if ((Player_x + 16 >= Enemy2_x && Player_x + 16 <= Enemy2_x + 16) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
 						{
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
+							playerMoney += 30;
 						}
 					}
 					if (key[KEY_LEFT])
@@ -523,11 +526,13 @@ int Enemies()
 						{
 							cout << "Enemy killed!";
 							enemyDead = 1;
+							playerMoney += 30;
 						}
 						if ((Player_x - 16 >= Enemy2_x && Player_x - 16 <= Enemy2_x + 16) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
 						{
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
+							playerMoney += 30;
 						}
 					}
 					if (key[KEY_UP])
@@ -537,11 +542,13 @@ int Enemies()
 						{
 							cout << "Enemy killed!";
 							enemyDead = 1;
+							playerMoney += 30;
 						}
 						if ((Player_x  >= Enemy2_x && Player_x  <= Enemy2_x + 16) && (Player_y - 16 >= Enemy2_y && Player_y - 16 <= Enemy2_y + 16))
 						{
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
+							playerMoney += 30;
 						}
 					}
 					if (key[KEY_DOWN])
@@ -551,11 +558,13 @@ int Enemies()
 						{
 							cout << "Enemy killed!";
 							enemyDead = 1;
+							playerMoney += 30;
 						}
 						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 16) && (Player_y + 16 >= Enemy2_y && Player_y + 16 <= Enemy2_y + 16))
 						{
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
+							playerMoney += 30;
 						}
 					}
 				}
@@ -732,17 +741,28 @@ int Enemies()
 			enemyEffect = 1;
 			if (bonusEffect2 == 1)
 			{
-				cout << "Player has killed enemy2 with bonus.";
+				cout << "Player has killed enemy1 with bonus.";
 				enemyDead = 1;
+				playerMoney += 10;
 			}
 			else
 			{
-				cout << "Enemy1 killed Player!";
-				Enemy1_x = -100;
-				Enemy1_y = -100;
-				al_destroy_display(displayEn);
-				wyjscie = main();
-				return 0;
+				if (playerHealth >= 1)
+				{
+					cout << "Enemy1 hit Player!";
+					playerHealth--;
+					Enemy2_x = -10000;
+					Enemy2_y = -10000;
+				}
+				else
+				{
+					cout << "Enemy1 killed Player!";
+					Enemy1_x = -10000;
+					Enemy1_y = -10000;
+					al_destroy_display(displayEn);
+					wyjscie = main();
+					return 0;
+				}
 			}
 		}
 
@@ -753,16 +773,27 @@ int Enemies()
 			{
 				cout << "Player has killed enemy2 with bonus.";
 				enemyDead2 = 1;
+				playerMoney += 10;
 			}
 			else
 			{
-				cout << "Enemy2 killed Player!";
-				Enemy2_x = -100;
-				Enemy2_y = -100;
+				if (playerHealth >= 1)
+				{
+					cout << "Enemy2 hit Player!";
+					playerHealth--;
+					Enemy2_x = -10000;
+					Enemy2_y = -10000;
+				}
+				else
+				{
+					cout << "Enemy2 killed Player!";
+					Enemy2_x = -10000;
+					Enemy2_y = -10000;
 
-				al_destroy_display(displayEn);
-				wyjscie = main();
-				return 0;
+					al_destroy_display(displayEn);
+					wyjscie = main();
+					return 0;
+				}
 			}
 		}
 
@@ -801,6 +832,9 @@ int Enemies()
 			{
 				al_draw_bitmap(serce, 60-camera_x, 10-camera_y, 0);
 				al_draw_textf(font, al_map_rgb(135, 206, 50), 110-camera_x, 10-camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerHealth);
+				
+				al_draw_bitmap(moneta, 160 - camera_x, 10 - camera_y, 0);
+				al_draw_textf(font, al_map_rgb(135, 206, 50), 220 - camera_x, 10 - camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerMoney);
 			}
 
 			if (bronEffect == 0)
