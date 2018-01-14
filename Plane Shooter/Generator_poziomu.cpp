@@ -1,3 +1,38 @@
+
+
+//if (counter >= 10)
+//{
+//	for (int i = 0; i < 10; i++)
+//	{
+//		for (int j = 0; j < 13; j++)
+//		{
+//			if (!found)
+//			{
+//				if (miniMap_x != i && miniMap_y != j)
+//				{
+//					if (tabMiniMap[i][j] == 1)
+//					{
+//						tabMiniMap[miniMap_x][miniMap_y] = 2;
+//						miniMap_x = i;
+//						miniMap_y = j;
+//						found = 1;
+//						cout << "found it!";
+//					}
+//				}
+//			}
+//			else
+//			{
+//				cout << "didn't found found. ";
+//			}
+//		}
+//	}
+//}
+
+
+
+
+
+
 #include "biblioteki.h"
 #include <time.h>
 #include <iostream>
@@ -7,39 +42,31 @@
 
 using namespace std;
 
-void polozenieNowegoSektora(int miniMap_x, int miniMap_y, int tabMiniMap[10][13], int realMap_x, int realMap_y)
+int RandomFunction()
 {
-	int tymczasowa_miniMap_x = miniMap_x;
-	int tymczasowa_miniMap_y = miniMap_y;
+	srand(time(NULL));
+
+	return rand() % 4;
+
+}
+
+void PolozenieNowegoSektora(int *miniMap_x, int *miniMap_y, int tabMiniMap[10][13], int *realMap_x, int *realMap_y)
+{
+	int tymczasowa_miniMap_x = *miniMap_x;
+	int tymczasowa_miniMap_y = *miniMap_y;
 	int los;
 	int counter = 0;
 	bool found = 0;
+
+	//srand(time(NULL));
+
 	do {
-		tymczasowa_miniMap_x = miniMap_x;
-		tymczasowa_miniMap_y = miniMap_y;
-		if (counter >= 10)
-		{
-			for (int i = 0; i < 10; i++)
-			{
-				for (int j = 0; j < 13; j++)
-				{
-					if (!found)
-					{
-						if (miniMap_x != i && miniMap_y != j)
-						{
-							if (tabMiniMap[i][j] == 1)
-							{
-								tabMiniMap[miniMap_x][miniMap_y] = 2;
-								miniMap_x = i;
-								miniMap_y = j;
-								found = 1;
-							}
-						}
-					}
-				}
-			}
-		}
-		los = rand() % 4;
+		tymczasowa_miniMap_x = *miniMap_x;
+		tymczasowa_miniMap_y = *miniMap_y;
+
+		//los = rand() % 4;
+		los = RandomFunction();
+		cout << "los " << los << endl << endl;
 		switch (los)
 		{
 		case 0:
@@ -56,10 +83,91 @@ void polozenieNowegoSektora(int miniMap_x, int miniMap_y, int tabMiniMap[10][13]
 			break;
 		}
 		counter++;
-	} while (tabMiniMap[miniMap_x][miniMap_y] != 0);
 
-	realMap_x = miniMap_x * 20;
-	realMap_y = miniMap_y * 15;
+		/*cout << tabMiniMap[tymczasowa_miniMap_x][tymczasowa_miniMap_y] << endl << endl;
+		system("pause");*/
+		cout << "counter " << counter << endl;
+		if (counter >= 10)
+		{
+			cout << "entered if counter" << endl;
+			for (int i = 0; i < 10; i++)
+			{
+				cout << "entered first for " << endl;
+				for (int j = 0; j < 13; j++)
+				{
+					cout << "entered second for " << endl;
+					if (!found)
+					{
+						cout << "entered if found" << endl;
+						cout << "i " << i << endl;
+						cout << "j " << j << endl;
+						if (*miniMap_x != i && *miniMap_y != j)
+						{
+							cout << "entered if minimapx !=i && minimapy !=j" << endl;
+							cout << tabMiniMap[i][j] << endl;
+
+							/*for (int i = 0; i < 10; i++)
+							{
+								for (int j = 0; j < 13; j++)
+								{
+									cout << tabMiniMap[i][j] << " ";
+								}
+								cout << endl;
+							}*/
+
+							for (int i = 0; i < 10; i++)
+							{
+								for (int j = 0; j < 13; j++)
+								{
+									if (tabMiniMap[i][j] == 1)
+										cout << "found 1 in: x " << i << " y " << j << endl;
+								}
+							}
+
+							if (tabMiniMap[j][i] == 1)
+							{
+								cout << "entered if tabminimap[i][j] == 1" << endl;
+								tabMiniMap[*miniMap_x][*miniMap_y] = 2;
+								*miniMap_x = i;
+								*miniMap_y = j;
+								found = 1;
+								cout << "found it!" << endl << "\t";
+								system("pause");
+							}
+						}
+					}
+					else
+					{
+						cout << "found already found." << endl;
+					}
+				}
+			}
+		}
+		//system("pause");
+	} while (tabMiniMap[tymczasowa_miniMap_x][tymczasowa_miniMap_y] == 1);
+
+	*miniMap_x = tymczasowa_miniMap_x;
+	*miniMap_y = tymczasowa_miniMap_y;
+
+	cout << "miniMap_x " << *miniMap_x << endl;
+	cout << "miniMap_y " << *miniMap_y << endl;
+
+	*realMap_x = *miniMap_x * 20;
+	*realMap_y = *miniMap_y * 15;
+
+	cout << "realMap_x " << *realMap_x << endl;
+	cout << "realMap_y " << *realMap_y << endl;
+
+	tabMiniMap[*miniMap_x][*miniMap_y] = 1;
+
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 13; j++)
+		{
+			cout << tabMiniMap[i][j] << " ";
+		}
+		cout << endl;
+	}
 
 }
 
@@ -124,8 +232,14 @@ void generatorPoziomu()
 	int miniMap_x = 5;
 	int miniMap_y = 7;
 
+	int *ptr_miniMap_x = &miniMap_x;
+	int *ptr_miniMap_y = &miniMap_y;
+
 	int realMap_x = miniMap_x * 20;
 	int realMap_y = miniMap_y * 15;
+
+	int *ptr_realMap_x = &realMap_x;
+	int *ptr_realMap_y = &realMap_y;
 
 	string start = "Generowanie/SektorStartowy";
 	string originalarena = "Generowanie/Arena";
@@ -247,7 +361,7 @@ void generatorPoziomu()
 		}
 	}
 
-	tabMiniMap[miniMap_x][miniMap_y] = 1;
+	tabMiniMap[miniMap_x][miniMap_y] = 1; // x=5  y=7
 
 	//wyrzucenie wszystkiego do pliku, i sprawdzenie jak dzia³a.
 	
@@ -256,10 +370,19 @@ void generatorPoziomu()
 	//wszystko na razie dzia³a!
 
 	{
-		miniMap_x++;
+		/*miniMap_x++;
 		realMap_x = miniMap_x * 20;
-		realMap_y = miniMap_y * 15;
+		realMap_y = miniMap_y * 15;*/
+
+		PolozenieNowegoSektora(ptr_miniMap_x,ptr_miniMap_y,tabMiniMap,ptr_realMap_x,ptr_realMap_y);
+
 		arena += "_1.txt";
+
+		cout << "miniMapx = " << miniMap_x << endl;
+		cout << "miniMapy = " << miniMap_y << endl;
+
+		cout << "realMapx = " << realMap_x << endl;
+		cout << "realMapy = " << realMap_y << endl;
 
 		wczytanieZPliku(arena, tabPrzejsciowy);
 		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
@@ -268,12 +391,21 @@ void generatorPoziomu()
 	}
 
 	{
-		miniMap_y++;
+		/*miniMap_y++;
 		realMap_x = miniMap_x * 20;
-		realMap_y = miniMap_y * 15;
+		realMap_y = miniMap_y * 15;*/
+
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y);
+
 		arena = originalarena;
 		arena += "_2.txt";
 
+		cout << "miniMapx = " << miniMap_x << endl;
+		cout << "miniMapy = " << miniMap_y << endl;
+
+		cout << "realMapx = " << realMap_x << endl;
+		cout << "realMapy = " << realMap_y << endl;
+
 		wczytanieZPliku(arena, tabPrzejsciowy);
 		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
 
@@ -281,9 +413,18 @@ void generatorPoziomu()
 	}
 
 	{
-		miniMap_x--;
+		/*miniMap_x--;
 		realMap_x = miniMap_x * 20;
-		realMap_y = miniMap_y * 15;
+		realMap_y = miniMap_y * 15;*/
+
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y);
+
+		cout << "miniMapx = " << miniMap_x << endl;
+		cout << "miniMapy = " << miniMap_y << endl;
+
+		cout << "realMapx = " << realMap_x << endl;
+		cout << "realMapy = " << realMap_y << endl;
+
 		arena = originalarena;
 		arena += "_3.txt";
 
@@ -294,9 +435,18 @@ void generatorPoziomu()
 	}
 
 	{
-		miniMap_y++;
+		/*miniMap_y++;
 		realMap_x = miniMap_x * 20;
-		realMap_y = miniMap_y * 15;
+		realMap_y = miniMap_y * 15;*/
+
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y);
+
+		cout << "miniMapx = " << miniMap_x << endl;
+		cout << "miniMapy = " << miniMap_y << endl;
+
+		cout << "realMapx = " << realMap_x << endl;
+		cout << "realMapy = " << realMap_y << endl;
+
 		arena = originalarena;
 		arena += "_1.txt";
 
@@ -307,9 +457,18 @@ void generatorPoziomu()
 	}
 
 	{
-		miniMap_x++;
+		/*miniMap_x++;
 		realMap_x = miniMap_x * 20; 
-		realMap_y = miniMap_y * 15;
+		realMap_y = miniMap_y * 15;*/
+
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y);
+
+		cout << "miniMapx = " << miniMap_x << endl;
+		cout << "miniMapy = " << miniMap_y << endl;
+
+		cout << "realMapx = " << realMap_x << endl;
+		cout << "realMapy = " << realMap_y << endl;
+
 		//arena = originalarena;
 		//arena += "_1.txt";
 		sklep += "_1.txt";

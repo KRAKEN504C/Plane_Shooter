@@ -25,6 +25,7 @@ int camera_x = 100;
 int camera_y = 100;
 
 int tabEn[200][210];
+int tabMiMa[10][13];
 
 ALLEGRO_BITMAP *loader(string sciezka);
 
@@ -34,11 +35,168 @@ enum MYKEYS {
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_S, KEY_L, KEY_B, KEY_ESCAPE, KEY_SPACE
 };
 
-
-void LogikaSklepu()
+int MapaKolizji(int tabEn[200][210], int Player_x, int Player_y)
 {
+	// 0 dla pustego pola
+	// 1 dla sciany
+	// 2 dla sklepu
+	int kolizja_x1 = Player_x / 32 ;
+	int kolizja_y1 = Player_y / 32 ;
+	int kolizja_x2 = (Player_x + 16) / 32;
+	int kolizja_y2 = (Player_y + 16) / 32;
+
+	int i = /*-2 + */kolizja_x1;
+	int j = /*-2 + */kolizja_y1;
+
+	//for (int i = -2 + kolizja_x1; i < 2 + kolizja_x1; i++)
+	{
+		//for (int j = -2 + kolizja_y1; j < 2 + kolizja_y1; j++)
+		{
+			if (tabEn[i][j] != 0)
+			{
+				cout << "i " << i << endl;
+				cout << "j " << j << endl;
+				cout << "entered if tabEn[i][j] !=0 " << endl;
+				int wsp_i1 = (i * 32) /*- camera_x*/;
+				int wsp_j1 = (j * 32) /*- camera_y*/;
+				if (tabEn[i][j] == 1)
+				{
+					cout << "entered if tabEn[i][j] == 1 " << endl;
+					cout << "Player_x = " << Player_x << " Player_y = " << Player_y << endl;
+					cout << "wsp_i = " << wsp_i1 << " wsp_j = " << wsp_j1 << endl;
+					if ((Player_x > (Player_x + 16) + (wsp_i1 + 16) - 1) || // is b1 on the right side of b2?
+						(Player_y > (Player_y + 16) + (wsp_j1 + 16) - 1) || // is b1 under b2?
+						((Player_x + 16) > Player_x + wsp_i1 - 1) || // is b2 on the right side of b1?
+						((Player_y + 16) > Player_y + wsp_j1 - 1))   // is b2 under b1?
+					{
+						return 0;
+					}
+					if (Player_x > (Player_x + 16) + (wsp_i1 + 16) - 1) cout << "right side of b2 " << endl;
+					else if (Player_y > (Player_y + 16) + (wsp_j1 + 16) - 1) cout << "b1 under b2 " << endl;
+					else if ((Player_x + 16) > Player_x + wsp_i1 - 1) cout << "b2 right side of b1 " << endl;
+					else if ((Player_y + 16) > Player_y + wsp_j1 - 1) cout << "b2 under b1  " << endl;
+
+					else return 1;
+				}
+				else if (tabEn[i][j] == 4)
+				{
+					cout << "entered else if tabEn[i][j] == 4 " << endl;
+					if ((Player_x > (Player_x + 16) + (wsp_i1 + 16) - 1) || // is b1 on the right side of b2?
+						(Player_y > (Player_y + 16) + (wsp_j1 + 16) - 1) || // is b1 under b2?
+						((Player_x + 16) > Player_x + wsp_i1 - 1) || // is b2 on the right side of b1?
+						((Player_y + 16) > Player_y + wsp_j1 - 1))   // is b2 under b1?
+					{
+						return 3;
+					}
+					else return 0;
+				}
+				else return 0;
+			}
+			else return 0;
+		}
+	}
+}
+
+
+void LogikaSklepu(ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_FONT *font, ALLEGRO_BITMAP *sklep_strzalka, ALLEGRO_BITMAP *przedmiot1, ALLEGRO_BITMAP *przedmiot2, ALLEGRO_BITMAP *przedmiot3, ALLEGRO_BITMAP *przedmiot4)
+{
+	//sklep screen size 600x440
+
+	ALLEGRO_EVENT ev;
+	//ALLEGRO_EVENT_QUEUE *event_queue;
+
+	bool exit = 0;
+	int selectedItem = 0;
+	int standard_x = 60 - camera_x;
+	int strzalka_x = standard_x;
+	int	strzalka_y = 280 - camera_y;
+	
+	cout << "entered function logikasklepu" << endl;
+	while (!exit)
+	{
+		//cout << "entered while in function logikasklepu" << endl;
+
+		al_wait_for_event(event_queue, &ev);
+
+		al_draw_filled_rectangle(20 - camera_x, 80 - camera_y, 620 - camera_x, 460 - camera_y, al_map_rgb(255, 255, 255));
+		al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 80 - camera_y, ALLEGRO_ALIGN_CENTER, "You entered Shop!");
+		al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 100 - camera_y, ALLEGRO_ALIGN_CENTER, "Use arrows, to select, press enter, to buy, press B to exit.");
+
+		al_draw_bitmap(sklep_strzalka, strzalka_x, strzalka_y, 0);
+
+		al_draw_bitmap(przedmiot1, 60 - camera_x, 200 - camera_y, 0);
+		al_draw_bitmap(przedmiot2, 220 - camera_x, 200 - camera_y, 0);
+		al_draw_bitmap(przedmiot3, 380 - camera_x, 200 - camera_y, 0);
+		al_draw_bitmap(przedmiot4, 540 - camera_x, 200 - camera_y, 0);
+
+		if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
+		{
+			switch (ev.keyboard.keycode)
+			{
+			case ALLEGRO_KEY_RIGHT:
+			{
+				if (selectedItem <= 2) selectedItem++;
+				strzalka_x = standard_x;
+				strzalka_x += selectedItem * 160;
+				cout << selectedItem << endl;
+				break;
+			}
+
+			case ALLEGRO_KEY_LEFT:
+			{
+				if (selectedItem >= 1) selectedItem--;
+				strzalka_x = standard_x;
+				strzalka_x += selectedItem * 160;
+				cout << selectedItem << endl;
+				break;
+			}
+
+			case ALLEGRO_KEY_B:
+			{
+				cout << "Player pressed B key" << endl;
+				exit = 1;
+				break;
+			}
+
+			case ALLEGRO_KEY_ESCAPE:
+			{
+				cout << "Player pressed ESC key" << endl;
+				exit = 1;
+				break;
+			}
+
+			}
+		}
+		al_flip_display();
+	}
+
+	//int wsp_i = ((miniPlayer_x * 4) - camera_x) + 10;
+	//int wsp_j = ((miniPlayer_y * 4) - camera_y) + 10;
+
+	//return 1;
+}
+
+void PlayerMiniMapPosition(int Player_x, int Player_y, ALLEGRO_BITMAP *miniMap_Player)
+{
+	//minimapa = 10x13
+	// 3520 / 32 = 110
+	// 110 / 20 = 5,5
+	// 3616 / 32 = 113
+	// 113 / 15 = 7,5(3)
+	int miniPlayer_x = Player_x / 32;
+	int miniPlayer_y = Player_y / 32;
+
+	miniPlayer_x /= 20;
+	miniPlayer_y /= 15;
+
+	int wsp_i = ((miniPlayer_x * 4) - camera_x) + 10;
+	int wsp_j = ((miniPlayer_y * 4) - camera_y) + 10;
+
+	al_draw_bitmap(miniMap_Player, wsp_i, wsp_j, 0);
 
 }
+
+
 
 int Enemies()
 {
@@ -118,123 +276,19 @@ int Enemies()
 	HubL.close();
 
 
-	/*
-	fstream Hub;
-	Hub.open("Mapy/Hub.txt", ios::in | ios::out);
-	for (int i = 0; i < 20; i++)
+	fstream MiniMapE;
+	MiniMapE.open("Generowanie/MiniMapa.txt", ios::in | ios::out);
+	for (int i = 0; i < 200; i++)
 	{
-		for (int j = 0; j < 15; j++)
+		for (int j = 0; j < 210; j++)
 		{
-			Hub >> tabEn[i][j];
+			MiniMapE >> tabMiMa[i][j];
 		}
 	}
-	cout << "wczytano mape" << endl;
-	Hub.close();
-	*/
+	cout << "wczytano mini mape" << endl;
+	HubL.close();
 
 
-
-
-
-
-
-	/*
-	ALLEGRO_BITMAP *obrazek1 = NULL;
-	ALLEGRO_BITMAP *obrazek2 = NULL;
-	ALLEGRO_BITMAP *Enemy1 = NULL;
-	ALLEGRO_BITMAP *Enemy2 = NULL;
-	ALLEGRO_BITMAP *Player = NULL;
-	ALLEGRO_BITMAP *bron1 = NULL;
-	ALLEGRO_BITMAP *bron2 = NULL;
-	ALLEGRO_BITMAP *bonus1 = NULL;
-	ALLEGRO_BITMAP *bonus2 = NULL;
-
-
-	obrazek1 = al_load_bitmap("bitmapy/sciana_Placeholder.png");
-	if (!obrazek1)
-	{
-		fprintf(stderr, "failed to create obrazek1 bitmap!\n");
-		return -1;
-	}
-
-	obrazek2 = al_load_bitmap("bitmapy/Droga_Placeholder.png");
-	if (!obrazek2)
-	{
-		fprintf(stderr, "failed to create obrazek2 bitmap!\n");
-		return -1;
-	}
-
-	Enemy1 = al_load_bitmap("Enemies/Enemy1_Placeholder.png");
-	if (!Enemy1)
-	{
-		fprintf(stderr, "failed to create Enemy1 bitmap!\n");
-		return -1;
-	}
-
-	Enemy2 = al_load_bitmap("Enemies/Enemy2_Placeholder.png");
-	if (!Enemy2)
-	{
-		fprintf(stderr, "failed to create Enemy2 bitmap!\n");
-		return -1;
-	}
-
-	Player = al_load_bitmap("Player/Player_Placeholder.png");
-	if (!Player)
-	{
-		fprintf(stderr, "failed to create Player bitmap!\n");
-		return -1;
-	}
-
-	bron1 = al_load_bitmap("bron/bron1_Placeholder.png");
-	if (!bron1)
-	{
-		fprintf(stderr, "failed to create bron1 bitmap!\n");
-		return -1;
-	}
-
-	bron2 = al_load_bitmap("bron/bron2_Placeholder.png");
-	if (!bron2)
-	{
-		fprintf(stderr, "failed to create bron2 bitmap!\n");
-		return -1;
-	}
-
-	bonus1 = al_load_bitmap("bonus/bonus1_Placeholder.png");
-	if (!bonus1)
-	{
-		fprintf(stderr, "failed to create bonus1 bitmap!\n");
-		return -1;
-	}
-
-	bonus2 = al_load_bitmap("bonus/bonus2_Placeholder.png");
-	if (!bonus2)
-	{
-		fprintf(stderr, "failed to create bonus2 bitmap!\n");
-		return -1;
-	}
-	*/
-
-
-
-	/*
-	Enemy1 = al_load_bitmap("Enemies/sciana_Placeholder.png");
-	if (!Enemy1)
-	{
-		fprintf(stderr, "failed to create Enemy1 bitmap!\n");
-		al_destroy_display(displayEn);
-		al_destroy_timer(timerEn);
-		return -1;
-	}
-
-	Enemy2 = al_load_bitmap("Enemies/Droga_Placeholder.png");
-	if (!Enemy2)
-	{
-		fprintf(stderr, "failed to create Enemy2 bitmap!\n");
-		al_destroy_display(displayEn);
-		al_destroy_timer(timerEn);
-		return -1;
-	}
-	*/
 
 
 
@@ -259,8 +313,11 @@ int Enemies()
 	ALLEGRO_BITMAP *bron4 = loader("bron/bron4_Placeholder.png");
 	ALLEGRO_BITMAP *bron5 = loader("bron/bron5_Placeholder.png");
 
-	ALLEGRO_BITMAP *miniMap_empty = loader("bonus/bonus2_Placeholder.png");
-	ALLEGRO_BITMAP *miniMap_Arena = loader("bonus/bonus2_Placeholder.png");
+	ALLEGRO_BITMAP *miniMap_empty = loader("MiniMap/MiniMap_Empty.png");
+	ALLEGRO_BITMAP *miniMap_Arena = loader("MiniMap/MiniMap_Arena.png");
+	ALLEGRO_BITMAP *miniMap_Player = loader("MiniMap/MiniMap_Player.png");
+
+	ALLEGRO_BITMAP *sklep_strzalka = loader("Sklep/Strzalka_Sklep_Placeholder.png");
 
 	ALLEGRO_BITMAP *obrazek4 = loader("bitmapy/Sklep_Placeholder.png");
 
@@ -300,6 +357,8 @@ int Enemies()
 	int czas = 0;
 	int miniczas = 0;
 
+	int minitest = 0;
+
 	int bonusEffect = 0;
 	int bonusEffect2 = 0;
 	int bronEffect = 0;
@@ -318,6 +377,8 @@ int Enemies()
 
 	int playerMoney = 0;
 	int playerHealth = 3;
+
+	int movetest = 0;
 	/*
 	
 	4-GÓRA
@@ -330,6 +391,16 @@ int Enemies()
 
 
 	
+
+
+
+
+
+
+
+
+
+
 
 	while (!doexit)
 	{
@@ -361,10 +432,11 @@ int Enemies()
 		//bonus5_y -= camera_y;
 		//bonus5_x -= camera_x;*/
 
-		cout << Enemy1_x << endl;
-		cout << Enemy1_y << endl;
-		cout << Player_x << endl;
-		cout << Player_y << endl;
+		//cout << Enemy1_x << endl;
+		//cout << Enemy1_y << endl;
+
+		/*cout << Player_x << endl;
+		cout << Player_y << endl;*/
 
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
@@ -373,22 +445,7 @@ int Enemies()
 
 		al_clear_to_color(al_map_rgb(135, 206, 250)); // ---------- W zale¿noœci od biomu bêdzie inne t³o. ---------- 
 
-		// miniMapa 40x52
 
-		for (int i = 0; i < 10; i++)
-		{
-			for (int j = 0; j < 13; j++)
-			{
-				int wsp_i = camera_x + (i * 4);
-				int wsp_j = camera_x + (j * 4);
-				//if (tabMiniMapa[i][j])
-				{
-
-				}
-				//al_draw_bitmap(, wsp_i, wsp_j);
-				//al_draw_bitmap(, wsp_i, wsp_j);
-			}
-		}
 
 		for (int i = 0; i < 200; i++)
 		{
@@ -427,57 +484,152 @@ int Enemies()
 			}
 		}
 
+
+		// miniMapa 40x52
+
+		for (int i = 0; i < 10; i++)
+		{
+			for (int j = 0; j < 13; j++)
+			{
+				int wsp_i = ((i * 4) - camera_x) + 10;
+				int wsp_j = ((j * 4) - camera_y) + 10;
+				if (tabMiMa[i][j] == 0)
+				{
+					al_draw_bitmap(miniMap_empty, wsp_i, wsp_j, 0);
+
+					/*al_draw_bitmap(serce, 60 - camera_x, 10 - camera_y, 0);
+					al_draw_textf(font, al_map_rgb(135, 206, 50), 110 - camera_x, 10 - camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerHealth);*/
+
+
+				}
+				else if (tabMiMa[i][j] == 1)
+				{
+					al_draw_bitmap(miniMap_Arena, wsp_i, wsp_j, 0);
+				}
+				//al_draw_bitmap(, wsp_i, wsp_j);
+				//al_draw_bitmap(, wsp_i, wsp_j);
+				PlayerMiniMapPosition(Player_x, Player_y, miniMap_Player);
+				
+			}
+		}
+
+		{
+			al_draw_bitmap(serce, 60 - camera_x, 10 - camera_y, 0);
+			al_draw_textf(font, al_map_rgb(135, 206, 50), 110 - camera_x, 10 - camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerHealth);
+
+			al_draw_bitmap(moneta, 160 - camera_x, 10 - camera_y, 0);
+			al_draw_textf(font, al_map_rgb(135, 206, 50), 220 - camera_x, 10 - camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerMoney);
+		}
+
 		//cout << sprawdztablica_x << endl << sprawdztablica_y << endl;
 		//cout << Enemy1_x << endl << Enemy1_y << endl;
 
+
 		// --------------------------------------------------------------------------------- Trzeba poprawiæ warunki kolizji !!! ---------------------------------------------------------------------------------
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
-			if (key[KEY_UP] && Player_y >= 4.0) {
+			if (key[KEY_UP] /*&& Player_y >= 4.0*/) {
 				//cout << "Up key was pressed" << endl;
-				if (bonusEffect == 1)
+
+				movetest = MapaKolizji(tabEn, Player_x, Player_y);
+				//cout << "up " <<  movetest << endl;
+				if (movetest == 0 || movetest == 2)
 				{
-					Player_y -= 8.0;
+					if (bonusEffect == 1)
+					{
+						Player_y -= 8.0;
+					}
+					else
+					{
+						Player_y -= 5.0;
+					}
+					if (movetest == 2)
+					{
+						al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+					}
 				}
 				else
 				{
-					Player_y -= 5.0;
+					Player_y += 10.0;
 				}
 			}
 
 			if (key[KEY_DOWN] /*&& Player_y <= SCREEN_H - CURSOR_SIZE - 4.0*/) {
 				//cout << "Down key was pressed" << endl;
-				if (bonusEffect == 1)
+
+				movetest = MapaKolizji(tabEn, Player_x, Player_y);
+				//cout << "down " << movetest << endl;
+				if (movetest == 0 || movetest == 2)
 				{
-					Player_y += 8.0;
+					if (bonusEffect == 1)
+					{
+						Player_y += 8.0;
+					}
+					else
+					{
+						Player_y += 5.0;
+					}
+					if (movetest == 2)
+					{
+						al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+					}
 				}
 				else
 				{
-					Player_y += 5.0;
+					Player_y -= 10.0;
 				}
 			}
 
 			if (key[KEY_LEFT] /*&& Player_x >= 4.0*/) {
 				//cout << "Left key was pressed" << endl;
-				if (bonusEffect == 1)
+
+				movetest = MapaKolizji(tabEn, Player_x, Player_y);
+				//cout << "left " << movetest << endl;
+				if (movetest == 0 || movetest == 2)
 				{
-					Player_x -= 8.0;
+					if (bonusEffect == 1)
+					{
+						Player_x -= 8.0;
+					}
+					else
+					{
+						Player_x -= 5.0;
+					}
+					if (movetest == 2)
+					{
+						al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+					}
 				}
 				else
-				{
-					Player_x -= 5.0;
+				{ 
+					Player_x += 10.0;
 				}
 			}
 
 			if (key[KEY_RIGHT] /*&& Player_x <= SCREEN_W - CURSOR_SIZE - 4.0*/) {
 				//cout << "Right key was pressed" << endl;
-				if (bonusEffect == 1)
+
+				movetest = MapaKolizji(tabEn, Player_x, Player_y);
+				//cout << "right " << movetest << endl;
+				if (movetest == 0 || movetest == 2)
 				{
-					Player_x += 8.0;
+					if (bonusEffect == 1)
+					{
+						Player_x += 8.0;
+					}
+					else
+					{
+						Player_x += 5.0;
+					}
+					if (movetest == 2)
+					{
+						al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+					}
 				}
 				else
 				{
-					Player_x += 5.0;
+					Player_x -= 10.0;
 				}
+				
 			}
 
 			if (key[KEY_SPACE]) {
@@ -500,7 +652,6 @@ int Enemies()
 						al_draw_bitmap(bron1, Player_x, Player_y + 16, 0);
 						break;
 					}
-
 
 
 					if (key[KEY_RIGHT])
@@ -646,7 +797,28 @@ int Enemies()
 				cout << "Player_x: " << Player_x << endl;
 				cout << "Player_y: " << Player_y << endl;
 				break;
+
+
+				case ALLEGRO_KEY_B:
+					{
+						/*if (minitest == 0)
+						{
+							minitest = 1;
+						}
+						else
+						{
+							minitest = 0;
+						}*/
+							//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 80 - camera_y, ALLEGRO_ALIGN_CENTER, "You entered Shop!");
+							LogikaSklepu(event_queue,font, sklep_strzalka,bonus3,bonus2,bonus1,bron1);
+					}
+				
+
+
 			}
+
+			
+
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
 			switch (ev.keyboard.keycode) {
@@ -676,64 +848,90 @@ int Enemies()
 			}
 		}
 
+		/*if (minitest == 0)
+		{
+			al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 80 - camera_y, ALLEGRO_ALIGN_CENTER, "You entered Shop!");
+		}*/
+
+
 		if ((Player_x >= bonus1_x && Player_x <= bonus1_x +16 ) && (Player_y >= bonus1_y && Player_y <= bonus1_y +16))
 		{
 			bonusEffect = 1;
 			cout << "Bonus was picked up!";
+			bonus1_x = -10000;
+			bonus1_y = -10000;
 		}
 
 		if ((Player_x >= bonus2_x && Player_x <= bonus2_x + 16) && (Player_y >= bonus2_y && Player_y <= bonus2_y + 16))
 		{
 			bonusEffect2 = 1;
 			cout << "Bonus2 was picked up!";
+			bonus2_x = -10000;
+			bonus2_y = -10000;
 		}
 
 		if ((Player_x >= bonus3_x && Player_x <= bonus3_x + 16) && (Player_y >= bonus3_y && Player_y <= bonus3_y + 16))
 		{
 			bonusEffect3 = 1;
 			cout << "Bonus3 was picked up!";
+			bonus3_x = -10000;
+			bonus3_y = -10000;
 		}
 
 		if ((Player_x >= bonus4_x && Player_x <= bonus4_x + 16) && (Player_y >= bonus4_y && Player_y <= bonus4_y + 16))
 		{
 			bonusEffect4 = 1;
 			cout << "Bonus4 was picked up!";
+			bonus4_x = -10000;
+			bonus4_y = -10000;
 		}
 
 		if ((Player_x >= bonus5_x && Player_x <= bonus5_x + 16) && (Player_y >= bonus5_y && Player_y <= bonus5_y + 16))
 		{
 			bonusEffect5 = 1;
 			cout << "Bonus5 was picked up!";
+			bonus5_x = -10000;
+			bonus5_y = -10000;
 		}
 
 		if ((Player_x >= bron1_x && Player_x <= bron1_x + 16) && (Player_y >= bron1_y && Player_y <= bron1_y + 16))
 		{
 			bronEffect = 1;
 			cout << "Bron1 was picked up!";
+			bron1_x = -10000;
+			bron1_y = -10000;
 		}
 
 		if ((Player_x >= bron2_x && Player_x <= bron2_x + 16) && (Player_y >= bron2_y && Player_y <= bron2_y + 16))
 		{
 			bronEffect2 = 1;
 			cout << "Bron2 was picked up!";
+			bron2_x = -10000;
+			bron2_y = -10000;
 		}
 
 		if ((Player_x >= bron3_x && Player_x <= bron3_x + 32) && (Player_y >= bron3_y && Player_y <= bron3_y + 32))
 		{
 			bronEffect3 = 1;
 			cout << "Bron3 was picked up!";
+			bron3_x = -10000;
+			bron3_y = -10000;
 		}
 
 		if ((Player_x >= bron4_x && Player_x <= bron4_x + 32) && (Player_y >= bron4_y && Player_y <= bron4_y + 32))
 		{
 			bronEffect4 = 1;
 			cout << "Bron4 was picked up!";
+			bron4_x = -10000;
+			bron4_y = -10000;
 		}
 
 		if ((Player_x >= bron5_x && Player_x <= bron5_x + 32) && (Player_y >= bron5_y && Player_y <= bron5_y + 32))
 		{
 			bronEffect5 = 1;
 			cout << "Bron5 was picked up!";
+			bron5_x = -10000;
+			bron5_y = -10000;
 		}
 
 		if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 16) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
@@ -751,19 +949,18 @@ int Enemies()
 				{
 					cout << "Enemy1 hit Player!";
 					playerHealth--;
-					Enemy2_x = -10000;
-					Enemy2_y = -10000;
 				}
 				else
 				{
 					cout << "Enemy1 killed Player!";
-					Enemy1_x = -10000;
-					Enemy1_y = -10000;
+
 					al_destroy_display(displayEn);
 					wyjscie = main();
 					return 0;
 				}
 			}
+			Enemy1_x = -10000;
+			Enemy1_y = -10000;
 		}
 
 		if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 16) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
@@ -781,20 +978,33 @@ int Enemies()
 				{
 					cout << "Enemy2 hit Player!";
 					playerHealth--;
-					Enemy2_x = -10000;
-					Enemy2_y = -10000;
 				}
 				else
 				{
 					cout << "Enemy2 killed Player!";
-					Enemy2_x = -10000;
-					Enemy2_y = -10000;
 
 					al_destroy_display(displayEn);
 					wyjscie = main();
 					return 0;
 				}
 			}
+			Enemy2_x = -10000;
+			Enemy2_y = -10000;
+		}
+
+		//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+
+		//if ((Player_x >= 3520 && Player_x <= 3520 + 64) && (Player_y >= 3616 && Player_y <= 3616 + 64))
+		{
+			//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+			/*if (ALLEGRO_KEY_B)
+			{
+				bool exit = 0;
+				do 
+				{
+					LogikaSklepu();
+				} while (!exit);
+			}*/
 		}
 
 
@@ -823,19 +1033,24 @@ int Enemies()
 			redraw = false;
 
 		
+			camera_x = -(Player_x - SCREEN_W / 2);
+			camera_y = -(Player_y - SCREEN_H / 2);
 
+			al_identity_transform(&camera);
+			al_translate_transform(&camera, camera_x, camera_y);
+			al_use_transform(&camera);
 
 			//al_clear_to_color(al_map_rgb(0, 0, 0));
 
 			al_draw_bitmap(Player, Player_x, Player_y, 0);
 
-			{
+			/*{
 				al_draw_bitmap(serce, 60-camera_x, 10-camera_y, 0);
 				al_draw_textf(font, al_map_rgb(135, 206, 50), 110-camera_x, 10-camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerHealth);
 				
 				al_draw_bitmap(moneta, 160 - camera_x, 10 - camera_y, 0);
 				al_draw_textf(font, al_map_rgb(135, 206, 50), 220 - camera_x, 10 - camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerMoney);
-			}
+			}*/
 
 			if (bronEffect == 0)
 			{
@@ -899,12 +1114,15 @@ int Enemies()
 
 
 
-			camera_x = -(Player_x - SCREEN_W / 2);
+			/*camera_x = -(Player_x - SCREEN_W / 2);
+			camera_y = -(Player_y - SCREEN_H / 2);*/
+
+			/*camera_x = -(Player_x - SCREEN_W / 2);
 			camera_y = -(Player_y - SCREEN_H / 2);
 
 			al_identity_transform(&camera);
 			al_translate_transform(&camera, camera_x, camera_y);
-			al_use_transform(&camera);
+			al_use_transform(&camera);*/
 
 			al_flip_display();
 		}
@@ -958,4 +1176,124 @@ al_draw_text(font, al_map_rgb(0, 255, 0), 300, 50, ALLEGRO_ALIGN_LEFT, "S-zapisz
 al_draw_text(font, al_map_rgb(0, 255, 0), 300, 100, ALLEGRO_ALIGN_LEFT, "L-Wczytaj");
 al_draw_text(font, al_map_rgb(0, 255, 0), 300, 150, ALLEGRO_ALIGN_LEFT, "B-Blok");
 al_draw_text(font, al_map_rgb(0, 255, 0), 300, 200, ALLEGRO_ALIGN_LEFT, "ESC-Wyjscie");
+*/
+
+
+
+/*
+fstream Hub;
+Hub.open("Mapy/Hub.txt", ios::in | ios::out);
+for (int i = 0; i < 20; i++)
+{
+for (int j = 0; j < 15; j++)
+{
+Hub >> tabEn[i][j];
+}
+}
+cout << "wczytano mape" << endl;
+Hub.close();
+*/
+
+
+
+
+
+
+
+/*
+ALLEGRO_BITMAP *obrazek1 = NULL;
+ALLEGRO_BITMAP *obrazek2 = NULL;
+ALLEGRO_BITMAP *Enemy1 = NULL;
+ALLEGRO_BITMAP *Enemy2 = NULL;
+ALLEGRO_BITMAP *Player = NULL;
+ALLEGRO_BITMAP *bron1 = NULL;
+ALLEGRO_BITMAP *bron2 = NULL;
+ALLEGRO_BITMAP *bonus1 = NULL;
+ALLEGRO_BITMAP *bonus2 = NULL;
+
+
+obrazek1 = al_load_bitmap("bitmapy/sciana_Placeholder.png");
+if (!obrazek1)
+{
+fprintf(stderr, "failed to create obrazek1 bitmap!\n");
+return -1;
+}
+
+obrazek2 = al_load_bitmap("bitmapy/Droga_Placeholder.png");
+if (!obrazek2)
+{
+fprintf(stderr, "failed to create obrazek2 bitmap!\n");
+return -1;
+}
+
+Enemy1 = al_load_bitmap("Enemies/Enemy1_Placeholder.png");
+if (!Enemy1)
+{
+fprintf(stderr, "failed to create Enemy1 bitmap!\n");
+return -1;
+}
+
+Enemy2 = al_load_bitmap("Enemies/Enemy2_Placeholder.png");
+if (!Enemy2)
+{
+fprintf(stderr, "failed to create Enemy2 bitmap!\n");
+return -1;
+}
+
+Player = al_load_bitmap("Player/Player_Placeholder.png");
+if (!Player)
+{
+fprintf(stderr, "failed to create Player bitmap!\n");
+return -1;
+}
+
+bron1 = al_load_bitmap("bron/bron1_Placeholder.png");
+if (!bron1)
+{
+fprintf(stderr, "failed to create bron1 bitmap!\n");
+return -1;
+}
+
+bron2 = al_load_bitmap("bron/bron2_Placeholder.png");
+if (!bron2)
+{
+fprintf(stderr, "failed to create bron2 bitmap!\n");
+return -1;
+}
+
+bonus1 = al_load_bitmap("bonus/bonus1_Placeholder.png");
+if (!bonus1)
+{
+fprintf(stderr, "failed to create bonus1 bitmap!\n");
+return -1;
+}
+
+bonus2 = al_load_bitmap("bonus/bonus2_Placeholder.png");
+if (!bonus2)
+{
+fprintf(stderr, "failed to create bonus2 bitmap!\n");
+return -1;
+}
+*/
+
+
+
+/*
+Enemy1 = al_load_bitmap("Enemies/sciana_Placeholder.png");
+if (!Enemy1)
+{
+fprintf(stderr, "failed to create Enemy1 bitmap!\n");
+al_destroy_display(displayEn);
+al_destroy_timer(timerEn);
+return -1;
+}
+
+Enemy2 = al_load_bitmap("Enemies/Droga_Placeholder.png");
+if (!Enemy2)
+{
+fprintf(stderr, "failed to create Enemy2 bitmap!\n");
+al_destroy_display(displayEn);
+al_destroy_timer(timerEn);
+return -1;
+}
 */
