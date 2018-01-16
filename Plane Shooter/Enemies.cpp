@@ -35,11 +35,17 @@ enum MYKEYS {
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_S, KEY_L, KEY_B, KEY_ESCAPE, KEY_SPACE
 };
 
-int MapaKolizji(int tabEn[200][210], int Player_x, int Player_y)
+int MapaKolizji(int tabEn[200][210], int Player_x, int Player_y, int kierunek)
 {
+	//0 - gora
+	//1 - dol
+	//2 - lewo
+	//3 - prawo
+
 	// 0 dla pustego pola
 	// 1 dla sciany
 	// 2 dla sklepu
+	// zmaiast dodawac wszystkich pikseli ruchu do przemieszczenia (5), dodatkowa funkcja bedzie sprawdzala, jak malo brakuje do sciany, i dodao tyle pikseli do przemieszczenia.
 	int kolizja_x1 = Player_x / 32 ;
 	int kolizja_y1 = Player_y / 32 ;
 	int kolizja_x2 = (Player_x + 16) / 32;
@@ -48,22 +54,128 @@ int MapaKolizji(int tabEn[200][210], int Player_x, int Player_y)
 	int i = /*-2 + */kolizja_x1;
 	int j = /*-2 + */kolizja_y1;
 
+	switch (kierunek)
+	{
+	case 1:
+		j++;
+		break;
+	case 3:
+		i++;
+		break;
+	}
+
 	//for (int i = -2 + kolizja_x1; i < 2 + kolizja_x1; i++)
 	{
 		//for (int j = -2 + kolizja_y1; j < 2 + kolizja_y1; j++)
 		{
 			if (tabEn[i][j] != 0)
 			{
-				cout << "i " << i << endl;
-				cout << "j " << j << endl;
-				cout << "entered if tabEn[i][j] !=0 " << endl;
+				//cout << "i " << i << endl;
+				//cout << "j " << j << endl;
+				//cout << "entered if tabEn[i][j] !=0 " << endl;
 				int wsp_i1 = (i * 32) /*- camera_x*/;
 				int wsp_j1 = (j * 32) /*- camera_y*/;
-				if (tabEn[i][j] == 1)
+				if (tabEn[i][j] == 1 || tabEn[i][j] == 4)
 				{
-					cout << "entered if tabEn[i][j] == 1 " << endl;
-					cout << "Player_x = " << Player_x << " Player_y = " << Player_y << endl;
-					cout << "wsp_i = " << wsp_i1 << " wsp_j = " << wsp_j1 << endl;
+
+					switch (kierunek)
+					{
+					case 3:
+
+						//wsp_i1 -= 15;
+						//al_draw_filled_rectangle(wsp_i1, wsp_j1, wsp_i1 + 32, wsp_j1 + 32, al_map_rgb(250, 250, 250));
+						//Player_x += 16;
+						//al_draw_filled_rectangle(Player_x, Player_y, Player_x + 16, Player_y + 16, al_map_rgb(25, 250, 250));
+						//cout << "prawa wspolrzedna player_x " << Player_x + 16 << " Lewa sciana " << wsp_i1 - 15 - 1 << endl;
+						if (Player_x + 15 < wsp_i1 )
+						{
+							return 0;
+						}
+						else
+						{
+							//cout << "kolizja prawej sciany" << endl; 
+							if (tabEn[i][j] == 1)
+							{
+								return 1;
+							}
+							if (tabEn[i][j] == 4)
+							{
+								return 2;
+							}
+						}
+						break;
+
+					case 0:
+						//al_draw_filled_rectangle(wsp_i1, wsp_j1, wsp_i1 + 32, wsp_j1 + 32, al_map_rgb(250, 250, 25));
+						//al_draw_filled_rectangle(Player_x, Player_y, Player_x + 16, Player_y + 16, al_map_rgb(25, 250, 250));
+						if (Player_y > (Player_y + 15) + (wsp_j1 + 16) - 1)
+						{
+							return 0;
+						}
+						else
+						{
+							//cout << "kolizja gornej sciany" << endl; // GOOD
+							if (tabEn[i][j] == 1)
+							{
+								return 1;
+							}
+							if (tabEn[i][j] == 4)
+							{
+								return 2;
+							}
+						}
+						break;
+
+					case 2:
+						//al_draw_filled_rectangle(wsp_i1, wsp_j1, wsp_i1 + 32, wsp_j1 + 32, al_map_rgb(250, 25, 250));
+						//al_draw_filled_rectangle(Player_x, Player_y, Player_x + 16, Player_y + 16, al_map_rgb(25, 250, 250));
+						if ((Player_x + 15) > Player_x + wsp_i1 - 1)
+						{
+							return 0;
+						}
+						else
+						{
+							//cout << "kolizja lewej sciany" << endl; // GOOD
+							if (tabEn[i][j] == 1)
+							{
+								return 1;
+							}
+							if (tabEn[i][j] == 4)
+							{
+								return 2;
+							}
+						}
+						break;
+
+					case 1:
+
+						//wsp_j1 -= 15;
+						//al_draw_filled_rectangle(wsp_i1, wsp_j1, wsp_i1 + 32, wsp_j1 + 32, al_map_rgb(25, 250, 250));
+						//Player_y += 16;
+						//al_draw_filled_rectangle(Player_x, Player_y, Player_x + 16, Player_y + 16, al_map_rgb(25, 250, 250));
+						//cout << "dolna wspolrzedna player_y " << Player_y + 16 << " gorna sciana " << wsp_j1 - 1 << endl;
+						if (Player_y + 15 < wsp_j1)
+						{
+							return 0;
+						}
+						else
+						{
+							//cout << "kolizja dolnej sciany" << endl;
+							if (tabEn[i][j] == 1)
+							{
+								return 1;
+							}
+							if (tabEn[i][j] == 4)
+							{
+								return 2;
+							}
+						}
+						break;
+					}
+				}
+				else if (tabEn[i][j] == 4)
+				{
+					//cout << "entered else if tabEn[i][j] == 4 " << endl;
 					if ((Player_x > (Player_x + 16) + (wsp_i1 + 16) - 1) || // is b1 on the right side of b2?
 						(Player_y > (Player_y + 16) + (wsp_j1 + 16) - 1) || // is b1 under b2?
 						((Player_x + 16) > Player_x + wsp_i1 - 1) || // is b2 on the right side of b1?
@@ -71,24 +183,7 @@ int MapaKolizji(int tabEn[200][210], int Player_x, int Player_y)
 					{
 						return 0;
 					}
-					if (Player_x > (Player_x + 16) + (wsp_i1 + 16) - 1) cout << "right side of b2 " << endl;
-					else if (Player_y > (Player_y + 16) + (wsp_j1 + 16) - 1) cout << "b1 under b2 " << endl;
-					else if ((Player_x + 16) > Player_x + wsp_i1 - 1) cout << "b2 right side of b1 " << endl;
-					else if ((Player_y + 16) > Player_y + wsp_j1 - 1) cout << "b2 under b1  " << endl;
-
-					else return 1;
-				}
-				else if (tabEn[i][j] == 4)
-				{
-					cout << "entered else if tabEn[i][j] == 4 " << endl;
-					if ((Player_x > (Player_x + 16) + (wsp_i1 + 16) - 1) || // is b1 on the right side of b2?
-						(Player_y > (Player_y + 16) + (wsp_j1 + 16) - 1) || // is b1 under b2?
-						((Player_x + 16) > Player_x + wsp_i1 - 1) || // is b2 on the right side of b1?
-						((Player_y + 16) > Player_y + wsp_j1 - 1))   // is b2 under b1?
-					{
-						return 3;
-					}
-					else return 0;
+					else return 2;
 				}
 				else return 0;
 			}
@@ -98,7 +193,7 @@ int MapaKolizji(int tabEn[200][210], int Player_x, int Player_y)
 }
 
 
-void LogikaSklepu(ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_FONT *font, ALLEGRO_BITMAP *sklep_strzalka, ALLEGRO_BITMAP *przedmiot1, ALLEGRO_BITMAP *przedmiot2, ALLEGRO_BITMAP *przedmiot3, ALLEGRO_BITMAP *przedmiot4)
+void LogikaSklepu(ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_FONT *font, ALLEGRO_BITMAP *sklep_strzalka, ALLEGRO_BITMAP *przedmiot1, ALLEGRO_BITMAP *przedmiot2, ALLEGRO_BITMAP *przedmiot3, ALLEGRO_BITMAP *przedmiot4, int *playerMoney,int *playerHealth, float *dodatekpredkosc, int *kupionabron)
 {
 	//sklep screen size 600x440
 
@@ -162,6 +257,39 @@ void LogikaSklepu(ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_FONT *font, ALLEGRO_
 			{
 				cout << "Player pressed ESC key" << endl;
 				exit = 1;
+				break;
+			}
+			case ALLEGRO_KEY_ENTER:
+			{
+				if(*playerMoney >= 30)
+				{
+					cout << "Player bought: ";
+					switch (selectedItem)
+					{
+					case 0:
+						*playerMoney -= 30;
+						*playerHealth++;
+						cout << "1 up!" << endl;
+						cout << "playerhealth = " << *playerHealth << endl;
+						break;
+					case 1:
+						*playerMoney -= 30;
+						*dodatekpredkosc+=0.5;
+						cout << "speed up!" << endl;
+						cout << "dodatekpredkosc = " << *dodatekpredkosc << endl;
+						break;
+					case 2:
+						*playerMoney -= 30;
+						*kupionabron = 1;
+						cout << "weapon nr 1 !" << endl;
+						break;
+					case 3:
+						*playerMoney -= 30;
+						*kupionabron = 2;
+						cout << "weapon nr 2 up!" << endl;
+						break;
+					}
+				}
 				break;
 			}
 
@@ -374,9 +502,20 @@ int Enemies()
 	int bonusEffect4 = 0;
 	int bonusEffect5 = 0;
 	int lastKey = 1;
+	int lastweapon = 0;
 
-	int playerMoney = 0;
+	int playerMoney = 30;
 	int playerHealth = 3;
+	float predkoscruchu = 2.5;
+
+	bool gracznasklepie = 0;
+
+	int *ptr_playerMoney = &playerMoney;
+	int *ptr_playerHealth = &playerHealth;
+	float dodatekpredkosci = 0;
+	float *ptr_dodatekpredkosci = &dodatekpredkosci;
+	int kupionabron = 0;
+	int *ptr_kupionabron = &kupionabron;
 
 	int movetest = 0;
 	/*
@@ -521,6 +660,11 @@ int Enemies()
 			al_draw_textf(font, al_map_rgb(135, 206, 50), 220 - camera_x, 10 - camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerMoney);
 		}
 
+		if (gracznasklepie)
+		{
+			al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+		}
+
 		//cout << sprawdztablica_x << endl << sprawdztablica_y << endl;
 		//cout << Enemy1_x << endl << Enemy1_y << endl;
 
@@ -530,126 +674,234 @@ int Enemies()
 			if (key[KEY_UP] /*&& Player_y >= 4.0*/) {
 				//cout << "Up key was pressed" << endl;
 
-				movetest = MapaKolizji(tabEn, Player_x, Player_y);
+				//movetest = MapaKolizji(tabEn, Player_x, Player_y,0);
 				//cout << "up " <<  movetest << endl;
-				if (movetest == 0 || movetest == 2)
-				{
+				//if (movetest == 0 || movetest == 2)
 					if (bonusEffect == 1)
 					{
-						Player_y -= 8.0;
+						predkoscruchu = 3 + dodatekpredkosci;
 					}
-					else
+					else {
+						predkoscruchu = 2.5 + dodatekpredkosci;
+					}
+
+
 					{
-						Player_y -= 5.0;
-					}
-					if (movetest == 2)
-					{
-						al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
-					}
-				}
+						//Player_y -= 8.0;
+						for (int i = -predkoscruchu; i <= 0; i++)
+						{
+							movetest = MapaKolizji(tabEn, Player_x, Player_y + i, 0);
+							if (movetest == 0)
+							{
+								Player_y += i;
+							}
+							if (movetest == 2)
+							{
+								//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+								gracznasklepie = 1;
+								Player_y += i;
+							}
+							else
+							{
+								gracznasklepie = 0;
+							}
+						}
+					}/*
 				else
 				{
 					Player_y += 10.0;
-				}
+				}*/
 			}
 
 			if (key[KEY_DOWN] /*&& Player_y <= SCREEN_H - CURSOR_SIZE - 4.0*/) {
 				//cout << "Down key was pressed" << endl;
 
-				movetest = MapaKolizji(tabEn, Player_x, Player_y);
+				//movetest = MapaKolizji(tabEn, Player_x, Player_y,1);
 				//cout << "down " << movetest << endl;
-				if (movetest == 0 || movetest == 2)
+				//if (movetest == 0 || movetest == 2)
+
+				if (bonusEffect == 1)
 				{
-					if (bonusEffect == 1)
-					{
-						Player_y += 8.0;
-					}
-					else
-					{
-						Player_y += 5.0;
-					}
-					if (movetest == 2)
-					{
-						al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
-					}
+					predkoscruchu = 3 + dodatekpredkosci;
 				}
+				else {
+					predkoscruchu = 2.5 + dodatekpredkosci;
+				}
+
+				
+						//Player_y += 8.0;
+						for (int i = predkoscruchu; i >= 0; i--)
+						{
+							movetest = MapaKolizji(tabEn, Player_x, Player_y + i, 1);
+							if (movetest == 0)
+							{
+								Player_y += i;
+							}
+							if (movetest == 2)
+							{
+								//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+								gracznasklepie = 1;
+								Player_y += i;
+							}
+							else
+							{
+								gracznasklepie = 0;
+							}
+						}
+					/*
 				else
 				{
 					Player_y -= 10.0;
-				}
+				}*/
 			}
 
 			if (key[KEY_LEFT] /*&& Player_x >= 4.0*/) {
 				//cout << "Left key was pressed" << endl;
 
-				movetest = MapaKolizji(tabEn, Player_x, Player_y);
+				//movetest = MapaKolizji(tabEn, Player_x, Player_y,2);
 				//cout << "left " << movetest << endl;
-				if (movetest == 0 || movetest == 2)
+
+				if (bonusEffect == 1)
 				{
-					if (bonusEffect == 1)
-					{
-						Player_x -= 8.0;
-					}
-					else
-					{
-						Player_x -= 5.0;
-					}
-					if (movetest == 2)
-					{
-						al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
-					}
+					predkoscruchu = 3 + dodatekpredkosci;
 				}
+				else {
+					predkoscruchu = 2.5 + dodatekpredkosci;
+				}
+				//if (movetest == 0 || movetest == 2)
+				{
+					for (int i = -predkoscruchu; i <= 0; i++)
+					{
+						movetest = MapaKolizji(tabEn, Player_x + i, Player_y, 2);
+						if (movetest == 0)
+						{
+							Player_x += i;
+						}
+						if (movetest == 2)
+						{
+							//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+							gracznasklepie = 1;
+							Player_x += i;
+						}
+						else
+						{
+							gracznasklepie = 0;
+						}
+					}
+				}/*
 				else
 				{ 
 					Player_x += 10.0;
-				}
+				}*/
 			}
 
 			if (key[KEY_RIGHT] /*&& Player_x <= SCREEN_W - CURSOR_SIZE - 4.0*/) {
 				//cout << "Right key was pressed" << endl;
 
-				movetest = MapaKolizji(tabEn, Player_x, Player_y);
+				//movetest = MapaKolizji(tabEn, Player_x, Player_y,3);
 				//cout << "right " << movetest << endl;
-				if (movetest == 0 || movetest == 2)
+
+				if (bonusEffect == 1)
 				{
-					if (bonusEffect == 1)
-					{
-						Player_x += 8.0;
-					}
-					else
-					{
-						Player_x += 5.0;
-					}
-					if (movetest == 2)
-					{
-						al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
-					}
+					predkoscruchu = 3 + dodatekpredkosci;
 				}
+				else {
+					predkoscruchu = 2.5 + dodatekpredkosci;
+				}
+					{
+						for (int i = predkoscruchu; i >= 0; i--)
+						{
+							movetest = MapaKolizji(tabEn, Player_x + i, Player_y, 3);
+							if (movetest == 0)
+							{
+								Player_x += i;
+							}
+							if (movetest == 2)
+							{
+								//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
+								gracznasklepie = 1;
+								Player_x += i;
+							}
+							else
+							{
+								gracznasklepie = 0;
+							}
+						}
+					}
+				/*
 				else
 				{
 					Player_x -= 10.0;
-				}
+				}*/
 				
 			}
 
 			if (key[KEY_SPACE]) {
 				//cout << "Space key was pressed" << endl;
-				if (bronEffect == 1)
+				if (lastweapon == 1)
 				{
 
 					switch (lastKey)
 					{
 					case 4:
-						al_draw_bitmap(bron1, Player_x + 16, Player_y, 0);
+						al_draw_bitmap(bron1, Player_x + 16, Player_y, 0);/*
+						if ((Player_x + 16 >= Enemy1_x && Player_x + 16 <= Enemy1_x + 16) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 16 >= Enemy2_x && Player_x + 16 <= Enemy2_x + 16) || (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}*/
 						break;
 					case 3:
-						al_draw_bitmap(bron1, Player_x - 16, Player_y, 0);
+						al_draw_bitmap(bron1, Player_x - 16, Player_y, 0);/*
+						if ((Player_x - 16 >= Enemy1_x && Player_x - 16 <= Enemy1_x + 16) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 16 >= Enemy2_x && Player_x - 16 <= Enemy2_x + 16) || (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}*/
 						break;
 					case 1:
-						al_draw_bitmap(bron1, Player_x, Player_y - 16, 0);
+						al_draw_bitmap(bron1, Player_x, Player_y - 16, 0);/*
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 16) || (Player_y - 16 >= Enemy1_y && Player_y - 16 <= Enemy1_y + 16))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 16) || (Player_y - 16 >= Enemy2_y && Player_y - 16 <= Enemy2_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}*/
 						break;
 					case 2:
-						al_draw_bitmap(bron1, Player_x, Player_y + 16, 0);
+						al_draw_bitmap(bron1, Player_x, Player_y + 16, 0);/*
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 16) || (Player_y + 16 >= Enemy1_y && Player_y + 16 <= Enemy1_y + 16))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 16) || (Player_y + 16 >= Enemy2_y && Player_y + 16 <= Enemy2_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}*/
 						break;
 					}
 
@@ -719,23 +971,137 @@ int Enemies()
 						}
 					}
 				}
-				else if(bronEffect2 == 1)
+
+				if(lastweapon == 2)
 				{
+
+					switch (lastKey)
+					{
+					case 4:
+						al_draw_bitmap(bron1, Player_x + 32, Player_y, 0);/*
+						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) || (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}*/
+						break;
+					case 3:
+						al_draw_bitmap(bron1, Player_x - 32, Player_y, 0);/*
+						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) || (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}*/
+						break;
+					case 1:
+						al_draw_bitmap(bron1, Player_x, Player_y - 32, 0);/*
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) || (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) || (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}*/
+						break;
+					case 2:
+						al_draw_bitmap(bron1, Player_x, Player_y + 32, 0);/*
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) || (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) || (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}*/
+						break;
+					}
+
 					if (key[KEY_RIGHT])
 					{
 						al_draw_bitmap(bron2, Player_x + 32, Player_y, 0);
+						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
 					}
 					if (key[KEY_LEFT])
 					{
 						al_draw_bitmap(bron2, Player_x - 32, Player_y, 0);
+						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
 					}
 					if (key[KEY_UP])
 					{
 						al_draw_bitmap(bron2, Player_x, Player_y - 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
 					}
 					if (key[KEY_DOWN])
 					{
 						al_draw_bitmap(bron2, Player_x, Player_y + 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
 					}
 				}
 			}
@@ -810,10 +1176,62 @@ int Enemies()
 							minitest = 0;
 						}*/
 							//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 80 - camera_y, ALLEGRO_ALIGN_CENTER, "You entered Shop!");
-							LogikaSklepu(event_queue,font, sklep_strzalka,bonus3,bonus2,bonus1,bron1);
+					if (gracznasklepie)
+					{
+						LogikaSklepu(event_queue, font, sklep_strzalka, bonus3, bonus2, bonus1, bron1, ptr_playerMoney,ptr_playerHealth,ptr_dodatekpredkosci,ptr_kupionabron);
+					}
+					break;
 					}
 				
+				case ALLEGRO_KEY_1:
+				{
 
+					if(bronEffect == 1)
+					{
+						lastweapon = 1;
+					}
+					break;
+				}
+
+				case ALLEGRO_KEY_2:
+				{
+
+					if (bronEffect2 == 1)
+					{
+						lastweapon = 2;
+					}
+					break;
+				}
+
+				case ALLEGRO_KEY_3:
+				{
+
+					if (bronEffect3 == 1)
+					{
+						lastweapon = 3;
+					}
+					break;
+				}
+
+				case ALLEGRO_KEY_4:
+				{
+
+					if (bronEffect4 == 1)
+					{
+						lastweapon = 4;
+					}
+					break;
+				}
+
+				case ALLEGRO_KEY_5:
+				{
+
+					if (bronEffect5 == 1)
+					{
+						lastweapon = 5;
+					}
+					break;
+				}
 
 			}
 
@@ -1091,10 +1509,20 @@ int Enemies()
 			{
 				al_draw_bitmap(Enemy1, Enemy1_x, Enemy1_y, 0);
 			}
+			else
+			{
+				Enemy1_x = -10000;
+				Enemy1_y = -10000;
+			}
 
 			if (enemyDead2 == 0)
 			{
 				al_draw_bitmap(Enemy2, Enemy2_x, Enemy2_y, 0);
+			}
+			else
+			{
+				Enemy2_x = -10000;
+				Enemy2_y = -10000;
 			}
 
 			if (bonusEffect3 == 0)
