@@ -50,12 +50,14 @@ int RandomFunction()
 
 }
 
-void PolozenieNowegoSektora(int *miniMap_x, int *miniMap_y, int tabMiniMap[10][13], int *realMap_x, int *realMap_y)
+void PolozenieNowegoSektora(int *miniMap_x, int *miniMap_y, int tabMiniMap[10][13], int *realMap_x, int *realMap_y/*, int *przerwax, int *przerway*/)
 {
 	int tymczasowa_miniMap_x = *miniMap_x;
 	int tymczasowa_miniMap_y = *miniMap_y;
 	int los;
 	int counter = 0;
+	int przerwa_x = 0;
+	int przerwa_y = 0;
 	bool found = 0;
 
 	//srand(time(NULL));
@@ -146,6 +148,23 @@ void PolozenieNowegoSektora(int *miniMap_x, int *miniMap_y, int tabMiniMap[10][1
 		//system("pause");
 	} while (tabMiniMap[tymczasowa_miniMap_x][tymczasowa_miniMap_y] == 1);
 
+	/*if (tymczasowa_miniMap_x > *miniMap_x)
+	{
+		przerwa_x = 5;
+	}
+	if (*miniMap_x > tymczasowa_miniMap_x)
+	{
+		przerwa_x = -5;
+	}
+	if (tymczasowa_miniMap_y > *miniMap_y)
+	{
+		przerwa_y = 5;
+	}
+	if (*miniMap_y > tymczasowa_miniMap_y)
+	{
+		przerwa_y = -5;
+	}*/
+
 	*miniMap_x = tymczasowa_miniMap_x;
 	*miniMap_y = tymczasowa_miniMap_y;
 
@@ -154,6 +173,9 @@ void PolozenieNowegoSektora(int *miniMap_x, int *miniMap_y, int tabMiniMap[10][1
 
 	*realMap_x = *miniMap_x * 20;
 	*realMap_y = *miniMap_y * 15;
+
+	*realMap_x += przerwa_x;
+	*realMap_y += przerwa_y;
 
 	cout << "realMap_x " << *realMap_x << endl;
 	cout << "realMap_y " << *realMap_y << endl;
@@ -219,6 +241,26 @@ void LosowanieStringa()
 
 }
 
+void ZamykanieDrzwi(int tabGP[200][210])
+{
+	for (int i = 0; i < 200; i++)
+	{
+		for (int j = 0; j < 210; j++)
+		{
+			if (tabGP[i][j] == 3)
+			{
+				if ((tabGP[i + 1][j] == 1 || tabGP[i + 1][j] == 3 || tabGP[i + 1][j] == 2) && (tabGP[i - 1][j] == 1 || tabGP[i - 1][j] == 3 || tabGP[i - 1][j] == 2) && (tabGP[i][j + 1] == 1 || tabGP[i][j + 1] == 3 || tabGP[i][j + 1] == 2) && (tabGP[i][j - 1] == 1 || tabGP[i][j - 1] == 3 || tabGP[i][j - 1] == 2))
+				{
+				}
+				else
+				{
+					tabGP[i][j] = 1;
+				}
+			}
+		}
+	}
+}
+
 void generatorPoziomu()
 {
 	srand(time(NULL));
@@ -234,6 +276,11 @@ void generatorPoziomu()
 
 	int *ptr_miniMap_x = &miniMap_x;
 	int *ptr_miniMap_y = &miniMap_y;
+
+	int przerwax = 0;
+	int *ptr_przerwax = &przerwax;
+	int przerway = 0;
+	int *ptr_przerway = &przerway;
 
 	int realMap_x = miniMap_x * 20;
 	int realMap_y = miniMap_y * 15;
@@ -374,7 +421,7 @@ void generatorPoziomu()
 		realMap_x = miniMap_x * 20;
 		realMap_y = miniMap_y * 15;*/
 
-		PolozenieNowegoSektora(ptr_miniMap_x,ptr_miniMap_y,tabMiniMap,ptr_realMap_x,ptr_realMap_y);
+		PolozenieNowegoSektora(ptr_miniMap_x,ptr_miniMap_y,tabMiniMap,ptr_realMap_x,ptr_realMap_y/*,ptr_przerwax, ptr_przerway*/);
 
 		arena += "_1.txt";
 
@@ -395,7 +442,7 @@ void generatorPoziomu()
 		realMap_x = miniMap_x * 20;
 		realMap_y = miniMap_y * 15;*/
 
-		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y);
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y/*, ptr_przerwax, ptr_przerway*/);
 
 		arena = originalarena;
 		arena += "_2.txt";
@@ -417,7 +464,7 @@ void generatorPoziomu()
 		realMap_x = miniMap_x * 20;
 		realMap_y = miniMap_y * 15;*/
 
-		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y);
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y/*, ptr_przerwax, ptr_przerway*/);
 
 		cout << "miniMapx = " << miniMap_x << endl;
 		cout << "miniMapy = " << miniMap_y << endl;
@@ -439,7 +486,7 @@ void generatorPoziomu()
 		realMap_x = miniMap_x * 20;
 		realMap_y = miniMap_y * 15;*/
 
-		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y);
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y/*, ptr_przerwax, ptr_przerway*/);
 
 		cout << "miniMapx = " << miniMap_x << endl;
 		cout << "miniMapy = " << miniMap_y << endl;
@@ -461,7 +508,7 @@ void generatorPoziomu()
 		realMap_x = miniMap_x * 20; 
 		realMap_y = miniMap_y * 15;*/
 
-		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y);
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y/*, ptr_przerwax, ptr_przerway*/);
 
 		cout << "miniMapx = " << miniMap_x << endl;
 		cout << "miniMapy = " << miniMap_y << endl;
@@ -490,6 +537,9 @@ void generatorPoziomu()
 
 
 
+	//zamykanie drzwi
+
+	ZamykanieDrzwi(tabGP);
 
 
 	fstream zapisz;

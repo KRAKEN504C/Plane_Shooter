@@ -26,6 +26,8 @@ int camera_y = 100;
 
 int tabEn[200][210];
 int tabMiMa[10][13];
+int tabPrzedmioty[200][210] = {};
+int tabminiPrzedmioty[10][13] = {};
 
 ALLEGRO_BITMAP *loader(string sciezka);
 
@@ -268,7 +270,7 @@ void LogikaSklepu(ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_FONT *font, ALLEGRO_
 					{
 					case 0:
 						*playerMoney -= 30;
-						*playerHealth++;
+						*playerHealth += 1;
 						cout << "1 up!" << endl;
 						cout << "playerhealth = " << *playerHealth << endl;
 						break;
@@ -324,7 +326,111 @@ void PlayerMiniMapPosition(int Player_x, int Player_y, ALLEGRO_BITMAP *miniMap_P
 
 }
 
+int Losowanie(int x, int y)
+{
+	int los = rand() % (y - x + 1) + x;
+	return los;
+}
 
+void SpawnerWszystkiego(int tabMiMa[10][13], int tabEn[200][210],int tabPrzedmioty[200][210], int tabminiPrzedmioty[10][13], int *spawn_x, int *spawn_y, int *przedmiotynapokuj, int *ostatnipokujspawnu_x, int *ostatnipokujspawnu_y)
+{
+	srand(time(NULL));
+
+	int losowaminimap_x = rand() % 10;
+	int losowaminimap_y = rand() % 13;
+
+	int stalaminimap_x = 0;
+	int stalaminimap_y = 0;
+
+	int losowaniewolnegomiejsca_x =0;
+	int losowaniewolnegomiejsca_y =0;
+
+	bool petla = 0;
+
+	if (*przedmiotynapokuj == 0)
+	{
+		*przedmiotynapokuj = 0;
+	}
+
+	cout << endl << "tabMiMa =  " << tabMiMa[losowaminimap_x][losowaminimap_y] << endl;
+
+	while (petla == 0)
+	{
+		cout << "entered while" << endl;
+		losowaminimap_x = rand()%10;
+		losowaminimap_y = rand()%13;
+		cout << "losowax = " << losowaminimap_x << endl;
+		cout << "losoway = " << losowaminimap_y << endl;
+		cout << "tabMiMa =  " << tabMiMa[losowaminimap_x][losowaminimap_y]<< endl;
+
+		if (tabMiMa[losowaminimap_x][losowaminimap_y] != 0 && tabminiPrzedmioty[losowaminimap_x][losowaminimap_y] != 1)
+		{
+			petla = 1;
+		}
+
+		if (*ostatnipokujspawnu_x == losowaminimap_x && *ostatnipokujspawnu_y == losowaminimap_y)
+		{
+			if (*przedmiotynapokuj >= 3)
+			{
+				petla = 0;
+				*przedmiotynapokuj = 0;
+				tabminiPrzedmioty[losowaminimap_x][losowaminimap_y] = 1;
+			}
+		}
+	} 
+
+	if (*ostatnipokujspawnu_x == losowaminimap_x && *ostatnipokujspawnu_y == losowaminimap_y)
+	{
+		*przedmiotynapokuj += 1;
+		cout << "++ do przedmioty na pokuj";
+	}
+
+	cout << "ostatnipokujspawnu_x  = " << *ostatnipokujspawnu_x << endl;
+	cout << "ostatnipokujspawnu_y  = " << *ostatnipokujspawnu_y << endl << endl;
+
+	*ostatnipokujspawnu_x = losowaminimap_x;
+	*ostatnipokujspawnu_y = losowaminimap_y;
+
+	//cout << "przedmiotynapokuj = " << *przedmiotynapokuj << endl;
+	cout << "ostatnipokujspawnu_x  = " << *ostatnipokujspawnu_x << endl;
+	cout << "ostatnipokujspawnu_y  = " << *ostatnipokujspawnu_y << endl << endl;
+
+	cout << "losowax = " << losowaminimap_x << endl;
+	cout << "losoway = " << losowaminimap_y << endl;
+
+	stalaminimap_x = losowaminimap_x *20;
+	stalaminimap_y = losowaminimap_y *15;
+
+	cout << "stalax = " << stalaminimap_x << endl;
+	cout << "stalay = " << stalaminimap_y << endl;
+
+	cout << "tabMiMa =  " << tabMiMa[losowaminimap_x][losowaminimap_y] << endl;
+
+	petla = 0;
+
+	while (petla == 0)
+	{
+		losowaniewolnegomiejsca_x = Losowanie(stalaminimap_x, stalaminimap_x + 20);
+		losowaniewolnegomiejsca_y = Losowanie(stalaminimap_y, stalaminimap_y + 15);
+
+		//cout << "losowaxwersja2 = " << losowaniewolnegomiejsca_x << endl;
+		//cout << "losowaywersja2 = " << losowaniewolnegomiejsca_y << endl;
+		if (tabEn[losowaniewolnegomiejsca_x][losowaniewolnegomiejsca_y] == 2 && tabPrzedmioty[losowaniewolnegomiejsca_x][losowaniewolnegomiejsca_y] != 1)
+		{
+			petla = 1;
+		}
+	} 
+
+	tabPrzedmioty[losowaniewolnegomiejsca_x][losowaniewolnegomiejsca_y] = 1;
+
+	cout << "tabPrzedmioty = " << tabPrzedmioty[losowaniewolnegomiejsca_x][losowaniewolnegomiejsca_y] << endl;
+	cout << "losowaniewolnegomiejsca_x = " << losowaniewolnegomiejsca_x <<  endl;
+	cout << "losowaniewolnegomiejsca_y = " << losowaniewolnegomiejsca_y << endl;
+
+	*spawn_x = losowaniewolnegomiejsca_x*32;
+	*spawn_y = losowaniewolnegomiejsca_y*32;
+
+}
 
 int Enemies()
 {
@@ -340,46 +446,107 @@ int Enemies()
 
 	bool redraw = true;
 	bool doexit = false;
+
 	int Player_y = 3520;
-	int Player_x = 3616;
+	int Player_x = 3516;
 
 	int Enemy1_y = rand() % 448 + 3392;
 	int Enemy1_x = rand() % 608 + 3232;
 
+	int *ptr_Enemy1_y = &Enemy1_y;
+	int *ptr_Enemy1_x = &Enemy1_x;
+
 	int Enemy2_y = rand() % 448 + 3392;
 	int Enemy2_x = rand() % 608 + 3232;
+
+	int *ptr_Enemy2_y = &Enemy2_y;
+	int *ptr_Enemy2_x = &Enemy2_x;
+
+	int Enemy3_y;
+	int Enemy3_x;
+
+	int *ptr_Enemy3_y = &Enemy3_y;
+	int *ptr_Enemy3_x = &Enemy3_x;
+
+	int Enemy4_y;
+	int Enemy4_x;
+
+	int *ptr_Enemy4_y = &Enemy4_y;
+	int *ptr_Enemy4_x = &Enemy4_x;
+
+	int Enemy5_y;
+	int Enemy5_x;
+
+	int *ptr_Enemy5_y = &Enemy5_y;
+	int *ptr_Enemy5_x = &Enemy5_x;
 
 	int bron1_y = rand() % 448 + 3392;
 	int bron1_x = rand() % 608 + 3232;
 
+	int *ptr_bron1_y = &bron1_y;
+	int *ptr_bron1_x = &bron1_x;
+
 	int bron2_y = rand() % 448 + 3392;
 	int bron2_x = rand() % 608 + 3232;
+
+	int *ptr_bron2_y = &bron2_y;
+	int *ptr_bron2_x = &bron2_x;
 
 	int bonus1_y = rand() % 448 + 3392;
 	int bonus1_x = rand() % 608 + 3232;
 
+	int *ptr_bonus1_y = &bonus1_y;
+	int *ptr_bonus1_x = &bonus1_x;
+
 	int bonus2_y = rand() % 448 + 3392;
 	int bonus2_x = rand() % 608 + 3232;
+
+	int *ptr_bonus2_y = &bonus2_y;
+	int *ptr_bonus2_x = &bonus2_x;
 
 	int bron3_y = bron1_y + 32;
 	int bron3_x = bron1_x;
 
+	int *ptr_bron3_y = &bron3_y;
+	int *ptr_bron3_x = &bron3_x;
+
 	int bron4_y = bron2_y + 32;
 	int bron4_x = bron2_x;
+
+	int *ptr_bron4_y = &bron4_y;
+	int *ptr_bron4_x = &bron4_x;
 
 	int bron5_y = bron1_y - 32;
 	int bron5_x = bron1_x;
 
+	int *ptr_bron5_y = &bron5_y;
+	int *ptr_bron5_x = &bron5_x;
+
 	int bonus3_y = bonus1_y + 32;
 	int bonus3_x = bonus1_x;
+
+	int *ptr_bonus3_y = &bonus3_y;
+	int *ptr_bonus3_x = &bonus3_x;
 
 	int bonus4_y = bonus2_y + 32;
 	int bonus4_x = bonus2_x;
 
+	int *ptr_bonus4_y = &bonus4_y;
+	int *ptr_bonus4_x = &bonus4_x;
+
 	int bonus5_y = bonus1_y - 32;
 	int bonus5_x = bonus1_x;
 
+	int *ptr_bonus5_y = &bonus5_y;
+	int *ptr_bonus5_x = &bonus5_x;
 
+	int przedmiotynapokuj = 0;
+	int *ptr_przedmiotynapokuj = &przedmiotynapokuj;
+
+	int ostatnipokujspawnu_x = 0;
+	int ostatnipokujspawnu_y = 0;
+	int *ptr_ostatnipokujspawnu_x = &ostatnipokujspawnu_x;
+	int *ptr_ostatnipokujspawnu_y = &ostatnipokujspawnu_y;
 
 	bool key[9] = { false, false, false, false, false, false, false, false, false };
 
@@ -416,8 +583,27 @@ int Enemies()
 	cout << "wczytano mini mape" << endl;
 	HubL.close();
 
+	//---------------------------------------- LOSOWANIE WSPOLRZEDNYCH ----------------------------------------
 
+	cout << "przed losowaniem" << endl;
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_bonus1_x, ptr_bonus1_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	cout << "po jednym losowaniu" << endl;
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_bonus2_x, ptr_bonus2_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_bonus3_x, ptr_bonus3_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_bonus4_x, ptr_bonus4_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_bonus5_x, ptr_bonus5_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
 
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_bron1_x, ptr_bron1_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_bron2_x, ptr_bron2_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_bron3_x, ptr_bron3_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_bron4_x, ptr_bron4_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_bron5_x, ptr_bron5_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_Enemy1_x, ptr_Enemy1_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_Enemy2_x, ptr_Enemy2_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_Enemy3_x, ptr_Enemy3_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_Enemy4_x, ptr_Enemy4_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
+	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_Enemy5_x, ptr_Enemy5_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
 
 
 	ALLEGRO_BITMAP *obrazek1 = loader("bitmapy/sciana_Placeholder.png");
@@ -978,7 +1164,7 @@ int Enemies()
 					switch (lastKey)
 					{
 					case 4:
-						al_draw_bitmap(bron1, Player_x + 32, Player_y, 0);/*
+						al_draw_bitmap(bron2, Player_x + 32, Player_y, 0);/*
 						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
 						{
 							cout << "Enemy killed!";
@@ -993,7 +1179,7 @@ int Enemies()
 						}*/
 						break;
 					case 3:
-						al_draw_bitmap(bron1, Player_x - 32, Player_y, 0);/*
+						al_draw_bitmap(bron2, Player_x - 32, Player_y, 0);/*
 						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
 						{
 							cout << "Enemy killed!";
@@ -1008,7 +1194,7 @@ int Enemies()
 						}*/
 						break;
 					case 1:
-						al_draw_bitmap(bron1, Player_x, Player_y - 32, 0);/*
+						al_draw_bitmap(bron2, Player_x, Player_y - 32, 0);/*
 						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) || (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
 						{
 							cout << "Enemy killed!";
@@ -1023,7 +1209,7 @@ int Enemies()
 						}*/
 						break;
 					case 2:
-						al_draw_bitmap(bron1, Player_x, Player_y + 32, 0);/*
+						al_draw_bitmap(bron2, Player_x, Player_y + 32, 0);/*
 						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) || (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
 						{
 							cout << "Enemy killed!";
@@ -1315,6 +1501,7 @@ int Enemies()
 		if ((Player_x >= bron1_x && Player_x <= bron1_x + 16) && (Player_y >= bron1_y && Player_y <= bron1_y + 16))
 		{
 			bronEffect = 1;
+			lastweapon = 1;
 			cout << "Bron1 was picked up!";
 			bron1_x = -10000;
 			bron1_y = -10000;
@@ -1323,6 +1510,7 @@ int Enemies()
 		if ((Player_x >= bron2_x && Player_x <= bron2_x + 16) && (Player_y >= bron2_y && Player_y <= bron2_y + 16))
 		{
 			bronEffect2 = 1;
+			lastweapon = 2;
 			cout << "Bron2 was picked up!";
 			bron2_x = -10000;
 			bron2_y = -10000;
@@ -1331,6 +1519,7 @@ int Enemies()
 		if ((Player_x >= bron3_x && Player_x <= bron3_x + 32) && (Player_y >= bron3_y && Player_y <= bron3_y + 32))
 		{
 			bronEffect3 = 1;
+			lastweapon = 3;
 			cout << "Bron3 was picked up!";
 			bron3_x = -10000;
 			bron3_y = -10000;
@@ -1339,6 +1528,7 @@ int Enemies()
 		if ((Player_x >= bron4_x && Player_x <= bron4_x + 32) && (Player_y >= bron4_y && Player_y <= bron4_y + 32))
 		{
 			bronEffect4 = 1;
+			lastweapon = 4;
 			cout << "Bron4 was picked up!";
 			bron4_x = -10000;
 			bron4_y = -10000;
@@ -1347,6 +1537,7 @@ int Enemies()
 		if ((Player_x >= bron5_x && Player_x <= bron5_x + 32) && (Player_y >= bron5_y && Player_y <= bron5_y + 32))
 		{
 			bronEffect5 = 1;
+			lastweapon = 5;
 			cout << "Bron5 was picked up!";
 			bron5_x = -10000;
 			bron5_y = -10000;
