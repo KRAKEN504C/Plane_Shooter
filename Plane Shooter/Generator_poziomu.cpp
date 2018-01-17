@@ -37,7 +37,6 @@
 #include <time.h>
 #include <iostream>
 #include <fstream>
-#include <Windows.h>
 
 
 using namespace std;
@@ -305,7 +304,7 @@ void generatorPoziomu()
 
 	/*
 	Jak ogarnac generowanie poziomu?
-	3 rodzaje blokow podanych w tablicy 
+	3 rodzaje blokow podanych w tablicy
 
 	1-œciana
 	2-droga
@@ -313,7 +312,7 @@ void generatorPoziomu()
 
 	poziom powinien sie sk³adaæ z po³¹czeñ miêdzy drzwiami we wszystkich mapach (³¹cznie mo¿e ich byæ maksymalnie oko³o 16)
 	poziom (wed³ug specyfikacji) generuje siê tak:
-	
+
 	1.Losuje sektor startowy(oraz liczbe Y z przedzia³u od 3 do 8 oraz A z przedzia³u od 9 do 16). (inicjalizacja X i A)
 	2.Losuje mape, i ³¹cze j¹ z poprzednio wybran¹ map¹.(3-drzwi w tym momencie zamieniaja sie w 2-droge miêdzy jedn¹ a drug¹ map¹.) X zwiêkszam o 1 (X startowo wynosi 0). Je¿eli x >= y powtórz.
 	3.Wylosowanie sklepu i po³¹czenie go z jak¹œ map¹.
@@ -364,7 +363,7 @@ void generatorPoziomu()
 	tabMiniMap[miniMap_x][miniMap_y] = 1; // x=5  y=7
 
 	//wyrzucenie wszystkiego do pliku, i sprawdzenie jak dzia³a.
-	
+
 
 
 	//wszystko na razie dzia³a!
@@ -458,7 +457,7 @@ void generatorPoziomu()
 
 	{
 		/*miniMap_x++;
-		realMap_x = miniMap_x * 20; 
+		realMap_x = miniMap_x * 20;
 		realMap_y = miniMap_y * 15;*/
 
 		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y);

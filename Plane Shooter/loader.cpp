@@ -1,16 +1,10 @@
 #ifndef LOADER_CPP_INCLUDED
 #define LOADER_CPP_INCLUDED
 #include "biblioteki.h"
-//#include "Edytor.cpp"
+#include "loader.hpp"//Needed for defining class.
 #include "Random_Font.hpp"
-#include <fstream>
-#include <string>
 
-using namespace std;
-
-
-
-ALLEGRO_BITMAP *loader(string sciezka)
+ALLEGRO_BITMAP *loader(std::string sciezka)
 {
 	ALLEGRO_FONT* font = Random_Font();
 
@@ -26,17 +20,6 @@ ALLEGRO_BITMAP *loader(string sciezka)
 
 }
 
-// NA ŒWIÊTA !!!! NAPRAWIC PLIKI LOADER.CPP I HPP ZEBY DOBRZE FUNKCJONOWALY (jak zinkluduje loader.hpp to beda mi sie wszystkie bitmapy ladowaly przy pomocy funkcji loader.cpp)
-//Zrób to w przekletej klasie !!!
-
-class ProperLoader
-{
-public:
-	ProperLoader();
-	~ProperLoader();
-
-};
-
 ProperLoader::ProperLoader()
 {
 }
@@ -44,9 +27,6 @@ ProperLoader::ProperLoader()
 ProperLoader::~ProperLoader()
 {
 }
-
-
-
 
 #endif
 
