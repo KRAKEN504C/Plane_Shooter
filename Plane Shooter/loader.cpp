@@ -1,23 +1,24 @@
 #ifndef LOADER_CPP_INCLUDED
 #define LOADER_CPP_INCLUDED
 #include "biblioteki.h"
-#include "loader.hpp"//Needed for defining class.
+#include "loader.hpp"//Needed to include .hpp when defining class, not needed when defining function.
 #include "Random_Font.hpp"
 
 ALLEGRO_BITMAP *loader(std::string sciezka)
 {
 	ALLEGRO_FONT* font = Random_Font();
 
-	const char * sciezka_char = sciezka.c_str();
+	const char* sciezka_char = sciezka.c_str();
 
-	return al_load_bitmap(sciezka_char);
+	ALLEGRO_BITMAP* bitmap = al_load_bitmap(sciezka_char);
 
-	if (!al_load_bitmap(sciezka_char))
+	if (bitmap)//al_load_bitmap() should return NULL on error, but error checking seams to be opposite…
 	{
-		fprintf(stderr, "failed to create bitmap!\n");
+		fprintf(stderr, "Failed to create %s bitmap!\n", sciezka_char);
 		return al_create_bitmap(32,32);
 	}
 
+	return bitmap;//First error checking, then returning.
 }
 
 ProperLoader::ProperLoader()
