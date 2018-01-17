@@ -12,7 +12,7 @@ ALLEGRO_BITMAP *loader(std::string sciezka)
 
 	ALLEGRO_BITMAP* bitmap = al_load_bitmap(sciezka_char);
 
-	if (bitmap)//al_load_bitmap() should return NULL on error, but error checking seams to be opposite…
+	if (!bitmap)//al_load_bitmap() return NULL on error.
 	{
 		fprintf(stderr, "Failed to create %s bitmap!\n", sciezka_char);
 		return al_create_bitmap(32,32);
