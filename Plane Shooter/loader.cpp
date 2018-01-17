@@ -1,41 +1,25 @@
 #ifndef LOADER_CPP_INCLUDED
 #define LOADER_CPP_INCLUDED
 #include "biblioteki.h"
-//#include "Edytor.cpp"
+#include "loader.hpp"//Needed to include .hpp when defining class, not needed when defining function.
 #include "Random_Font.hpp"
-#include <fstream>
-#include <string>
 
-using namespace std;
-
-
-
-ALLEGRO_BITMAP *loader(string sciezka)
+ALLEGRO_BITMAP *loader(std::string sciezka)
 {
 	ALLEGRO_FONT* font = Random_Font();
 
-	const char * sciezka_char = sciezka.c_str();
+	const char* sciezka_char = sciezka.c_str();
 
-	return al_load_bitmap(sciezka_char);
+	ALLEGRO_BITMAP* bitmap = al_load_bitmap(sciezka_char);
 
-	if (!al_load_bitmap(sciezka_char))
+	if (!bitmap)//al_load_bitmap() return NULL on error.
 	{
-		fprintf(stderr, "failed to create bitmap!\n");
+		fprintf(stderr, "Failed to create %s bitmap!\n", sciezka_char);
 		return al_create_bitmap(32,32);
 	}
 
+	return bitmap;//First error checking, then returning.
 }
-
-// NA ŒWIÊTA !!!! NAPRAWIC PLIKI LOADER.CPP I HPP ZEBY DOBRZE FUNKCJONOWALY (jak zinkluduje loader.hpp to beda mi sie wszystkie bitmapy ladowaly przy pomocy funkcji loader.cpp)
-//Zrób to w przekletej klasie !!!
-
-class ProperLoader
-{
-public:
-	ProperLoader();
-	~ProperLoader();
-
-};
 
 ProperLoader::ProperLoader()
 {
@@ -44,9 +28,6 @@ ProperLoader::ProperLoader()
 ProperLoader::~ProperLoader()
 {
 }
-
-
-
 
 #endif
 

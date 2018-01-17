@@ -95,7 +95,7 @@ int MapaKolizji(int tabEn[200][210], int Player_x, int Player_y, int kierunek)
 						}
 						else
 						{
-							//cout << "kolizja prawej sciany" << endl; 
+							//cout << "kolizja prawej sciany" << endl;
 							if (tabEn[i][j] == 1)
 							{
 								return 1;
@@ -207,7 +207,7 @@ void LogikaSklepu(ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_FONT *font, ALLEGRO_
 	int standard_x = 60 - camera_x;
 	int strzalka_x = standard_x;
 	int	strzalka_y = 280 - camera_y;
-	
+
 	cout << "entered function logikasklepu" << endl;
 	while (!exit)
 	{
@@ -605,7 +605,7 @@ int Enemies()
 	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_Enemy4_x, ptr_Enemy4_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
 	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_Enemy5_x, ptr_Enemy5_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
 
-
+    //Remember about case-sensitivity!
 	ALLEGRO_BITMAP *obrazek1 = loader("bitmapy/sciana_Placeholder.png");
 	ALLEGRO_BITMAP *obrazek2 = loader("bitmapy/Droga_Placeholder.png");
 	ALLEGRO_BITMAP *obrazek3 = loader("bitmapy/Drzwi_Placeholder.png");
@@ -649,7 +649,7 @@ int Enemies()
 
 	Player = al_load_bitmap("Player/Player_Placeholder.png");
 
-	
+
 
 	//al_clear_to_color(al_map_rgb(255,255,255));
 
@@ -705,8 +705,8 @@ int Enemies()
 
 	int movetest = 0;
 	/*
-	
-	4-GÓRA
+
+	4-Gï¿½RA
 	3-DÓ£
 	1-LEWO
 	2-PRAWO
@@ -715,7 +715,7 @@ int Enemies()
 
 
 
-	
+
 
 
 
@@ -768,7 +768,7 @@ int Enemies()
 
 		int sprawdztablica_x, sprawdztablica_y;
 
-		al_clear_to_color(al_map_rgb(135, 206, 250)); // ---------- W zale¿noœci od biomu bêdzie inne t³o. ---------- 
+		al_clear_to_color(al_map_rgb(135, 206, 250)); // ---------- W zaleï¿½noï¿½ci od biomu bï¿½dzie inne tï¿½o. ----------
 
 
 
@@ -834,7 +834,7 @@ int Enemies()
 				//al_draw_bitmap(, wsp_i, wsp_j);
 				//al_draw_bitmap(, wsp_i, wsp_j);
 				PlayerMiniMapPosition(Player_x, Player_y, miniMap_Player);
-				
+
 			}
 		}
 
@@ -855,7 +855,7 @@ int Enemies()
 		//cout << Enemy1_x << endl << Enemy1_y << endl;
 
 
-		// --------------------------------------------------------------------------------- Trzeba poprawiæ warunki kolizji !!! ---------------------------------------------------------------------------------
+		// --------------------------------------------------------------------------------- Trzeba poprawiï¿½ warunki kolizji !!! ---------------------------------------------------------------------------------
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
 			if (key[KEY_UP] /*&& Player_y >= 4.0*/) {
 				//cout << "Up key was pressed" << endl;
@@ -914,7 +914,7 @@ int Enemies()
 					predkoscruchu = 2.5 + dodatekpredkosci;
 				}
 
-				
+
 						//Player_y += 8.0;
 						for (int i = predkoscruchu; i >= 0; i--)
 						{
@@ -976,7 +976,7 @@ int Enemies()
 					}
 				}/*
 				else
-				{ 
+				{
 					Player_x += 10.0;
 				}*/
 			}
@@ -1019,7 +1019,7 @@ int Enemies()
 				{
 					Player_x -= 10.0;
 				}*/
-				
+
 			}
 
 			if (key[KEY_SPACE]) {
@@ -1368,7 +1368,7 @@ int Enemies()
 					}
 					break;
 					}
-				
+
 				case ALLEGRO_KEY_1:
 				{
 
@@ -1421,7 +1421,7 @@ int Enemies()
 
 			}
 
-			
+
 
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
@@ -1609,7 +1609,7 @@ int Enemies()
 			/*if (ALLEGRO_KEY_B)
 			{
 				bool exit = 0;
-				do 
+				do
 				{
 					LogikaSklepu();
 				} while (!exit);
@@ -1641,7 +1641,7 @@ int Enemies()
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			redraw = false;
 
-		
+
 			camera_x = -(Player_x - SCREEN_W / 2);
 			camera_y = -(Player_y - SCREEN_H / 2);
 
@@ -1656,7 +1656,7 @@ int Enemies()
 			/*{
 				al_draw_bitmap(serce, 60-camera_x, 10-camera_y, 0);
 				al_draw_textf(font, al_map_rgb(135, 206, 50), 110-camera_x, 10-camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerHealth);
-				
+
 				al_draw_bitmap(moneta, 160 - camera_x, 10 - camera_y, 0);
 				al_draw_textf(font, al_map_rgb(135, 206, 50), 220 - camera_x, 10 - camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerMoney);
 			}*/
@@ -1690,7 +1690,7 @@ int Enemies()
 			{
 				al_draw_bitmap(bonus1, bonus1_x, bonus1_y, 0);
 			}
-			
+
 			if (bonusEffect2 == 0)
 			{
 				al_draw_bitmap(bonus2, bonus2_x, bonus2_y, 0);
