@@ -445,7 +445,7 @@ void ruchPionowyPrzeciwnika(int *Enemy_x, int *Enemy_y, int tabEn[200][210], int
 
 	//al_draw_filled_rectangle(tymczasowka_x *32, (tymczasowka_y + *kierunek )*32, (tymczasowka_x *32) + 32, (tymczasowka_y + *kierunek) *32 + 32, al_map_rgb(250, 250, 250));
 
-	if (tabEn[tymczasowka_x][tymczasowka_y + *kierunek] == 2)
+	if (tabEn[tymczasowka_x][tymczasowka_y + *kierunek] == 2 || tabEn[tymczasowka_x][tymczasowka_y + *kierunek] == 5)
 	{
 		//cout << "Enemy_y " << *Enemy_y << endl;
 		*Enemy_y += *kierunek;
@@ -471,7 +471,7 @@ void ruchPoziomyPrzeciwnika(int *Enemy_x, int *Enemy_y, int tabEn[200][210], int
 
 	//al_draw_filled_rectangle(tymczasowka_x *32, (tymczasowka_y + *kierunek )*32, (tymczasowka_x *32) + 32, (tymczasowka_y + *kierunek) *32 + 32, al_map_rgb(250, 250, 250));
 
-	if (tabEn[tymczasowka_x + *kierunek][tymczasowka_y] == 2)
+	if (tabEn[tymczasowka_x + *kierunek][tymczasowka_y] == 2 || tabEn[tymczasowka_x][tymczasowka_y + *kierunek] == 5)
 	{
 		//cout << "Enemy_y " << *Enemy_y << endl;
 		*Enemy_x += *kierunek;
@@ -962,9 +962,17 @@ int Enemies()
 		al_clear_to_color(AktualnyKolor);
 
 
-		for (int i = 0; i < 200; i++)
+		//player_x/32
+		//player_y/32
+		//rysuj tylko widoczna czesc mapy.
+		int optymalizacja_x = Player_x / 32;
+		int optymalizacja_y = Player_y / 32;
+		optymalizacja_x -= 10;
+		optymalizacja_y -= 8;
+
+		for (int i = optymalizacja_x; i < optymalizacja_x+25; i++)
 		{
-			for (int j = 0; j < 210; j++)
+			for (int j = optymalizacja_y; j < optymalizacja_y+20; j++)
 			{
 				if (tabEn[i][j] != 0)
 				{
@@ -2919,7 +2927,7 @@ int Enemies()
 
 		if (bossDead == 0)
 		{
-			if (bosstimer >= 120)
+			if (bosstimer >= 240)
 			{
 				if (czasowspomagacz == 0)
 				{
@@ -3070,7 +3078,7 @@ int Enemies()
 			{
 				wygrana++;
 				al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "You Have Defeated Boss of this Biome!!!");
-				cout << aktualnybiom << endl;
+				//cout << aktualnybiom << endl;
 				Boss_x = -10000;
 				Boss_y = -10000;
 				if (wygrana >= 320)
@@ -3096,6 +3104,8 @@ int Enemies()
 						plik << aktualnybiom + 1;
 
 						plik.close();
+
+						generatorPoziomu();
 
 						test = Enemies();
 					}
@@ -3138,10 +3148,10 @@ int Enemies()
 
 	}
 
-	if (wartosctestowawyjscia = true)
+	/*if (wartosctestowawyjscia = true)
 	{
 		return 0;
-	}
+	}*/
 
 	al_destroy_bitmap(Player);
 	al_destroy_timer(timerEn);

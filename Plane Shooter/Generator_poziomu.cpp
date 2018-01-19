@@ -711,7 +711,7 @@ void generatorPoziomu()
 
 
 
-	system("pause");
+	//system("pause");
 }
 
 

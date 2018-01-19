@@ -58,6 +58,8 @@ int main()
 		al_draw_text(font, Zielony, 400, 200, ALLEGRO_ALIGN_CENTER, "Edytor");
 		al_draw_text(font, Zielony, 400, 250, ALLEGRO_ALIGN_CENTER, "Wyjscie");
 
+		al_draw_text(font, Zielony, 400, 400, ALLEGRO_ALIGN_CENTER, "PLANE SHOOTER");
+
 		al_flip_display();
 
 		//koniec rozrysowania menu.
