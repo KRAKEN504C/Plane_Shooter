@@ -2,18 +2,19 @@
 
 ALLEGRO_FONT* Random_Font()
 {
-    ALLEGRO_FONT* font1 = al_load_font("fonts/font-1.ttf", 22, 0);
-	ALLEGRO_FONT* font2 = al_load_font("fonts/font-2.ttf", 22, 0);
-
-    switch( rand()%2 )
+    switch( rand() % 3 )
     {
     case 0:
         {
-            return font1;
+            return al_load_font("fonts/ARIAL.TTF", 22, 0);
         }
     case 1:
         {
-            return font2;
+            return al_load_font("fonts/font-1.ttf", 22, 0);
+        }
+    case 2:
+        {
+            return al_load_font("fonts/font-2.ttf", 22, 0);
         }
     default:
         {
