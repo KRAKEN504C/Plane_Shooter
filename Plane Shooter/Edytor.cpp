@@ -95,7 +95,7 @@ int Edytor()
 	}
 
 	obrazek3 = al_load_bitmap("bitmapy/Drzwi_Placeholder.png");
-	if (!obrazek2)
+	if (!obrazek3)
 	{
 		fprintf(stderr, "failed to create obrazek3 bitmap!\n");
 		al_destroy_display(displayE);
@@ -104,18 +104,18 @@ int Edytor()
 	}
 
 	obrazek4 = al_load_bitmap("bitmapy/Sklep_Placeholder.png");
-	if (!obrazek2)
+	if (!obrazek4)
 	{
-		fprintf(stderr, "failed to create obrazek3 bitmap!\n");
+		fprintf(stderr, "failed to create obrazek4 bitmap!\n");
 		al_destroy_display(displayE);
 		al_destroy_timer(timerE);
 		return -1;
 	}
 
 	obrazek5 = al_load_bitmap("bitmapy/drogaB_Placeholder.png");
-	if (!obrazek2)
+	if (!obrazek5)
 	{
-		fprintf(stderr, "failed to create obrazek3 bitmap!\n");
+		fprintf(stderr, "failed to create obrazek5 bitmap!\n");
 		al_destroy_display(displayE);
 		al_destroy_timer(timerE);
 		return -1;
@@ -161,7 +161,7 @@ int Edytor()
 
 
 	/*
-	
+
 	test = 0 === obrazek1 (sciana)
 	test = 1 === obrazek2 (droga)
 	test = 2 === obrazek3 (drzwi)
@@ -175,7 +175,7 @@ int Edytor()
 	{
 		al_flip_display();
 
-		
+
 		while (!doexit)
 		{
 			ALLEGRO_EVENT ev;
