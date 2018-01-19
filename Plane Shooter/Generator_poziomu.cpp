@@ -35,16 +35,24 @@
 
 #include "biblioteki.h"
 #include <time.h>
+#include <random>
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <Windows.h>
 
 
 using namespace std;
 
+int LosowanieGP(int x, int y)
+{
+	int los = rand() % (y - x + 1) + x;
+	return los;
+}
+
 int RandomFunction()
 {
-	srand(time(NULL));
+	//srand(time(NULL));
 
 	return rand() % 4;
 
@@ -236,9 +244,14 @@ void RysowanieNaMapie(int tabGP[200][210], int tabPrzejsciowy[20][15], int realM
 }
 
 
-void LosowanieStringa()
+string LosowanieStringa()
 {
-
+	int test = LosowanieGP(1,3);
+	string testowy = "_";
+	testowy += to_string(test);
+	testowy += ".txt";
+	cout << testowy;
+	return testowy;
 }
 
 void ZamykanieDrzwi(int tabGP[200][210])
@@ -294,6 +307,7 @@ void generatorPoziomu()
 	string sklep = "Generowanie/Sklep";
 	string boss = "Generowanie/Boss";
 	string wyjscie = "Generowanie/Wyjscie.txt";
+	string losowy;
 
 	string testowe = "Generowanie/test_zapisu_sektorastartowego.txt";
 
@@ -423,7 +437,10 @@ void generatorPoziomu()
 
 		PolozenieNowegoSektora(ptr_miniMap_x,ptr_miniMap_y,tabMiniMap,ptr_realMap_x,ptr_realMap_y/*,ptr_przerwax, ptr_przerway*/);
 
-		arena += "_1.txt";
+		losowy = LosowanieStringa();
+
+		//arena += "_1.txt";
+		arena += losowy;
 
 		cout << "miniMapx = " << miniMap_x << endl;
 		cout << "miniMapy = " << miniMap_y << endl;
@@ -444,8 +461,11 @@ void generatorPoziomu()
 
 		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y/*, ptr_przerwax, ptr_przerway*/);
 
+		losowy = LosowanieStringa();
+
 		arena = originalarena;
-		arena += "_2.txt";
+		//arena += "_2.txt";
+		arena += losowy;
 
 		cout << "miniMapx = " << miniMap_x << endl;
 		cout << "miniMapy = " << miniMap_y << endl;
@@ -472,8 +492,11 @@ void generatorPoziomu()
 		cout << "realMapx = " << realMap_x << endl;
 		cout << "realMapy = " << realMap_y << endl;
 
+		losowy = LosowanieStringa();
+
 		arena = originalarena;
-		arena += "_3.txt";
+		//arena += "_3.txt";
+		arena += losowy;
 
 		wczytanieZPliku(arena, tabPrzejsciowy);
 		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
@@ -494,8 +517,11 @@ void generatorPoziomu()
 		cout << "realMapx = " << realMap_x << endl;
 		cout << "realMapy = " << realMap_y << endl;
 
+		losowy = LosowanieStringa();
+
 		arena = originalarena;
-		arena += "_1.txt";
+		//arena += "_1.txt";
+		arena += losowy;
 
 		wczytanieZPliku(arena, tabPrzejsciowy);
 		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
@@ -516,9 +542,12 @@ void generatorPoziomu()
 		cout << "realMapx = " << realMap_x << endl;
 		cout << "realMapy = " << realMap_y << endl;
 
+		losowy = LosowanieStringa();
+
 		//arena = originalarena;
 		//arena += "_1.txt";
-		sklep += "_1.txt";
+		//sklep += "_1.txt";
+		sklep += losowy;
 
 		wczytanieZPliku(sklep, tabPrzejsciowy);
 		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
@@ -527,6 +556,91 @@ void generatorPoziomu()
 	}
 
 
+	{
+
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y/*, ptr_przerwax, ptr_przerway*/);
+
+		cout << "miniMapx = " << miniMap_x << endl;
+		cout << "miniMapy = " << miniMap_y << endl;
+
+		cout << "realMapx = " << realMap_x << endl;
+		cout << "realMapy = " << realMap_y << endl;
+
+		losowy = LosowanieStringa();
+
+		arena = originalarena;
+		arena += losowy;
+
+		wczytanieZPliku(arena, tabPrzejsciowy);
+		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
+
+		tabMiniMap[miniMap_x][miniMap_y] = 1;
+	}
+
+	{
+
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y/*, ptr_przerwax, ptr_przerway*/);
+
+		cout << "miniMapx = " << miniMap_x << endl;
+		cout << "miniMapy = " << miniMap_y << endl;
+
+		cout << "realMapx = " << realMap_x << endl;
+		cout << "realMapy = " << realMap_y << endl;
+
+		losowy = LosowanieStringa();
+
+		arena = originalarena;
+		arena += losowy;
+
+		wczytanieZPliku(arena, tabPrzejsciowy);
+		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
+
+		tabMiniMap[miniMap_x][miniMap_y] = 1;
+	}
+
+	{
+
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y/*, ptr_przerwax, ptr_przerway*/);
+
+		cout << "miniMapx = " << miniMap_x << endl;
+		cout << "miniMapy = " << miniMap_y << endl;
+
+		cout << "realMapx = " << realMap_x << endl;
+		cout << "realMapy = " << realMap_y << endl;
+
+		losowy = LosowanieStringa();
+
+		arena = originalarena;
+		arena += losowy;
+
+		wczytanieZPliku(arena, tabPrzejsciowy);
+		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
+
+		tabMiniMap[miniMap_x][miniMap_y] = 1;
+	}
+
+
+	{
+
+		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y/*, ptr_przerwax, ptr_przerway*/);
+
+		cout << "miniMapx = " << miniMap_x << endl;
+		cout << "miniMapy = " << miniMap_y << endl;
+
+		cout << "realMapx = " << realMap_x << endl;
+		cout << "realMapy = " << realMap_y << endl;
+
+		losowy = LosowanieStringa();
+
+		//arena = originalarena;
+		boss += losowy;
+		cout << boss;
+
+		wczytanieZPliku(boss, tabPrzejsciowy);
+		RysowanieNaMapie(tabGP, tabPrzejsciowy, realMap_x, realMap_y);
+
+		tabMiniMap[miniMap_x][miniMap_y] = 1;
+	}
 
 
 

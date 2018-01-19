@@ -208,14 +208,15 @@ void LogikaSklepu(ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_FONT *font, ALLEGRO_
 	int strzalka_x = standard_x;
 	int	strzalka_y = 280 - camera_y;
 	
-	cout << "entered function logikasklepu" << endl;
+	
+	//cout << "entered function logikasklepu" << endl;
 	while (!exit)
 	{
 		//cout << "entered while in function logikasklepu" << endl;
 
 		al_wait_for_event(event_queue, &ev);
 
-		al_draw_filled_rectangle(20 - camera_x, 80 - camera_y, 620 - camera_x, 460 - camera_y, al_map_rgb(255, 255, 255));
+		al_draw_filled_rectangle(20 - camera_x, 80 - camera_y, 620 - camera_x, 460 - camera_y, al_map_rgb(0, 128, 255));
 		al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 80 - camera_y, ALLEGRO_ALIGN_CENTER, "You entered Shop!");
 		al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 100 - camera_y, ALLEGRO_ALIGN_CENTER, "Use arrows, to select, press enter, to buy, press B to exit.");
 
@@ -282,12 +283,12 @@ void LogikaSklepu(ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_FONT *font, ALLEGRO_
 						break;
 					case 2:
 						*playerMoney -= 30;
-						*kupionabron = 1;
+						*kupionabron += 1;
 						cout << "weapon nr 1 !" << endl;
 						break;
 					case 3:
 						*playerMoney -= 30;
-						*kupionabron = 2;
+						*kupionabron += 2;
 						cout << "weapon nr 2 up!" << endl;
 						break;
 					}
@@ -352,16 +353,16 @@ void SpawnerWszystkiego(int tabMiMa[10][13], int tabEn[200][210],int tabPrzedmio
 		*przedmiotynapokuj = 0;
 	}
 
-	cout << endl << "tabMiMa =  " << tabMiMa[losowaminimap_x][losowaminimap_y] << endl;
+	//cout << endl << "tabMiMa =  " << tabMiMa[losowaminimap_x][losowaminimap_y] << endl;
 
 	while (petla == 0)
 	{
-		cout << "entered while" << endl;
+		//cout << "entered while" << endl;
 		losowaminimap_x = rand()%10;
 		losowaminimap_y = rand()%13;
-		cout << "losowax = " << losowaminimap_x << endl;
+		/*cout << "losowax = " << losowaminimap_x << endl;
 		cout << "losoway = " << losowaminimap_y << endl;
-		cout << "tabMiMa =  " << tabMiMa[losowaminimap_x][losowaminimap_y]<< endl;
+		cout << "tabMiMa =  " << tabMiMa[losowaminimap_x][losowaminimap_y]<< endl;*/
 
 		if (tabMiMa[losowaminimap_x][losowaminimap_y] != 0 && tabminiPrzedmioty[losowaminimap_x][losowaminimap_y] != 1)
 		{
@@ -370,7 +371,7 @@ void SpawnerWszystkiego(int tabMiMa[10][13], int tabEn[200][210],int tabPrzedmio
 
 		if (*ostatnipokujspawnu_x == losowaminimap_x && *ostatnipokujspawnu_y == losowaminimap_y)
 		{
-			if (*przedmiotynapokuj >= 3)
+			if (*przedmiotynapokuj >= 2)
 			{
 				petla = 0;
 				*przedmiotynapokuj = 0;
@@ -382,29 +383,29 @@ void SpawnerWszystkiego(int tabMiMa[10][13], int tabEn[200][210],int tabPrzedmio
 	if (*ostatnipokujspawnu_x == losowaminimap_x && *ostatnipokujspawnu_y == losowaminimap_y)
 	{
 		*przedmiotynapokuj += 1;
-		cout << "++ do przedmioty na pokuj";
+		//cout << "++ do przedmioty na pokuj";
 	}
 
-	cout << "ostatnipokujspawnu_x  = " << *ostatnipokujspawnu_x << endl;
-	cout << "ostatnipokujspawnu_y  = " << *ostatnipokujspawnu_y << endl << endl;
+	//cout << "ostatnipokujspawnu_x  = " << *ostatnipokujspawnu_x << endl;
+	//cout << "ostatnipokujspawnu_y  = " << *ostatnipokujspawnu_y << endl << endl;
 
 	*ostatnipokujspawnu_x = losowaminimap_x;
 	*ostatnipokujspawnu_y = losowaminimap_y;
 
 	//cout << "przedmiotynapokuj = " << *przedmiotynapokuj << endl;
-	cout << "ostatnipokujspawnu_x  = " << *ostatnipokujspawnu_x << endl;
+	/*cout << "ostatnipokujspawnu_x  = " << *ostatnipokujspawnu_x << endl;
 	cout << "ostatnipokujspawnu_y  = " << *ostatnipokujspawnu_y << endl << endl;
 
 	cout << "losowax = " << losowaminimap_x << endl;
-	cout << "losoway = " << losowaminimap_y << endl;
+	cout << "losoway = " << losowaminimap_y << endl;*/
 
 	stalaminimap_x = losowaminimap_x *20;
 	stalaminimap_y = losowaminimap_y *15;
 
-	cout << "stalax = " << stalaminimap_x << endl;
+	/*cout << "stalax = " << stalaminimap_x << endl;
 	cout << "stalay = " << stalaminimap_y << endl;
 
-	cout << "tabMiMa =  " << tabMiMa[losowaminimap_x][losowaminimap_y] << endl;
+	cout << "tabMiMa =  " << tabMiMa[losowaminimap_x][losowaminimap_y] << endl;*/
 
 	petla = 0;
 
@@ -432,6 +433,134 @@ void SpawnerWszystkiego(int tabMiMa[10][13], int tabEn[200][210],int tabPrzedmio
 
 }
 
+void ruchPionowyPrzeciwnika(int *Enemy_x, int *Enemy_y, int tabEn[200][210], int *kierunek)
+{
+	int tymczasowka_x = *Enemy_x / 32;
+	int tymczasowka_y = *Enemy_y / 32;
+
+	//cout << "tym_y " << tymczasowka_y << endl;
+	//cout << "tym_x " << tymczasowka_x << endl;
+
+	//cout << "tabEn[tym_x][tym_y + kier] = " << tabEn[tymczasowka_x][tymczasowka_y + *kierunek] << endl << endl;
+
+	//al_draw_filled_rectangle(tymczasowka_x *32, (tymczasowka_y + *kierunek )*32, (tymczasowka_x *32) + 32, (tymczasowka_y + *kierunek) *32 + 32, al_map_rgb(250, 250, 250));
+
+	if (tabEn[tymczasowka_x][tymczasowka_y + *kierunek] == 2)
+	{
+		//cout << "Enemy_y " << *Enemy_y << endl;
+		*Enemy_y += *kierunek;
+		//cout << "Enemy_y " << *Enemy_y << endl << endl;
+	}
+	else
+	{
+		//cout << "Flliped kierunek" << endl;
+		*kierunek *= -1;
+	}
+
+}
+
+void ruchPoziomyPrzeciwnika(int *Enemy_x, int *Enemy_y, int tabEn[200][210], int *kierunek)
+{
+	int tymczasowka_x = *Enemy_x / 32;
+	int tymczasowka_y = *Enemy_y / 32;
+
+	//cout << "tym_y " << tymczasowka_y << endl;
+	//cout << "tym_x " << tymczasowka_x << endl;
+
+	//cout << "tabEn[tym_x][tym_y + kier] = " << tabEn[tymczasowka_x][tymczasowka_y + *kierunek] << endl << endl;
+
+	//al_draw_filled_rectangle(tymczasowka_x *32, (tymczasowka_y + *kierunek )*32, (tymczasowka_x *32) + 32, (tymczasowka_y + *kierunek) *32 + 32, al_map_rgb(250, 250, 250));
+
+	if (tabEn[tymczasowka_x + *kierunek][tymczasowka_y] == 2)
+	{
+		//cout << "Enemy_y " << *Enemy_y << endl;
+		*Enemy_x += *kierunek;
+		//cout << "Enemy_y " << *Enemy_y << endl << endl;
+	}
+	else
+	{
+		//cout << "Flliped kierunek" << endl;
+		*kierunek *= -1;
+	}
+}
+
+void SpawnerBossa(int tabEn[200][210], int *spawn_x, int *spawn_y)
+{
+	int miniplanszabossa_x;
+	int miniplanszabossa_y;
+	int losowaniewolnegomiejsca_x;
+	int losowaniewolnegomiejsca_y;
+
+	//znajduje miejsce w tablicy, gdzie jest numer 5.
+
+	for (int i = 0; i < 200; i++)
+	{
+		for (int j = 0; j < 210; j++)
+		{
+			if (tabEn[i][j] == 5)
+			{
+				miniplanszabossa_x = i ;
+				miniplanszabossa_y = j ;
+			}
+		}
+	}
+
+	//wiem ze to miejsce, jest pokojem bossa.
+	//tworze wspolrzedne minimapy tego pokoju.
+
+	//cout << miniplanszabossa_x << endl;
+	//cout << miniplanszabossa_y << endl;
+
+	miniplanszabossa_x /= 20;
+	miniplanszabossa_y /= 15;
+	miniplanszabossa_x *= 20;
+	miniplanszabossa_y *= 15;
+
+	//zeby potem moc spokojnie generowac losowe wartosci, do momentu znalezienia kolejnej 5, zeby moc na niej postawic bossa.
+
+	bool petla = 0;
+
+	while (petla == 0)
+	{
+		//losuje pewien punkt w pokoju bossa
+		losowaniewolnegomiejsca_x = Losowanie(miniplanszabossa_x, miniplanszabossa_x + 20);
+		losowaniewolnegomiejsca_y = Losowanie(miniplanszabossa_y, miniplanszabossa_y + 15);
+
+		//sprawdzam, czy ten punkt ma wartosc 5
+		if (tabEn[losowaniewolnegomiejsca_x][losowaniewolnegomiejsca_y] == 5 && tabPrzedmioty[losowaniewolnegomiejsca_x][losowaniewolnegomiejsca_y] != 1)
+		{
+			//jezeli tak, zakoncz
+			petla = 1;
+		}
+	}
+	//umiejscowienie bossa na planszy
+	*spawn_x = losowaniewolnegomiejsca_x * 32;
+	*spawn_y = losowaniewolnegomiejsca_y * 32;
+
+}
+
+void BOSS(int *Enemy_x, int *Enemy_y, int tabEn[200][210], int *kierunek, int *czasowspomagacz)
+{
+	//cout << "boss_x: " << *Enemy_x << endl;
+	//cout << "boss_y: " << *Enemy_y << endl;
+
+	if (*czasowspomagacz == 1)
+	{
+		ruchPionowyPrzeciwnika(Enemy_x, Enemy_y, tabEn, kierunek);
+	}
+
+	if (*czasowspomagacz == 0)
+	{
+		ruchPoziomyPrzeciwnika(Enemy_x, Enemy_y, tabEn, kierunek);
+	}
+	
+}
+
+void WeaponHandler()
+{
+
+}
+
 int Enemies()
 {
 	srand(time(NULL));
@@ -446,6 +575,8 @@ int Enemies()
 
 	bool redraw = true;
 	bool doexit = false;
+
+	int klasapostaci = rand() % 2 + 1;
 
 	int Player_y = 3520;
 	int Player_x = 3516;
@@ -548,6 +679,24 @@ int Enemies()
 	int *ptr_ostatnipokujspawnu_x = &ostatnipokujspawnu_x;
 	int *ptr_ostatnipokujspawnu_y = &ostatnipokujspawnu_y;
 
+	int kierunek1 = 1;
+	int kierunek2 = 1;
+	int *ptr_kierunek1 = &kierunek1;
+	int *ptr_kierunek2 = &kierunek2;
+	int kierunek3 = 1;
+	int kierunek4 = 1;
+	int *ptr_kierunek3 = &kierunek3;
+	int *ptr_kierunek4 = &kierunek4;
+	int kierunek5 = 1;
+	int *ptr_kierunek5 = &kierunek5;
+
+	int Boss_y = 3440;
+	int Boss_x = 3616;
+	int *ptr_Boss_y = &Boss_y;
+	int *ptr_Boss_x = &Boss_x;
+	int bosskierunek = 1;
+	int *ptr_bosskierunek = &bosskierunek;
+
 	bool key[9] = { false, false, false, false, false, false, false, false, false };
 
 	ALLEGRO_DISPLAY* displayEn = al_create_display(SCREEN_W, SCREEN_H);
@@ -583,6 +732,18 @@ int Enemies()
 	cout << "wczytano mini mape" << endl;
 	HubL.close();
 
+
+	int aktualnybiom = 0;
+	fstream plik;
+
+	plik.open("Save.txt", ios::in | ios::out);
+
+	plik >> aktualnybiom;
+
+	plik.close();
+
+
+
 	//---------------------------------------- LOSOWANIE WSPOLRZEDNYCH ----------------------------------------
 
 	cout << "przed losowaniem" << endl;
@@ -605,6 +766,8 @@ int Enemies()
 	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_Enemy4_x, ptr_Enemy4_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
 	SpawnerWszystkiego(tabMiMa, tabEn, tabPrzedmioty, tabminiPrzedmioty, ptr_Enemy5_x, ptr_Enemy5_y, ptr_przedmiotynapokuj, ptr_ostatnipokujspawnu_x, ptr_ostatnipokujspawnu_y);
 
+	SpawnerBossa(tabEn, ptr_Boss_x, ptr_Boss_y);
+
 
 	ALLEGRO_BITMAP *obrazek1 = loader("bitmapy/sciana_Placeholder.png");
 	ALLEGRO_BITMAP *obrazek2 = loader("bitmapy/Droga_Placeholder.png");
@@ -616,7 +779,8 @@ int Enemies()
 	ALLEGRO_BITMAP *bonus1 = loader("bonus/bonus1_Placeholder.png");
 	ALLEGRO_BITMAP *bonus2 = loader("bonus/bonus2_Placeholder.png");
 
-	ALLEGRO_BITMAP *Player = loader("Player/Player_Placeholder.png");
+	ALLEGRO_BITMAP *Player = loader("Player/Player1_Placeholder.png");
+	ALLEGRO_BITMAP *Player2 = loader("Player/Player2_Placeholder.png");
 	ALLEGRO_BITMAP *serce = loader("Player/Serce_Placeholder.png");
 	ALLEGRO_BITMAP *moneta = loader("Player/Moneta_Placeholder.png");
 
@@ -626,14 +790,18 @@ int Enemies()
 	ALLEGRO_BITMAP *bron3 = loader("bron/bron3_Placeholder.png");
 	ALLEGRO_BITMAP *bron4 = loader("bron/bron4_Placeholder.png");
 	ALLEGRO_BITMAP *bron5 = loader("bron/bron5_Placeholder.png");
+	ALLEGRO_BITMAP *Enemy3 = loader("Enemies/Enemy3_Placeholder.png");
+	ALLEGRO_BITMAP *Enemy4 = loader("Enemies/Enemy4_Placeholder.png");
+	ALLEGRO_BITMAP *Enemy5 = loader("Enemies/Enemy5_Placeholder.png");
 
 	ALLEGRO_BITMAP *miniMap_empty = loader("MiniMap/MiniMap_Empty.png");
 	ALLEGRO_BITMAP *miniMap_Arena = loader("MiniMap/MiniMap_Arena.png");
 	ALLEGRO_BITMAP *miniMap_Player = loader("MiniMap/MiniMap_Player.png");
 
+	ALLEGRO_BITMAP *obrazek4 = loader("bitmapy/Sklep_Placeholder.png");
 	ALLEGRO_BITMAP *sklep_strzalka = loader("Sklep/Strzalka_Sklep_Placeholder.png");
 
-	ALLEGRO_BITMAP *obrazek4 = loader("bitmapy/Sklep_Placeholder.png");
+	ALLEGRO_BITMAP *Boss = loader("Enemies/Boss_Placeholder.png");
 
 
 	ALLEGRO_TRANSFORM camera; // KAMERA TUTAJ!!!!!!!!
@@ -649,7 +817,7 @@ int Enemies()
 
 	Player = al_load_bitmap("Player/Player_Placeholder.png");
 
-	
+
 
 	//al_clear_to_color(al_map_rgb(255,255,255));
 
@@ -666,6 +834,32 @@ int Enemies()
 
 	al_start_timer(timerEn);
 
+	ALLEGRO_COLOR Zielonyen = al_map_rgb(0, 255, 128);
+	ALLEGRO_COLOR Czerwonyen = al_map_rgb(255, 102, 102);
+	ALLEGRO_COLOR Niebieskien = al_map_rgb(153, 204, 255);
+	ALLEGRO_COLOR Jakis = al_map_rgb(192, 192, 192);
+	ALLEGRO_COLOR AktualnyKolor = al_map_rgb(255, 204, 229);
+
+	switch (aktualnybiom)
+	{
+	case 0:
+		AktualnyKolor = Zielonyen;
+		break;
+	case 1:
+		AktualnyKolor = Czerwonyen;
+		break;
+	case 2:
+		AktualnyKolor = Niebieskien;
+		break;
+	case 3:
+		AktualnyKolor = Jakis;
+		break;
+	}
+
+
+	
+
+
 	int test = 0;
 	int wyjscie = 0;
 	int czas = 0;
@@ -681,6 +875,10 @@ int Enemies()
 	int enemyEffect2 = 0;
 	int enemyDead = 0;
 	int enemyDead2 = 0;
+	int enemyDead3 = 0;
+	int enemyDead4 = 0;
+	int enemyDead5 = 0;
+	int bossDead = 0;
 	int bronEffect3 = 0;
 	int bronEffect4 = 0;
 	int bronEffect5 = 0;
@@ -704,6 +902,26 @@ int Enemies()
 	int *ptr_kupionabron = &kupionabron;
 
 	int movetest = 0;
+
+	int czasowspomagacz = 0;
+	int *ptr_czasowspomagacz = &czasowspomagacz;
+	int bosstimer = 0;
+
+	int wygrana = 0;
+	bool wartosctestowawyjscia = false;
+
+	switch (klasapostaci)
+	{
+	case 1:
+		bronEffect = 1;
+			break;
+	case 2:
+		playerHealth += 1;
+		playerMoney += 30;
+		Player = Player2;
+		break;
+	}
+
 	/*
 	
 	4-GÓRA
@@ -732,34 +950,6 @@ int Enemies()
 		/*Player_y -= camera_y;
 		Player_x -= camera_x;*/
 
-		/*Enemy1_y -= camera_y;
-		//Enemy1_x -= camera_x;
-		//Enemy2_y -= camera_y;
-		//Enemy2_x -= camera_x;
-		//bron1_y -= camera_y;
-		//bron1_x -= camera_x;
-		//bron2_y -= camera_y;
-		//bron2_x -= camera_x;
-		//bonus1_y -= camera_y;
-		//bonus1_x -= camera_x;
-		//bonus2_y -= camera_y;
-		//bonus2_x -= camera_x;
-		//bron3_y -= camera_y;
-		//bron3_x -= camera_x;
-		//bron4_y -= camera_y;
-		//bron4_x -= camera_x;
-		//bron5_y -= camera_y;
-		//bron5_x -= camera_x;
-		//bonus3_y -= camera_y;
-		//bonus3_x -= camera_x;
-		//bonus4_y -= camera_y;
-		//bonus4_x -= camera_x;
-		//bonus5_y -= camera_y;
-		//bonus5_x -= camera_x;*/
-
-		//cout << Enemy1_x << endl;
-		//cout << Enemy1_y << endl;
-
 		/*cout << Player_x << endl;
 		cout << Player_y << endl;*/
 
@@ -768,8 +958,8 @@ int Enemies()
 
 		int sprawdztablica_x, sprawdztablica_y;
 
-		al_clear_to_color(al_map_rgb(135, 206, 250)); // ---------- W zale¿noœci od biomu bêdzie inne t³o. ---------- 
-
+		//al_clear_to_color(al_map_rgb(50, 206, 250)); // ---------- W zale¿noœci od biomu bêdzie inne t³o. ---------- 
+		al_clear_to_color(AktualnyKolor);
 
 
 		for (int i = 0; i < 200; i++)
@@ -795,6 +985,10 @@ int Enemies()
 					else if (tabEn[i][j] == 4)
 					{
 						al_draw_bitmap(obrazek4, wsp_i, wsp_j, 0);
+					}
+					else if (tabEn[i][j] == 5)
+					{
+						al_draw_bitmap(obrazek2, wsp_i, wsp_j, 0);
 					}
 					sprawdztablica_x = wsp_i;
 					sprawdztablica_y = wsp_j;
@@ -1023,14 +1217,14 @@ int Enemies()
 			}
 
 			if (key[KEY_SPACE]) {
-				//cout << "Space key was pressed" << endl;
+				// ---------------------------------------- TRZEBA POSPRZATAC, I WRZUCIC TO DO OSOBNEJ FUNKCJI, BO SZLAK JASNY TRAFI, KREW NAGLA ZALEJE KAZDEGO PRZEGLADAJACEGO TEN KOD ----------------------------------------
 				if (lastweapon == 1)
 				{
 
 					switch (lastKey)
 					{
 					case 4:
-						al_draw_bitmap(bron1, Player_x + 16, Player_y, 0);/*
+						al_draw_bitmap(bron1, Player_x + 16, Player_y, 0);
 						if ((Player_x + 16 >= Enemy1_x && Player_x + 16 <= Enemy1_x + 16) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
 						{
 							cout << "Enemy killed!";
@@ -1042,10 +1236,16 @@ int Enemies()
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
 							playerMoney += 30;
-						}*/
+						}
+						if ((Player_x + 16 >= Boss_x && Player_x + 16 <= Boss_x + 16) && (Player_y >= Boss_y && Player_y <= Boss_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
 						break;
 					case 3:
-						al_draw_bitmap(bron1, Player_x - 16, Player_y, 0);/*
+						al_draw_bitmap(bron1, Player_x - 16, Player_y, 0);
 						if ((Player_x - 16 >= Enemy1_x && Player_x - 16 <= Enemy1_x + 16) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
 						{
 							cout << "Enemy killed!";
@@ -1057,10 +1257,16 @@ int Enemies()
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
 							playerMoney += 30;
-						}*/
+						}
+						if ((Player_x - 16 >= Boss_x && Player_x - 16 <= Boss_x + 16) && (Player_y >= Boss_y && Player_y <= Boss_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
 						break;
 					case 1:
-						al_draw_bitmap(bron1, Player_x, Player_y - 16, 0);/*
+						al_draw_bitmap(bron1, Player_x, Player_y - 16, 0);
 						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 16) || (Player_y - 16 >= Enemy1_y && Player_y - 16 <= Enemy1_y + 16))
 						{
 							cout << "Enemy killed!";
@@ -1072,10 +1278,16 @@ int Enemies()
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
 							playerMoney += 30;
-						}*/
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 16) && (Player_y - 16 >= Boss_y && Player_y - 16 <= Boss_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
 						break;
 					case 2:
-						al_draw_bitmap(bron1, Player_x, Player_y + 16, 0);/*
+						al_draw_bitmap(bron1, Player_x, Player_y + 16, 0);
 						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 16) || (Player_y + 16 >= Enemy1_y && Player_y + 16 <= Enemy1_y + 16))
 						{
 							cout << "Enemy killed!";
@@ -1087,7 +1299,13 @@ int Enemies()
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
 							playerMoney += 30;
-						}*/
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 16) && (Player_y + 16 >= Boss_y && Player_y + 16 <= Boss_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
 						break;
 					}
 
@@ -1107,6 +1325,30 @@ int Enemies()
 							enemyDead2 = 1;
 							playerMoney += 30;
 						}
+						if ((Player_x + 16 >= Boss_x && Player_x + 16 <= Boss_x + 16) && (Player_y >= Boss_y && Player_y <= Boss_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 16 >= Enemy3_x && Player_x + 16 <= Enemy3_x + 16) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 16))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 16 >= Enemy4_x && Player_x + 16 <= Enemy4_x + 16) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 16))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 16 >= Enemy5_x && Player_x + 16 <= Enemy5_x + 16) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 16))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
 					}
 					if (key[KEY_LEFT])
 					{
@@ -1121,6 +1363,30 @@ int Enemies()
 						{
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 16 >= Boss_x && Player_x - 16 <= Boss_x + 16) && (Player_y >= Boss_y && Player_y <= Boss_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 16 >= Enemy3_x && Player_x - 16 <= Enemy3_x + 16) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 16))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 16 >= Enemy4_x && Player_x - 16 <= Enemy4_x + 16) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 16))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 16 >= Enemy5_x && Player_x - 16 <= Enemy5_x + 16) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 16))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead5 = 1;
 							playerMoney += 30;
 						}
 					}
@@ -1139,6 +1405,31 @@ int Enemies()
 							enemyDead2 = 1;
 							playerMoney += 30;
 						}
+
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 16) && (Player_y - 16 >= Boss_y && Player_y - 16 <= Boss_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x>= Enemy3_x && Player_x<= Enemy3_x + 16) && (Player_y - 16 >= Enemy3_y && Player_y - 16 <= Enemy3_y + 16))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x>= Enemy4_x && Player_x <= Enemy4_x + 16) && (Player_y - 16 >= Enemy4_y && Player_y - 16 <= Enemy4_y + 16))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x>= Enemy5_x && Player_x <= Enemy5_x + 16) && (Player_y - 16 >= Enemy5_y && Player_y - 16 <= Enemy5_y + 16))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
 					}
 					if (key[KEY_DOWN])
 					{
@@ -1153,6 +1444,30 @@ int Enemies()
 						{
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 16) && (Player_y + 16 >= Boss_y && Player_y + 16 <= Boss_y + 16))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 16) && (Player_y +16 >= Enemy3_y && Player_y + 16 <= Enemy3_y + 16))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 16) && (Player_y + 16 >= Enemy4_y && Player_y + 16 <= Enemy4_y + 16))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 16) && (Player_y + 16 >= Enemy5_y && Player_y + 16 <= Enemy5_y + 16))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
 							playerMoney += 30;
 						}
 					}
@@ -1240,6 +1555,24 @@ int Enemies()
 							enemyDead2 = 1;
 							playerMoney += 30;
 						}
+						if ((Player_x + 32 >= Enemy3_x && Player_x + 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy4_x && Player_x + 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy5_x && Player_x + 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
 					}
 					if (key[KEY_LEFT])
 					{
@@ -1254,6 +1587,24 @@ int Enemies()
 						{
 							cout << "Enemy2 killed!";
 							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy3_x && Player_x - 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy4_x && Player_x - 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy5_x && Player_x - 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead5 = 1;
 							playerMoney += 30;
 						}
 					}
@@ -1272,6 +1623,24 @@ int Enemies()
 							enemyDead2 = 1;
 							playerMoney += 30;
 						}
+						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y - 32 >= Enemy3_y && Player_y - 32 <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y - 32 >= Enemy4_y && Player_y - 32 <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y - 32 >= Enemy5_y && Player_y - 32 <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
 					}
 					if (key[KEY_DOWN])
 					{
@@ -1288,8 +1657,795 @@ int Enemies()
 							enemyDead2 = 1;
 							playerMoney += 30;
 						}
+						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y + 32 >= Enemy3_y && Player_y + 32 <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y + 32 >= Enemy4_y && Player_y + 32 <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y + 32 >= Enemy5_y && Player_y + 32 <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
 					}
 				}
+
+				if (lastweapon == 3)
+				{
+
+					switch (lastKey)
+					{
+					case 4:
+						al_draw_bitmap(bron3, Player_x + 32, Player_y, 0);
+						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					case 3:
+						al_draw_bitmap(bron3, Player_x - 32, Player_y, 0);
+						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					case 1:
+						al_draw_bitmap(bron3, Player_x, Player_y - 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					case 2:
+						al_draw_bitmap(bron3, Player_x, Player_y + 32, 0);
+
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					}
+
+
+					if (key[KEY_RIGHT])
+					{
+						al_draw_bitmap(bron3, Player_x + 32, Player_y, 0);
+						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy3_x && Player_x + 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy4_x && Player_x + 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy5_x && Player_x + 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+					if (key[KEY_LEFT])
+					{
+						al_draw_bitmap(bron3, Player_x - 32, Player_y, 0);
+						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy3_x && Player_x - 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy4_x && Player_x - 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy5_x && Player_x - 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+					if (key[KEY_UP])
+					{
+						al_draw_bitmap(bron3, Player_x, Player_y - 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y - 32 >= Enemy3_y && Player_y - 32 <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y - 32 >= Enemy4_y && Player_y - 32 <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y - 32 >= Enemy5_y && Player_y - 32 <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+					if (key[KEY_DOWN])
+					{
+						al_draw_bitmap(bron3, Player_x, Player_y + 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y + 32 >= Enemy3_y && Player_y + 32 <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y + 32 >= Enemy4_y && Player_y + 32 <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y + 32 >= Enemy5_y && Player_y + 32 <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+				}
+
+				if (lastweapon == 4)
+				{
+
+					switch (lastKey)
+					{
+					case 4:
+						al_draw_bitmap(bron4, Player_x + 32, Player_y, 0);
+						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					case 3:
+						al_draw_bitmap(bron4, Player_x - 32, Player_y, 0);
+						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					case 1:
+						al_draw_bitmap(bron4, Player_x, Player_y - 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					case 2:
+						al_draw_bitmap(bron4, Player_x, Player_y + 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					}
+
+
+					if (key[KEY_RIGHT])
+					{
+						al_draw_bitmap(bron4, Player_x + 32, Player_y, 0);
+						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy3_x && Player_x + 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy4_x && Player_x + 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy5_x && Player_x + 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+					if (key[KEY_LEFT])
+					{
+						al_draw_bitmap(bron4, Player_x - 32, Player_y, 0);
+						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy3_x && Player_x - 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy4_x && Player_x - 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy5_x && Player_x - 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+					if (key[KEY_UP])
+					{
+						al_draw_bitmap(bron4, Player_x, Player_y - 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y - 32 >= Enemy3_y && Player_y - 32 <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y - 32 >= Enemy4_y && Player_y - 32 <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y - 32 >= Enemy5_y && Player_y - 32 <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+					if (key[KEY_DOWN])
+					{
+						al_draw_bitmap(bron4, Player_x, Player_y + 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y + 32 >= Enemy3_y && Player_y + 32 <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y + 32 >= Enemy4_y && Player_y + 32 <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y + 32 >= Enemy5_y && Player_y + 32 <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+				}
+
+
+				if (lastweapon == 5)
+				{
+
+					switch (lastKey)
+					{
+					case 4:
+						al_draw_bitmap(bron5, Player_x + 32, Player_y, 0);
+						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					case 3:
+						al_draw_bitmap(bron5, Player_x - 32, Player_y, 0);
+						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					case 1:
+						al_draw_bitmap(bron5, Player_x, Player_y - 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					case 2:
+						al_draw_bitmap(bron5, Player_x, Player_y + 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						break;
+					}
+
+
+					if (key[KEY_RIGHT])
+					{
+						al_draw_bitmap(bron5, Player_x + 32, Player_y, 0);
+						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy3_x && Player_x + 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy4_x && Player_x + 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x + 32 >= Enemy5_x && Player_x + 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+					if (key[KEY_LEFT])
+					{
+						al_draw_bitmap(bron5, Player_x - 32, Player_y, 0);
+						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy3_x && Player_x - 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy4_x && Player_x - 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x - 32 >= Enemy5_x && Player_x - 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+					if (key[KEY_UP])
+					{
+						al_draw_bitmap(bron5, Player_x, Player_y - 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y - 32 >= Enemy3_y && Player_y - 32 <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y - 32 >= Enemy4_y && Player_y - 32 <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y - 32 >= Enemy5_y && Player_y - 32 <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+					if (key[KEY_DOWN])
+					{
+						al_draw_bitmap(bron5, Player_x, Player_y + 32, 0);
+						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
+						{
+							cout << "Enemy killed!";
+							enemyDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
+						{
+							cout << "Enemy2 killed!";
+							enemyDead2 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
+						{
+							cout << "Boss killed!";
+							bossDead = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y + 32 >= Enemy3_y && Player_y + 32 <= Enemy3_y + 32))
+						{
+							cout << "Enemy3 killed!";
+							enemyDead3 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y + 32 >= Enemy4_y && Player_y + 32 <= Enemy4_y + 32))
+						{
+							cout << "Enemy4 killed!";
+							enemyDead4 = 1;
+							playerMoney += 30;
+						}
+						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y + 32 >= Enemy5_y && Player_y + 32 <= Enemy5_y + 32))
+						{
+							cout << "Enemy5 killed!";
+							enemyDead5 = 1;
+							playerMoney += 30;
+						}
+					}
+				}
+
 			}
 
 			/*cout << "Player_x: " << Player_x << endl;
@@ -1364,7 +2520,23 @@ int Enemies()
 							//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 80 - camera_y, ALLEGRO_ALIGN_CENTER, "You entered Shop!");
 					if (gracznasklepie)
 					{
-						LogikaSklepu(event_queue, font, sklep_strzalka, bonus3, bonus2, bonus1, bron1, ptr_playerMoney,ptr_playerHealth,ptr_dodatekpredkosci,ptr_kupionabron);
+						LogikaSklepu(event_queue, font, sklep_strzalka, bonus3, bonus1, bron3, bron4, ptr_playerMoney,ptr_playerHealth,ptr_dodatekpredkosci,ptr_kupionabron);
+
+						switch (kupionabron)
+						{
+						case 1:
+							bronEffect3 = 1;
+							break;
+						case 2:
+							bronEffect4 = 1;
+							break;
+						case 3:
+							bronEffect3 = 1;
+							bronEffect4 = 1;
+							break;
+						default:
+							break;
+						}
 					}
 					break;
 					}
@@ -1477,6 +2649,7 @@ int Enemies()
 		if ((Player_x >= bonus3_x && Player_x <= bonus3_x + 16) && (Player_y >= bonus3_y && Player_y <= bonus3_y + 16))
 		{
 			bonusEffect3 = 1;
+			playerHealth++;
 			cout << "Bonus3 was picked up!";
 			bonus3_x = -10000;
 			bonus3_y = -10000;
@@ -1485,6 +2658,7 @@ int Enemies()
 		if ((Player_x >= bonus4_x && Player_x <= bonus4_x + 16) && (Player_y >= bonus4_y && Player_y <= bonus4_y + 16))
 		{
 			bonusEffect4 = 1;
+			playerHealth += 2;
 			cout << "Bonus4 was picked up!";
 			bonus4_x = -10000;
 			bonus4_y = -10000;
@@ -1493,6 +2667,7 @@ int Enemies()
 		if ((Player_x >= bonus5_x && Player_x <= bonus5_x + 16) && (Player_y >= bonus5_y && Player_y <= bonus5_y + 16))
 		{
 			bonusEffect5 = 1;
+			playerMoney += 60;
 			cout << "Bonus5 was picked up!";
 			bonus5_x = -10000;
 			bonus5_y = -10000;
@@ -1601,21 +2776,162 @@ int Enemies()
 			Enemy2_y = -10000;
 		}
 
-		//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
-
-		//if ((Player_x >= 3520 && Player_x <= 3520 + 64) && (Player_y >= 3616 && Player_y <= 3616 + 64))
+		if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 16) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 16))
 		{
-			//al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "to enter shop press B");
-			/*if (ALLEGRO_KEY_B)
+			enemyEffect = 1;
+			if (bonusEffect2 == 1)
 			{
-				bool exit = 0;
-				do 
+				cout << "Player has killed enemy3 with bonus.";
+				enemyDead = 1;
+				playerMoney += 10;
+			}
+			else
+			{
+				if (playerHealth >= 1)
 				{
-					LogikaSklepu();
-				} while (!exit);
-			}*/
+					cout << "Enemy3 hit Player!";
+					playerHealth--;
+				}
+				else
+				{
+					cout << "Enemy3 killed Player!";
+
+					al_destroy_display(displayEn);
+					wyjscie = main();
+					return 0;
+				}
+			}
+			Enemy3_x = -10000;
+			Enemy3_y = -10000;
 		}
 
+		if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 16) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 16))
+		{
+			enemyEffect = 1;
+			if (bonusEffect2 == 1)
+			{
+				cout << "Player has killed enemy3 with bonus.";
+				enemyDead = 1;
+				playerMoney += 10;
+			}
+			else
+			{
+				if (playerHealth >= 1)
+				{
+					cout << "Enemy3 hit Player!";
+					playerHealth--;
+				}
+				else
+				{
+					cout << "Enemy3 killed Player!";
+
+					al_destroy_display(displayEn);
+					wyjscie = main();
+					return 0;
+				}
+			}
+			Enemy4_x = -10000;
+			Enemy4_y = -10000;
+		}
+
+		if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 16) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 16))
+		{
+			enemyEffect = 1;
+			if (bonusEffect2 == 1)
+			{
+				cout << "Player has killed enemy3 with bonus.";
+				enemyDead = 1;
+				playerMoney += 10;
+			}
+			else
+			{
+				if (playerHealth >= 1)
+				{
+					cout << "Enemy3 hit Player!";
+					playerHealth--;
+				}
+				else
+				{
+					cout << "Enemy3 killed Player!";
+
+					al_destroy_display(displayEn);
+					wyjscie = main();
+					return 0;
+				}
+			}
+			Enemy5_x = -10000;
+			Enemy5_y = -10000;
+		}
+
+		if ((Player_x >= Boss_x && Player_x + 16 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y + 16 <= Boss_y + 16))
+		{
+			enemyEffect2 = 1;
+			if (bonusEffect2 == 1)
+			{
+				cout << "Player has killed Boss with bonus.";
+				bossDead = 1;
+				playerMoney += 10;
+			}
+			else
+			{
+				if (playerHealth >= 1)
+				{
+					cout << "Boss hit Player!";
+					playerHealth--;
+				}
+				else
+				{
+					cout << "Boss killed Player!";
+
+					al_destroy_display(displayEn);
+					wyjscie = main();
+					return 0;
+				}
+			}
+			Boss_x = -10000;
+			Boss_y = -10000;
+		}
+
+		if (enemyDead == 0)
+		{
+			ruchPionowyPrzeciwnika(ptr_Enemy1_x, ptr_Enemy1_y, tabEn, ptr_kierunek1);
+		}
+		
+		if (enemyDead2 == 0)
+		{
+			ruchPoziomyPrzeciwnika(ptr_Enemy2_x, ptr_Enemy2_y, tabEn, ptr_kierunek2);
+		}
+
+		if (enemyDead3 == 0)
+		{
+			ruchPionowyPrzeciwnika(ptr_Enemy3_x, ptr_Enemy3_y, tabEn, ptr_kierunek3);
+		}
+
+		if (enemyDead4 == 0)
+		{
+			ruchPoziomyPrzeciwnika(ptr_Enemy4_x, ptr_Enemy4_y, tabEn, ptr_kierunek4);
+		}
+
+		if (enemyDead5 == 0)
+		{
+			ruchPoziomyPrzeciwnika(ptr_Enemy5_x, ptr_Enemy5_y, tabEn, ptr_kierunek5);
+		}
+
+		if (bossDead == 0)
+		{
+			if (bosstimer >= 120)
+			{
+				if (czasowspomagacz == 0)
+				{
+					czasowspomagacz = 1;
+				}
+				else czasowspomagacz = 0;
+
+				bosstimer = 0;
+			}
+			BOSS(ptr_Boss_x, ptr_Boss_y, tabEn, ptr_bosskierunek, ptr_czasowspomagacz);
+			bosstimer++;
+		}
 
 		/*
 		for (int i = 0; i < 20; i++)
@@ -1716,6 +3032,76 @@ int Enemies()
 				Enemy2_y = -10000;
 			}
 
+			if (enemyDead3 == 0)
+			{
+				al_draw_bitmap(Enemy3, Enemy3_x, Enemy3_y, 0);
+			}
+			else
+			{
+				Enemy3_x = -10000;
+				Enemy3_y = -10000;
+			}
+
+			if (enemyDead4 == 0)
+			{
+				al_draw_bitmap(Enemy4, Enemy4_x, Enemy4_y, 0);
+			}
+			else
+			{
+				Enemy4_x = -10000;
+				Enemy4_y = -10000;
+			}
+
+			if (enemyDead5 == 0)
+			{
+				al_draw_bitmap(Enemy5, Enemy5_x, Enemy5_y, 0);
+			}
+			else
+			{
+				Enemy5_x = -10000;
+				Enemy5_y = -10000;
+			}
+
+			if (bossDead == 0)
+			{
+				al_draw_bitmap(Boss, Boss_x, Boss_y, 0);
+			}
+			else
+			{
+				wygrana++;
+				al_draw_text(font, al_map_rgb(135, 206, 50), 320 - camera_x, 180 - camera_y, ALLEGRO_ALIGN_CENTER, "You Have Defeated Boss of this Biome!!!");
+				cout << aktualnybiom << endl;
+				Boss_x = -10000;
+				Boss_y = -10000;
+				if (wygrana >= 320)
+				{
+					
+					
+
+					if (aktualnybiom>=3)
+					{
+						ofstream plik("Save.txt");
+
+						plik << 0;
+
+						plik.close();
+						doexit = true;
+						wartosctestowawyjscia = true;
+					}
+					else
+					{
+
+						ofstream plik("Save.txt");
+
+						plik << aktualnybiom + 1;
+
+						plik.close();
+
+						test = Enemies();
+					}
+				}
+			}
+
 			if (bonusEffect3 == 0)
 			{
 				al_draw_bitmap(bonus3, bonus3_x, bonus3_y, 0);
@@ -1750,6 +3136,11 @@ int Enemies()
 
 
 
+	}
+
+	if (wartosctestowawyjscia = true)
+	{
+		return 0;
 	}
 
 	al_destroy_bitmap(Player);

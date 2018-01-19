@@ -2,6 +2,7 @@
 #include "Random_Font.hpp"
 //#include "kolkokwadrat.cpp"
 //#include <Edytor.cpp>
+#include <fstream>
 
 using namespace std;
 
@@ -54,7 +55,7 @@ int main()
 
 		al_draw_text(font, Zielony, 400, 100, ALLEGRO_ALIGN_CENTER, "Nowa Gra");
 		al_draw_text(font, Zielony, 400, 150, ALLEGRO_ALIGN_CENTER, "Wczytaj Gre");
-		al_draw_text(font, Zielony, 400, 200, ALLEGRO_ALIGN_CENTER, "Opcje");
+		al_draw_text(font, Zielony, 400, 200, ALLEGRO_ALIGN_CENTER, "Edytor");
 		al_draw_text(font, Zielony, 400, 250, ALLEGRO_ALIGN_CENTER, "Wyjscie");
 
 		al_flip_display();
@@ -84,7 +85,12 @@ int main()
 				{
 					cout << "Left mouse has been clicked on start" << endl;
 					al_destroy_display(display);
-					test = kolkokwadrat();
+					ofstream plik("Save.txt");
+
+					plik << 0;
+
+					plik.close();
+					test = Enemies();
 					return 0;													//---------->Teraz dobrze wychodzi, dzieki tej malutkiej prosciutkiej linijce<----------
 					//display = al_create_display(800, 600);
 				}
