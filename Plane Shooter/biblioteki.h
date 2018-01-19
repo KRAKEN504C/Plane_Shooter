@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
-#include <stdio.h>
+#include <fstream>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>

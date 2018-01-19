@@ -39,7 +39,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <Windows.h>
 
 
 using namespace std;
@@ -360,48 +359,48 @@ void generatorPoziomu()
 	}
 
 	test.close();
-	//wygl¹da na to, ¿e wszystko dobrze siê zapisuje do tabPrzejsciowy.
+	//wyglï¿½da na to, ï¿½e wszystko dobrze siï¿½ zapisuje do tabPrzejsciowy.
 
 
 
 	/*
 	Jak ogarnac generowanie poziomu?
-	3 rodzaje blokow podanych w tablicy 
+	3 rodzaje blokow podanych w tablicy
 
-	1-œciana
+	1-ï¿½ciana
 	2-droga
 	3-drzwi
 
-	poziom powinien sie sk³adaæ z po³¹czeñ miêdzy drzwiami we wszystkich mapach (³¹cznie mo¿e ich byæ maksymalnie oko³o 16)
-	poziom (wed³ug specyfikacji) generuje siê tak:
-	
-	1.Losuje sektor startowy(oraz liczbe Y z przedzia³u od 3 do 8 oraz A z przedzia³u od 9 do 16). (inicjalizacja X i A)
-	2.Losuje mape, i ³¹cze j¹ z poprzednio wybran¹ map¹.(3-drzwi w tym momencie zamieniaja sie w 2-droge miêdzy jedn¹ a drug¹ map¹.) X zwiêkszam o 1 (X startowo wynosi 0). Je¿eli x >= y powtórz.
-	3.Wylosowanie sklepu i po³¹czenie go z jak¹œ map¹.
-	4.To samo co w punkcie 2 tylko ¿e tym razem z pêtl¹ dla X >= A.
-	5.Wylosowanie areny Bossa pasuj¹cego do aktualnego biomu.
-	6.Wygenerowanie iluzorycznych œcian, przeciwników oraz gracza.
+	poziom powinien sie skï¿½adaï¿½ z poï¿½ï¿½czeï¿½ miï¿½dzy drzwiami we wszystkich mapach (ï¿½ï¿½cznie moï¿½e ich byï¿½ maksymalnie okoï¿½o 16)
+	poziom (wedï¿½ug specyfikacji) generuje siï¿½ tak:
 
-	Teraz tylko zamieniæ to w kod.
+	1.Losuje sektor startowy(oraz liczbe Y z przedziaï¿½u od 3 do 8 oraz A z przedziaï¿½u od 9 do 16). (inicjalizacja X i A)
+	2.Losuje mape, i ï¿½ï¿½cze jï¿½ z poprzednio wybranï¿½ mapï¿½.(3-drzwi w tym momencie zamieniaja sie w 2-droge miï¿½dzy jednï¿½ a drugï¿½ mapï¿½.) X zwiï¿½kszam o 1 (X startowo wynosi 0). Jeï¿½eli x >= y powtï¿½rz.
+	3.Wylosowanie sklepu i poï¿½ï¿½czenie go z jakï¿½ï¿½ mapï¿½.
+	4.To samo co w punkcie 2 tylko ï¿½e tym razem z pï¿½tlï¿½ dla X >= A.
+	5.Wylosowanie areny Bossa pasujï¿½cego do aktualnego biomu.
+	6.Wygenerowanie iluzorycznych ï¿½cian, przeciwnikï¿½w oraz gracza.
 
-	To wszystko bêdzie proste jak tylko znajdê prosty sposób na po³¹czenie jednej mapy z drug¹.
+	Teraz tylko zamieniï¿½ to w kod.
+
+	To wszystko bï¿½dzie proste jak tylko znajdï¿½ prosty sposï¿½b na poï¿½ï¿½czenie jednej mapy z drugï¿½.
 
 	hmmm...
-	mapa œwiata domyœlnie ma rozmiar tablicy 200x200. Sektor startowy umieœæmy gdzieœ w œrodku. Powiedzmy 100x100. (5x7 na minimapie)
+	mapa ï¿½wiata domyï¿½lnie ma rozmiar tablicy 200x200. Sektor startowy umieï¿½ï¿½my gdzieï¿½ w ï¿½rodku. Powiedzmy 100x100. (5x7 na minimapie)
 	teraz niech bedzie losowanie od 0 do 3.
-	w zale¿noœci od liczby jaka wypad³a nastepny sektor bêdzie ustawiany nad/pod/za/przed poprzednim sektorem.
-	maksymalna iloœæ sektorów jaka mo¿na ustaliæ wynosi 10x13. stworzymy mini-mape o rozmiarze 10x13. 0 oznacza dostepne miejsce, a 1 zajete.
+	w zaleï¿½noï¿½ci od liczby jaka wypadï¿½a nastepny sektor bï¿½dzie ustawiany nad/pod/za/przed poprzednim sektorem.
+	maksymalna iloï¿½ï¿½ sektorï¿½w jaka moï¿½na ustaliï¿½ wynosi 10x13. stworzymy mini-mape o rozmiarze 10x13. 0 oznacza dostepne miejsce, a 1 zajete.
 
-	sektory bêd¹ stawiane z przerwa od siebie 10 kratek (10 x 32 px = 10 dowolnych bloków tworz¹cych mape.)
-	w tej 10 blokowej przerwie bêdzie teraz generowany korytarz.
-	Jak wygenerowaæ korytarz?
+	sektory bï¿½dï¿½ stawiane z przerwa od siebie 10 kratek (10 x 32 px = 10 dowolnych blokï¿½w tworzï¿½cych mape.)
+	w tej 10 blokowej przerwie bï¿½dzie teraz generowany korytarz.
+	Jak wygenerowaï¿½ korytarz?
 
 	hmm...
-	weŸmy pozycje drzwi do sektora A oraz drzwi do sektora B. je¿eli odleg³oœæ wzglêdem osi x jest wiêksza od odleg³oœci wzglêdem osi y to oznacza, ¿e ³¹czym sektory pionowo (jeden nad/pod drugim).
-	w takim wypadku generujem poziomo droge miedzy punktem A i B w przerwie pomiêdzy tymi sektorami (gdzieœ w œrodku.) a potem ³¹czym oba sektory t¹ drog¹ za pomoc¹ pionowych œcie¿ek prowadz¹cych od jednych drzwi do drogi, i z drogi do drugich drzwi.
-	podobnie w przypadku kiedy odleg³oœæ wzglêdem osi y jest wiêksza od odleg³oœci wzglêdem osi x, tylko ¿e droge generujem pionowo, i ³¹czymy j¹ poziomymi œcie¿kami.
+	weï¿½my pozycje drzwi do sektora A oraz drzwi do sektora B. jeï¿½eli odlegï¿½oï¿½ï¿½ wzglï¿½dem osi x jest wiï¿½ksza od odlegï¿½oï¿½ci wzglï¿½dem osi y to oznacza, ï¿½e ï¿½ï¿½czym sektory pionowo (jeden nad/pod drugim).
+	w takim wypadku generujem poziomo droge miedzy punktem A i B w przerwie pomiï¿½dzy tymi sektorami (gdzieï¿½ w ï¿½rodku.) a potem ï¿½ï¿½czym oba sektory tï¿½ drogï¿½ za pomocï¿½ pionowych ï¿½cieï¿½ek prowadzï¿½cych od jednych drzwi do drogi, i z drogi do drugich drzwi.
+	podobnie w przypadku kiedy odlegï¿½oï¿½ï¿½ wzglï¿½dem osi y jest wiï¿½ksza od odlegï¿½oï¿½ci wzglï¿½dem osi x, tylko ï¿½e droge generujem pionowo, i ï¿½ï¿½czymy jï¿½ poziomymi ï¿½cieï¿½kami.
 
-	teraz zamieniæ to w kod.
+	teraz zamieniï¿½ to w kod.
 	*/
 
 	int X = 0;
@@ -413,7 +412,7 @@ void generatorPoziomu()
 
 	// sektor startowy minimap = 5x7
 
-	//narysowanie sektoru startowego na g³ównej mapie.    Coœ tu nie dzia³a     EDIT: juz jest ok.
+	//narysowanie sektoru startowego na gï¿½ï¿½wnej mapie.    Coï¿½ tu nie dziaï¿½a     EDIT: juz jest ok.
 	for (int i = 0; i < 20; i++)
 	{
 		for (int j = 0; j < 15; j++)
@@ -424,11 +423,11 @@ void generatorPoziomu()
 
 	tabMiniMap[miniMap_x][miniMap_y] = 1; // x=5  y=7
 
-	//wyrzucenie wszystkiego do pliku, i sprawdzenie jak dzia³a.
-	
+	//wyrzucenie wszystkiego do pliku, i sprawdzenie jak dziaï¿½a.
 
 
-	//wszystko na razie dzia³a!
+
+	//wszystko na razie dziaï¿½a!
 
 	{
 		/*miniMap_x++;
@@ -531,7 +530,7 @@ void generatorPoziomu()
 
 	{
 		/*miniMap_x++;
-		realMap_x = miniMap_x * 20; 
+		realMap_x = miniMap_x * 20;
 		realMap_y = miniMap_y * 15;*/
 
 		PolozenieNowegoSektora(ptr_miniMap_x, ptr_miniMap_y, tabMiniMap, ptr_realMap_x, ptr_realMap_y/*, ptr_przerwax, ptr_przerway*/);
