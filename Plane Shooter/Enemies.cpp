@@ -95,7 +95,7 @@ int MapaKolizji(int tabEn[200][210], int Player_x, int Player_y, int kierunek)
 						}
 						else
 						{
-							//cout << "kolizja prawej sciany" << endl; 
+							//cout << "kolizja prawej sciany" << endl;
 							if (tabEn[i][j] == 1)
 							{
 								return 1;
@@ -207,8 +207,8 @@ void LogikaSklepu(ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_FONT *font, ALLEGRO_
 	int standard_x = 60 - camera_x;
 	int strzalka_x = standard_x;
 	int	strzalka_y = 280 - camera_y;
-	
-	
+
+
 	//cout << "entered function logikasklepu" << endl;
 	while (!exit)
 	{
@@ -378,7 +378,7 @@ void SpawnerWszystkiego(int tabMiMa[10][13], int tabEn[200][210],int tabPrzedmio
 				tabminiPrzedmioty[losowaminimap_x][losowaminimap_y] = 1;
 			}
 		}
-	} 
+	}
 
 	if (*ostatnipokujspawnu_x == losowaminimap_x && *ostatnipokujspawnu_y == losowaminimap_y)
 	{
@@ -420,7 +420,7 @@ void SpawnerWszystkiego(int tabMiMa[10][13], int tabEn[200][210],int tabPrzedmio
 		{
 			petla = 1;
 		}
-	} 
+	}
 
 	tabPrzedmioty[losowaniewolnegomiejsca_x][losowaniewolnegomiejsca_y] = 1;
 
@@ -553,7 +553,7 @@ void BOSS(int *Enemy_x, int *Enemy_y, int tabEn[200][210], int *kierunek, int *c
 	{
 		ruchPoziomyPrzeciwnika(Enemy_x, Enemy_y, tabEn, kierunek);
 	}
-	
+
 }
 
 void WeaponHandler()
@@ -769,6 +769,7 @@ int Enemies()
 	SpawnerBossa(tabEn, ptr_Boss_x, ptr_Boss_y);
 
 
+    //Remember about case-sensitivity!
 	ALLEGRO_BITMAP *obrazek1 = loader("bitmapy/sciana_Placeholder.png");
 	ALLEGRO_BITMAP *obrazek2 = loader("bitmapy/Droga_Placeholder.png");
 	ALLEGRO_BITMAP *obrazek3 = loader("bitmapy/Drzwi_Placeholder.png");
@@ -857,7 +858,7 @@ int Enemies()
 	}
 
 
-	
+
 
 
 	int test = 0;
@@ -923,8 +924,8 @@ int Enemies()
 	}
 
 	/*
-	
-	4-GÓRA
+
+	4-Gï¿½RA
 	3-DÓ£
 	1-LEWO
 	2-PRAWO
@@ -933,7 +934,7 @@ int Enemies()
 
 
 
-	
+
 
 
 
@@ -958,7 +959,7 @@ int Enemies()
 
 		int sprawdztablica_x, sprawdztablica_y;
 
-		//al_clear_to_color(al_map_rgb(50, 206, 250)); // ---------- W zale¿noœci od biomu bêdzie inne t³o. ---------- 
+		//al_clear_to_color(al_map_rgb(50, 206, 250)); // ---------- W zaleï¿½noï¿½ci od biomu bï¿½dzie inne tï¿½o. ----------
 		al_clear_to_color(AktualnyKolor);
 
 
@@ -1036,7 +1037,7 @@ int Enemies()
 				//al_draw_bitmap(, wsp_i, wsp_j);
 				//al_draw_bitmap(, wsp_i, wsp_j);
 				PlayerMiniMapPosition(Player_x, Player_y, miniMap_Player);
-				
+
 			}
 		}
 
@@ -1057,7 +1058,7 @@ int Enemies()
 		//cout << Enemy1_x << endl << Enemy1_y << endl;
 
 
-		// --------------------------------------------------------------------------------- Trzeba poprawiæ warunki kolizji !!! ---------------------------------------------------------------------------------
+		// --------------------------------------------------------------------------------- Trzeba poprawiï¿½ warunki kolizji !!! ---------------------------------------------------------------------------------
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
 			if (key[KEY_UP] /*&& Player_y >= 4.0*/) {
 				//cout << "Up key was pressed" << endl;
@@ -1116,7 +1117,7 @@ int Enemies()
 					predkoscruchu = 2.5 + dodatekpredkosci;
 				}
 
-				
+
 						//Player_y += 8.0;
 						for (int i = predkoscruchu; i >= 0; i--)
 						{
@@ -1178,7 +1179,7 @@ int Enemies()
 					}
 				}/*
 				else
-				{ 
+				{
 					Player_x += 10.0;
 				}*/
 			}
@@ -1221,7 +1222,7 @@ int Enemies()
 				{
 					Player_x -= 10.0;
 				}*/
-				
+
 			}
 
 			if (key[KEY_SPACE]) {
@@ -2548,7 +2549,7 @@ int Enemies()
 					}
 					break;
 					}
-				
+
 				case ALLEGRO_KEY_1:
 				{
 
@@ -2601,7 +2602,7 @@ int Enemies()
 
 			}
 
-			
+
 
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
@@ -2904,7 +2905,7 @@ int Enemies()
 		{
 			ruchPionowyPrzeciwnika(ptr_Enemy1_x, ptr_Enemy1_y, tabEn, ptr_kierunek1);
 		}
-		
+
 		if (enemyDead2 == 0)
 		{
 			ruchPoziomyPrzeciwnika(ptr_Enemy2_x, ptr_Enemy2_y, tabEn, ptr_kierunek2);
@@ -2965,7 +2966,7 @@ int Enemies()
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			redraw = false;
 
-		
+
 			camera_x = -(Player_x - SCREEN_W / 2);
 			camera_y = -(Player_y - SCREEN_H / 2);
 
@@ -2980,7 +2981,7 @@ int Enemies()
 			/*{
 				al_draw_bitmap(serce, 60-camera_x, 10-camera_y, 0);
 				al_draw_textf(font, al_map_rgb(135, 206, 50), 110-camera_x, 10-camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerHealth);
-				
+
 				al_draw_bitmap(moneta, 160 - camera_x, 10 - camera_y, 0);
 				al_draw_textf(font, al_map_rgb(135, 206, 50), 220 - camera_x, 10 - camera_y, ALLEGRO_ALIGN_CENTER, "x %i", playerMoney);
 			}*/
@@ -3014,7 +3015,7 @@ int Enemies()
 			{
 				al_draw_bitmap(bonus1, bonus1_x, bonus1_y, 0);
 			}
-			
+
 			if (bonusEffect2 == 0)
 			{
 				al_draw_bitmap(bonus2, bonus2_x, bonus2_y, 0);
@@ -3083,8 +3084,8 @@ int Enemies()
 				Boss_y = -10000;
 				if (wygrana >= 320)
 				{
-					
-					
+
+
 
 					if (aktualnybiom>=3)
 					{
