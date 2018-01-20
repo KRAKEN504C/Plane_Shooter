@@ -971,9 +971,9 @@ int Enemies()
 		optymalizacja_x -= 10;
 		optymalizacja_y -= 8;
 
-		for (int i = optymalizacja_x; i < optymalizacja_x+25; i++)
+		for (int i = optymalizacja_x; i < optymalizacja_x+21; i++)
 		{
-			for (int j = optymalizacja_y; j < optymalizacja_y+20; j++)
+			for (int j = optymalizacja_y; j < optymalizacja_y+16; j++)
 			{
 				if (tabEn[i][j] != 0)
 				{
@@ -3096,6 +3096,15 @@ int Enemies()
 						plik.close();
 						doexit = true;
 						wartosctestowawyjscia = true;
+
+						al_destroy_bitmap(Player);
+						al_destroy_timer(timerEn);
+						al_destroy_display(displayEn);
+						al_destroy_event_queue(event_queue);
+						test = main();
+
+						return 0;
+
 					}
 					else
 					{
@@ -3107,6 +3116,11 @@ int Enemies()
 						plik.close();
 
 						generatorPoziomu();
+
+						al_destroy_bitmap(Player);
+						al_destroy_timer(timerEn);
+						al_destroy_display(displayEn);
+						al_destroy_event_queue(event_queue);
 
 						test = Enemies();
 					}
