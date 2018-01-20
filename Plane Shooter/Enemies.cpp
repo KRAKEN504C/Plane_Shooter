@@ -968,12 +968,12 @@ int Enemies()
 		//rysuj tylko widoczna czesc mapy.
 		int optymalizacja_x = Player_x / 32;
 		int optymalizacja_y = Player_y / 32;
-		optymalizacja_x -= 10;
-		optymalizacja_y -= 8;
+		optymalizacja_x -= 1;
+		optymalizacja_y -= 1;
 
-		for (int i = optymalizacja_x; i < optymalizacja_x+21; i++)
+		for (int i = optymalizacja_x; i < optymalizacja_x+4; i++)
 		{
-			for (int j = optymalizacja_y; j < optymalizacja_y+16; j++)
+			for (int j = optymalizacja_y; j < optymalizacja_y+4; j++)
 			{
 				if (tabEn[i][j] != 0)
 				{
