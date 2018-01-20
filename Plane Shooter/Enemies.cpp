@@ -556,9 +556,103 @@ void BOSS(int *Enemy_x, int *Enemy_y, int tabEn[200][210], int *kierunek, int *c
 
 }
 
-void WeaponHandler()
+void EnemyHandler()
 {
 
+}
+
+int WeaponHandler(int lastweapon, int lastKey, int Player_x, int Player_y, int Enemy_x, int Enemy_y,int *playerMoney, ALLEGRO_BITMAP *bron1)
+{
+	bool dead = 0;
+
+	if (lastweapon == 1)
+	{
+
+		switch (lastKey)
+		{
+		case 4:
+			al_draw_bitmap(bron1, Player_x + 16, Player_y, 0);
+			al_draw_filled_rectangle(Player_x + 16, Player_y + 16, Player_x, Player_y, al_map_rgb(255, 255, 255));
+			if ((Player_x + 16 >= Enemy_x && Player_x + 16 <= Enemy_x + 16) || (Player_y >= Enemy_y && Player_y <= Enemy_y + 16))
+			{
+				dead = 1;
+			}
+			break;
+		case 3:
+			al_draw_bitmap(bron1, Player_x - 16, Player_y, 0);
+			al_draw_filled_rectangle(Player_x - 16, Player_y - 16, Player_x, Player_y, al_map_rgb(255, 255, 255));
+			if ((Player_x - 16 >= Enemy_x && Player_x - 16 <= Enemy_x + 16) || (Player_y >= Enemy_y && Player_y <= Enemy_y + 16))
+			{
+				dead = 1;
+			}
+			break;
+		case 1:
+			al_draw_bitmap(bron1, Player_x, Player_y - 16, 0);
+			al_draw_filled_rectangle(Player_x - 16 , Player_y - 16, Player_x, Player_y, al_map_rgb(255, 255, 255));
+			if ((Player_x >= Enemy_x && Player_x <= Enemy_x + 16) || (Player_y - 16 >= Enemy_y && Player_y - 16 <= Enemy_y + 16))
+			{
+				dead = 1;
+			}
+			break;
+		case 2:
+			al_draw_bitmap(bron1, Player_x, Player_y + 16, 0);
+			al_draw_filled_rectangle(Player_x + 16, Player_y + 16, Player_x, Player_y, al_map_rgb(255, 255, 255));
+			if ((Player_x >= Enemy_x && Player_x <= Enemy_x + 16) || (Player_y + 16 >= Enemy_y && Player_y + 16 <= Enemy_y + 16))
+			{
+				dead = 1;
+			}
+			break;
+		}
+
+		if (dead == 1)
+		{
+			*playerMoney += 30;
+			return 1;
+		}
+	}
+	if (lastweapon == 2 || lastweapon == 3 || lastweapon == 4 || lastweapon == 5)
+	{
+		switch (lastKey)
+		{
+		case 4:
+			al_draw_filled_rectangle(Player_x + 32, Player_y + 32, Player_x, Player_y, al_map_rgb(255, 255, 255));
+			if ((Player_x >= Enemy_x || Player_x + 32 <= Enemy_x + 32) || (Player_y >= Enemy_y || Player_y + 32 <= Enemy_y + 32))
+			{
+				
+			}
+			else dead = 1;
+			break;
+		case 3:
+			al_draw_filled_rectangle(Player_x - 32, Player_y - 32, Player_x, Player_y, al_map_rgb(255, 255, 255));
+			if ((Player_x >= Enemy_x || Player_x - 32 <= Enemy_x - 32) || (Player_y >= Enemy_y || Player_y - 32 <= Enemy_y - 32))
+			{
+				
+			}
+			else dead = 1;
+			break;
+		case 1:
+			al_draw_filled_rectangle(Player_x - 32, Player_y - 32, Player_x, Player_y, al_map_rgb(255, 255, 255));
+			if ((Player_x >= Enemy_x || Player_x - 32 <= Enemy_x - 32) || (Player_y >= Enemy_y || Player_y - 32 <= Enemy_y - 32))
+			{
+				
+			}
+			else dead = 1;
+			break;
+		case 2:
+			al_draw_filled_rectangle(Player_x + 32, Player_y + 32, Player_x, Player_y, al_map_rgb(255, 255, 255));
+			if ((Player_x >= Enemy_x || Player_x + 32 <= Enemy_x + 32) || (Player_y >= Enemy_y || Player_y + 32 <= Enemy_y + 32))
+			{
+				
+			}else dead = 1;
+			break;
+		}
+
+		if (dead == 1)
+		{
+			*playerMoney += 30;
+			return 1;
+		}
+	}else return 0;
 }
 
 int Enemies()
@@ -968,12 +1062,12 @@ int Enemies()
 		//rysuj tylko widoczna czesc mapy.
 		int optymalizacja_x = Player_x / 32;
 		int optymalizacja_y = Player_y / 32;
-		optymalizacja_x -= 1;
-		optymalizacja_y -= 1;
+		optymalizacja_x -= 10;
+		optymalizacja_y -= 8;
 
-		for (int i = optymalizacja_x; i < optymalizacja_x+4; i++)
+		for (int i = optymalizacja_x; i < optymalizacja_x+25; i++)
 		{
-			for (int j = optymalizacja_y; j < optymalizacja_y+4; j++)
+			for (int j = optymalizacja_y; j < optymalizacja_y+20; j++)
 			{
 				if (tabEn[i][j] != 0)
 				{
@@ -1227,1234 +1321,92 @@ int Enemies()
 
 			if (key[KEY_SPACE]) {
 				// ---------------------------------------- TRZEBA POSPRZATAC, I WRZUCIC TO DO OSOBNEJ FUNKCJI, BO SZLAK JASNY TRAFI, KREW NAGLA ZALEJE KAZDEGO PRZEGLADAJACEGO TEN KOD ----------------------------------------
-				if (lastweapon == 1)
+
+				int kolizja = 0;
+				int do_y = 0;
+				int do_x = 0;
+
+				if (key[KEY_RIGHT])
 				{
-
-					switch (lastKey)
-					{
-					case 4:
-						al_draw_bitmap(bron1, Player_x + 16, Player_y, 0);
-						if ((Player_x + 16 >= Enemy1_x && Player_x + 16 <= Enemy1_x + 16) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 16 >= Enemy2_x && Player_x + 16 <= Enemy2_x + 16) || (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 16 >= Boss_x && Player_x + 16 <= Boss_x + 16) && (Player_y >= Boss_y && Player_y <= Boss_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 3:
-						al_draw_bitmap(bron1, Player_x - 16, Player_y, 0);
-						if ((Player_x - 16 >= Enemy1_x && Player_x - 16 <= Enemy1_x + 16) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 16 >= Enemy2_x && Player_x - 16 <= Enemy2_x + 16) || (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 16 >= Boss_x && Player_x - 16 <= Boss_x + 16) && (Player_y >= Boss_y && Player_y <= Boss_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 1:
-						al_draw_bitmap(bron1, Player_x, Player_y - 16, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 16) || (Player_y - 16 >= Enemy1_y && Player_y - 16 <= Enemy1_y + 16))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 16) || (Player_y - 16 >= Enemy2_y && Player_y - 16 <= Enemy2_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 16) && (Player_y - 16 >= Boss_y && Player_y - 16 <= Boss_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 2:
-						al_draw_bitmap(bron1, Player_x, Player_y + 16, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 16) || (Player_y + 16 >= Enemy1_y && Player_y + 16 <= Enemy1_y + 16))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 16) || (Player_y + 16 >= Enemy2_y && Player_y + 16 <= Enemy2_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 16) && (Player_y + 16 >= Boss_y && Player_y + 16 <= Boss_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					}
-
-
-					if (key[KEY_RIGHT])
-					{
-						al_draw_bitmap(bron1, Player_x + 16, Player_y, 0);
-						if ((Player_x + 16 >= Enemy1_x && Player_x + 16 <= Enemy1_x + 16) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 16 >= Enemy2_x && Player_x + 16 <= Enemy2_x + 16) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 16 >= Boss_x && Player_x + 16 <= Boss_x + 16) && (Player_y >= Boss_y && Player_y <= Boss_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 16 >= Enemy3_x && Player_x + 16 <= Enemy3_x + 16) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 16))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 16 >= Enemy4_x && Player_x + 16 <= Enemy4_x + 16) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 16))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 16 >= Enemy5_x && Player_x + 16 <= Enemy5_x + 16) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 16))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_LEFT])
-					{
-						al_draw_bitmap(bron1, Player_x - 16, Player_y, 0);
-						if ((Player_x - 16 >= Enemy1_x && Player_x - 16 <= Enemy1_x + 16) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 16))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 16 >= Enemy2_x && Player_x - 16 <= Enemy2_x + 16) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 16 >= Boss_x && Player_x - 16 <= Boss_x + 16) && (Player_y >= Boss_y && Player_y <= Boss_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 16 >= Enemy3_x && Player_x - 16 <= Enemy3_x + 16) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 16))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 16 >= Enemy4_x && Player_x - 16 <= Enemy4_x + 16) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 16))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 16 >= Enemy5_x && Player_x - 16 <= Enemy5_x + 16) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 16))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_UP])
-					{
-						al_draw_bitmap(bron1, Player_x, Player_y - 16, 0);
-						if ((Player_x  >= Enemy1_x && Player_x  <= Enemy1_x + 16) && (Player_y - 16 >= Enemy1_y && Player_y - 16 <= Enemy1_y + 16))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x  >= Enemy2_x && Player_x  <= Enemy2_x + 16) && (Player_y - 16 >= Enemy2_y && Player_y - 16 <= Enemy2_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 16) && (Player_y - 16 >= Boss_y && Player_y - 16 <= Boss_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x>= Enemy3_x && Player_x<= Enemy3_x + 16) && (Player_y - 16 >= Enemy3_y && Player_y - 16 <= Enemy3_y + 16))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x>= Enemy4_x && Player_x <= Enemy4_x + 16) && (Player_y - 16 >= Enemy4_y && Player_y - 16 <= Enemy4_y + 16))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x>= Enemy5_x && Player_x <= Enemy5_x + 16) && (Player_y - 16 >= Enemy5_y && Player_y - 16 <= Enemy5_y + 16))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_DOWN])
-					{
-						al_draw_bitmap(bron1, Player_x, Player_y + 16, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 16) && (Player_y + 16 >= Enemy1_y && Player_y + 16 <= Enemy1_y + 16))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 16) && (Player_y + 16 >= Enemy2_y && Player_y + 16 <= Enemy2_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 16) && (Player_y + 16 >= Boss_y && Player_y + 16 <= Boss_y + 16))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 16) && (Player_y +16 >= Enemy3_y && Player_y + 16 <= Enemy3_y + 16))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 16) && (Player_y + 16 >= Enemy4_y && Player_y + 16 <= Enemy4_y + 16))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 16) && (Player_y + 16 >= Enemy5_y && Player_y + 16 <= Enemy5_y + 16))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
+					lastKey = 4;
+					do_x = 32;
 				}
 
-				if(lastweapon == 2)
+				if (key[KEY_LEFT])
 				{
-
-					switch (lastKey)
-					{
-					case 4:
-						al_draw_bitmap(bron2, Player_x + 32, Player_y, 0);/*
-						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) || (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}*/
-						break;
-					case 3:
-						al_draw_bitmap(bron2, Player_x - 32, Player_y, 0);/*
-						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) || (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) || (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}*/
-						break;
-					case 1:
-						al_draw_bitmap(bron2, Player_x, Player_y - 32, 0);/*
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) || (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) || (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}*/
-						break;
-					case 2:
-						al_draw_bitmap(bron2, Player_x, Player_y + 32, 0);/*
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) || (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) || (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}*/
-						break;
-					}
-
-					if (key[KEY_RIGHT])
-					{
-						al_draw_bitmap(bron2, Player_x + 32, Player_y, 0);
-						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy3_x && Player_x + 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy4_x && Player_x + 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy5_x && Player_x + 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_LEFT])
-					{
-						al_draw_bitmap(bron2, Player_x - 32, Player_y, 0);
-						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy3_x && Player_x - 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy4_x && Player_x - 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy5_x && Player_x - 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_UP])
-					{
-						al_draw_bitmap(bron2, Player_x, Player_y - 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y - 32 >= Enemy3_y && Player_y - 32 <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y - 32 >= Enemy4_y && Player_y - 32 <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y - 32 >= Enemy5_y && Player_y - 32 <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_DOWN])
-					{
-						al_draw_bitmap(bron2, Player_x, Player_y + 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y + 32 >= Enemy3_y && Player_y + 32 <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y + 32 >= Enemy4_y && Player_y + 32 <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y + 32 >= Enemy5_y && Player_y + 32 <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
+					lastKey = 3;
+					do_x = -32;
 				}
 
-				if (lastweapon == 3)
+				if (key[KEY_UP])
 				{
-
-					switch (lastKey)
-					{
-					case 4:
-						al_draw_bitmap(bron3, Player_x + 32, Player_y, 0);
-						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 3:
-						al_draw_bitmap(bron3, Player_x - 32, Player_y, 0);
-						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 1:
-						al_draw_bitmap(bron3, Player_x, Player_y - 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 2:
-						al_draw_bitmap(bron3, Player_x, Player_y + 32, 0);
-
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					}
-
-
-					if (key[KEY_RIGHT])
-					{
-						al_draw_bitmap(bron3, Player_x + 32, Player_y, 0);
-						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy3_x && Player_x + 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy4_x && Player_x + 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy5_x && Player_x + 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_LEFT])
-					{
-						al_draw_bitmap(bron3, Player_x - 32, Player_y, 0);
-						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy3_x && Player_x - 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy4_x && Player_x - 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy5_x && Player_x - 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_UP])
-					{
-						al_draw_bitmap(bron3, Player_x, Player_y - 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y - 32 >= Enemy3_y && Player_y - 32 <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y - 32 >= Enemy4_y && Player_y - 32 <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y - 32 >= Enemy5_y && Player_y - 32 <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_DOWN])
-					{
-						al_draw_bitmap(bron3, Player_x, Player_y + 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y + 32 >= Enemy3_y && Player_y + 32 <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y + 32 >= Enemy4_y && Player_y + 32 <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y + 32 >= Enemy5_y && Player_y + 32 <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
+					lastKey = 1;
+					do_y = -32;
 				}
 
-				if (lastweapon == 4)
+				if (key[KEY_DOWN])
 				{
-
-					switch (lastKey)
-					{
-					case 4:
-						al_draw_bitmap(bron4, Player_x + 32, Player_y, 0);
-						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 3:
-						al_draw_bitmap(bron4, Player_x - 32, Player_y, 0);
-						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 1:
-						al_draw_bitmap(bron4, Player_x, Player_y - 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 2:
-						al_draw_bitmap(bron4, Player_x, Player_y + 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					}
-
-
-					if (key[KEY_RIGHT])
-					{
-						al_draw_bitmap(bron4, Player_x + 32, Player_y, 0);
-						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy3_x && Player_x + 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy4_x && Player_x + 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy5_x && Player_x + 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_LEFT])
-					{
-						al_draw_bitmap(bron4, Player_x - 32, Player_y, 0);
-						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy3_x && Player_x - 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy4_x && Player_x - 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy5_x && Player_x - 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_UP])
-					{
-						al_draw_bitmap(bron4, Player_x, Player_y - 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y - 32 >= Enemy3_y && Player_y - 32 <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y - 32 >= Enemy4_y && Player_y - 32 <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y - 32 >= Enemy5_y && Player_y - 32 <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_DOWN])
-					{
-						al_draw_bitmap(bron4, Player_x, Player_y + 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y + 32 >= Enemy3_y && Player_y + 32 <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y + 32 >= Enemy4_y && Player_y + 32 <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y + 32 >= Enemy5_y && Player_y + 32 <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
+					lastKey = 2;
+					do_y = 32;
+				}
+				
+				switch (lastweapon)
+				{
+				case 2:
+					al_draw_bitmap(bron2, Player_x + do_x, Player_y + do_y, 0);
+					break;
+				case 3:
+					al_draw_bitmap(bron3, Player_x + do_x, Player_y + do_y, 0);
+					break;
+				case 4:
+					al_draw_bitmap(bron4, Player_x + do_x, Player_y + do_y, 0);
+					break;
+				case 5:
+					al_draw_bitmap(bron5, Player_x + do_x, Player_y + do_y, 0);
+					break;
 				}
 
-
-				if (lastweapon == 5)
+				kolizja = WeaponHandler(lastweapon, lastKey, Player_x, Player_y, Enemy1_x, Enemy1_y, ptr_playerMoney, bron1);
+				if (kolizja == 1)
 				{
-
-					switch (lastKey)
-					{
-					case 4:
-						al_draw_bitmap(bron5, Player_x + 32, Player_y, 0);
-						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 3:
-						al_draw_bitmap(bron5, Player_x - 32, Player_y, 0);
-						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 1:
-						al_draw_bitmap(bron5, Player_x, Player_y - 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					case 2:
-						al_draw_bitmap(bron5, Player_x, Player_y + 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						break;
-					}
-
-
-					if (key[KEY_RIGHT])
-					{
-						al_draw_bitmap(bron5, Player_x + 32, Player_y, 0);
-						if ((Player_x + 32 >= Enemy1_x && Player_x + 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy2_x && Player_x + 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Boss_x && Player_x + 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy3_x && Player_x + 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy4_x && Player_x + 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x + 32 >= Enemy5_x && Player_x + 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_LEFT])
-					{
-						al_draw_bitmap(bron5, Player_x - 32, Player_y, 0);
-						if ((Player_x - 32 >= Enemy1_x && Player_x - 32 <= Enemy1_x + 32) && (Player_y >= Enemy1_y && Player_y <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy2_x && Player_x - 32 <= Enemy2_x + 32) && (Player_y >= Enemy2_y && Player_y <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Boss_x && Player_x - 32 <= Boss_x + 32) && (Player_y >= Boss_y && Player_y <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy3_x && Player_x - 32 <= Enemy3_x + 32) && (Player_y >= Enemy3_y && Player_y <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy4_x && Player_x - 32 <= Enemy4_x + 32) && (Player_y >= Enemy4_y && Player_y <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x - 32 >= Enemy5_x && Player_x - 32 <= Enemy5_x + 32) && (Player_y >= Enemy5_y && Player_y <= Enemy5_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_UP])
-					{
-						al_draw_bitmap(bron5, Player_x, Player_y - 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y - 32 >= Enemy1_y && Player_y - 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y - 32 >= Enemy2_y && Player_y - 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y - 32 >= Boss_y && Player_y - 32 <= Boss_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y - 32 >= Enemy3_y && Player_y - 32 <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y - 32 >= Enemy4_y && Player_y - 32 <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y - 32 >= Enemy5_y && Player_y - 32 <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
-					if (key[KEY_DOWN])
-					{
-						al_draw_bitmap(bron5, Player_x, Player_y + 32, 0);
-						if ((Player_x >= Enemy1_x && Player_x <= Enemy1_x + 32) && (Player_y + 32 >= Enemy1_y && Player_y + 32 <= Enemy1_y + 32))
-						{
-							cout << "Enemy killed!";
-							enemyDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy2_x && Player_x <= Enemy2_x + 32) && (Player_y + 32 >= Enemy2_y && Player_y + 32 <= Enemy2_y + 32))
-						{
-							cout << "Enemy2 killed!";
-							enemyDead2 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Boss_x && Player_x <= Boss_x + 32) && (Player_y + 32 >= Boss_y && Player_y + 32 <= Boss_y + 32))
-						{
-							cout << "Boss killed!";
-							bossDead = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy3_x && Player_x <= Enemy3_x + 32) && (Player_y + 32 >= Enemy3_y && Player_y + 32 <= Enemy3_y + 32))
-						{
-							cout << "Enemy3 killed!";
-							enemyDead3 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy4_x && Player_x <= Enemy4_x + 32) && (Player_y + 32 >= Enemy4_y && Player_y + 32 <= Enemy4_y + 32))
-						{
-							cout << "Enemy4 killed!";
-							enemyDead4 = 1;
-							playerMoney += 30;
-						}
-						if ((Player_x >= Enemy5_x && Player_x <= Enemy5_x + 32) && (Player_y + 32 >= Enemy5_y && Player_y + 32 <= Enemy5_y + 32))
-						{
-							cout << "Enemy5 killed!";
-							enemyDead5 = 1;
-							playerMoney += 30;
-						}
-					}
+					enemyDead = 1;
+					cout << "Enemy1 killed!";
 				}
-
+				kolizja = 0;
+				kolizja = WeaponHandler(lastweapon, lastKey, Player_x, Player_y, Enemy2_x, Enemy2_y, ptr_playerMoney, bron1);
+				if (kolizja == 1)
+				{
+					enemyDead2 = 1;
+					cout << "Enemy2 killed!";
+				}
+				kolizja = 0;
+				kolizja = WeaponHandler(lastweapon, lastKey, Player_x, Player_y, Enemy3_x, Enemy3_y, ptr_playerMoney, bron1);
+				if (kolizja == 1)
+				{
+					enemyDead3 = 1;
+					cout << "Enemy3 killed!";
+				}
+				kolizja = 0;
+				kolizja = WeaponHandler(lastweapon, lastKey, Player_x, Player_y, Enemy4_x, Enemy4_y, ptr_playerMoney, bron1);
+				if (kolizja == 1)
+				{
+					enemyDead4 = 1;
+					cout << "Enemy4 killed!";
+				}
+				kolizja = 0;
+				kolizja = WeaponHandler(lastweapon, lastKey, Player_x, Player_y, Enemy5_x, Enemy5_y, ptr_playerMoney, bron1);
+				if (kolizja == 1)
+				{
+					enemyDead5 = 1;
+					cout << "Enemy5 killed!";
+				}
+				kolizja = 0;
+				kolizja = WeaponHandler(lastweapon, lastKey, Player_x, Player_y, Boss_x, Boss_y, ptr_playerMoney, bron1);
+				if (kolizja == 1)
+				{
+					bossDead = 1;
+					cout << "Boss killed!";
+				}
 			}
 
 			/*cout << "Player_x: " << Player_x << endl;
